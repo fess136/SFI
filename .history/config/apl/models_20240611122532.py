@@ -34,9 +34,3 @@ class Administradores(models.Model):
     cedula=models.BigIntegerField(max_length=15,verbose_name="Cedula",unique=True)
     correo_electronico=models.CharField(max_length=150,verbose_name="Email")
     
-    
-    class Meta:
-        
-        verbose_name = "Administrador"
-        verbose_name_plural = "Administradores"
-        db_table="Administrador"

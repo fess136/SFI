@@ -34,9 +34,39 @@ class Administradores(models.Model):
     cedula=models.BigIntegerField(max_length=15,verbose_name="Cedula",unique=True)
     correo_electronico=models.CharField(max_length=150,verbose_name="Email")
     
+    def __str__(self):
+       return self.nombre
     
+
     class Meta:
         
         verbose_name = "Administrador"
         verbose_name_plural = "Administradores"
         db_table="Administrador"
+
+
+
+class Empleados(models.Model):
+
+    nombre=models.CharField(max_length=150, verbose_name="Nombre")
+    apellido=models.CharField(max_length=150, verbose_name="Apellido")
+    edad=models.IntegerField(max_length=150,verbose_name="Edad")
+    cedula=models.BigIntegerField(max_length=15,verbose_name="Cedula",unique=True)
+    correo_electronico=models.CharField(max_length=150,verbose_name="Email")
+
+    def __str__(self):
+       return self.nombre
+    
+    
+    class Meta:
+        
+        verbose_name = "Empleados"
+        verbose_name_plural = "Empleados"
+        db_table="Empleados"
+
+
+        
+
+
+    
+

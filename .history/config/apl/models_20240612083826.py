@@ -31,8 +31,8 @@ class Administradores(models.Model):
     
     nombre=models.CharField(max_length=150, verbose_name="Nombre")
     apellido=models.CharField(max_length=150, verbose_name="Apellido")
-    edad=models.PositiveIntegerField(verbose_name="Edad")
-    cedula=models.PositiveBigIntegerField(verbose_name="Cedula",unique=True)
+    edad=models.IntegerField(verbose_name="Edad")
+    cedula=models.BigIntegerField(verbose_name="Cedula",unique=True)
     correo_electronico=models.CharField(max_length=150,verbose_name="Email")
     
     def __str__(self):
@@ -50,9 +50,9 @@ class Administradores(models.Model):
 class Clientes(models.Model):
     nombre=models.CharField(max_length=150, verbose_name="Nombre")
     apellido=models.CharField(max_length=150, verbose_name="Apellido")
-    nit=models.PositiveBigIntegerField(verbose_name="Nit",unique=True)
-    correo_electronico=models.EmailField(max_length=150,verbose_name="Email")
-    telefono=models.PositiveBigIntegerField(verbose_name="Telefono")
+    nit=models.BigIntegerField(verbose_name="Nit",unique=True)
+    correo_electronico=models.CharField(max_length=150,verbose_name="Email")
+    telefono=models.IntegerField(verbose_name="Telefono")
     Tipo_identificador=models.ForeignKey(Tipo_identificador, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -69,8 +69,8 @@ class Empleados(models.Model):
 
     nombre=models.CharField(max_length=100, verbose_name="Nombre")
     apellido=models.CharField(max_length=100, verbose_name="Apellido")
-    edad=models.PositiveIntegerField(verbose_name="Edad")
-    cedula=models.PositiveBigIntegerField(verbose_name="Cedula",unique=True)
+    edad=models.IntegerField(verbose_name="Edad")
+    cedula=models.BigIntegerField(verbose_name="Cedula",unique=True)
     correo_electronico=models.CharField(max_length=100,verbose_name="Email")
 
     def __str__(self):

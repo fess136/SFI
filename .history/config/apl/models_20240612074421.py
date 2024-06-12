@@ -48,13 +48,4 @@ class clientes(models.Model):
     apellido=models.CharField(max_length=150, verbose_name="Apellido")
     nit=models.BigIntegerField(max_length=15,verbose_name="Nit",unique=True)
     correo_electronico=models.CharField(max_length=150,verbose_name="Email")
-    telefono=models.IntegerField(max_length=150,verbose_name="Telefono")
-    Tipo_identificador=models.ForeignKey(Tipo_identificador, on_delete=models.CASCADE)
     
-    def __str__(self):
-        return self.nombre
-    
-    class Meta:
-        verbose_name = "Cliente"
-        verbose_name_plural ="Clientes"
-        db_table ="Cliente"

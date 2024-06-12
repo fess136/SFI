@@ -175,7 +175,7 @@ class Metodo_Pago(models.Model):
 
 
 class Compras(models.Model):
-    fecha_compra =models.DateTimeField(verbose_name="Fecha De Compra",auto_now=True)
+    fecha_compra =models.DateField(verbose_name="Fecha De Compra",auto_now=True)
     metodo_pago =models.ForeignKey(Metodo_Pago,on_delete=models.PROTECT)
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
     proveedor = models.ForeignKey(Proveedores,on_delete=models.PROTECT)
@@ -189,11 +189,11 @@ class Compras(models.Model):
         db_table ="Compra"
         
 class Ventas(models.Model):
-    fecha_venta=models.DateTimeField(verbose_name="Fecha De Venta",auto_now=True)
+    fecha_venta=models.DateField(verbose_name="Fecha De Venta",auto_now=True)
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
-    empleado= models.ForeignKey(Empleados,on_delete=models.PROTECT,null=True)
+    empleado= models.ForeignKey(Empleados,on_delete=models.PROTECT )
     cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
-    administrador = models.ForeignKey(Administradores,on_delete=models.PROTECT ,default="no")
+    administrador = models.ForeignKey(Administradores,on_delete=models.PROTECT )
     
     def __str__(self):
         return f"{self.fecha_venta}"

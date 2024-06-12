@@ -191,9 +191,9 @@ class Compras(models.Model):
 class Ventas(models.Model):
     fecha_venta=models.DateTimeField(verbose_name="Fecha De Venta",auto_now=True)
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
-    empleado= models.ForeignKey(Empleados,on_delete=models.PROTECT,null=True)
+    empleado= models.ForeignKey(Empleados,on_delete=models.PROTECT DO_NOTHING)
     cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
-    administrador = models.ForeignKey(Administradores,on_delete=models.PROTECT ,default="no")
+    administrador = models.ForeignKey(Administradores,on_delete=models.PROTECT null=False)
     
     def __str__(self):
         return f"{self.fecha_venta}"

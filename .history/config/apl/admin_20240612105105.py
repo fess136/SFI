@@ -13,6 +13,5 @@ admin.site.register(Empleados)
 admin.site.register(Productos)
 admin.site.register(Compras)
 admin.site.register(Metodo_Pago)
-admin.site.register(Ventas)
 
 

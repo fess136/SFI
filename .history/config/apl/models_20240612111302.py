@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import*
+
 # Create your models here.
 class Tipo(models.Model):
     nombre=models.CharField(max_length=150, verbose_name="Nombre")
@@ -12,6 +12,7 @@ class Tipo(models.Model):
         verbose_name = "Tipo"
         verbose_name_plural = "Tipos"
         db_table = "Tipo"
+
 
 
 class Presentacion(models.Model):
@@ -187,18 +188,3 @@ class Compras(models.Model):
         verbose_name ="Compra"
         verbose_name_plural ="Compras"
         db_table ="Compra"
-        
-class Ventas(models.Model):
-    fecha_venta=models.DateTimeField(verbose_name="Fecha De Venta",auto_now=True)
-    producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
-    empleado= models.ForeignKey(Empleados,on_delete=models.PROTECT,null=True)
-    cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
-    administrador = models.ForeignKey(Administradores,on_delete=models.PROTECT ,default="no")
-    
-    def __str__(self):
-        return f"{self.fecha_venta}"
-    
-    class Meta:
-        verbose_name ="Venta"
-        verbose_name_plural ="Ventas"
-        db_table ="Venta"

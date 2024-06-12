@@ -193,7 +193,7 @@ class Ventas(models.Model):
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
     empleado= models.ForeignKey(Empleados,on_delete=models.PROTECT,null=True)
     cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
-    administrador = models.ForeignKey(Administradores,on_delete=models.PROTECT ,default="no")
+    administrador = models.ForeignKey(Administradores,on_delete=models.PROTECT ,null=False)
     
     def __str__(self):
         return f"{self.fecha_venta}"

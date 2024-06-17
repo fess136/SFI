@@ -11,9 +11,9 @@ try:
 
         p = Productos.objects.get(id=4)
         print(p.nombre)
-        # p.nombre = "loca"
-        # p.save()
-        # print(p.nombre)
+        p.nombre = "loca"
+        p.save()
+        
 
 except Exception as e:
     print("Oscar es gay")

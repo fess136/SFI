@@ -19,5 +19,5 @@ from django.urls import path ,include
 from apl.views import vista1
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("prueba/", include("apl.urls"))
+    path("prueba/", vista1)
 ]

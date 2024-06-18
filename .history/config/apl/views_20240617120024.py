@@ -1,16 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
-from .models import *
 # Create your views here.
 
 def vista1(request):
-    nombres={
+    nombre={
         
-        "nombre":"Fabian",
-        "tipos":Tipo.objects.all()
+        "nombre":"Fabian"
     }
 
-    return render(request,"index.html",nombres)
+    return render(request,"index.html")
 
 
 def vista2(request):

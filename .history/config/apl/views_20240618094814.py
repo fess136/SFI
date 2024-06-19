@@ -7,7 +7,7 @@ def vista1(request):
     nombres={
         
         "nombre":"Fabian",
-        "productos":Productos.objects.all()
+        "tipos":Productos.objects.all()
     }
 
     return render(request,"index.html",nombres)

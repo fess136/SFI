@@ -6,11 +6,10 @@ from .models import *
 def vista1(request):
     nombres={
         
-        "nombre":"Fabian",
         "productos":Productos.objects.all()
     }
 
-    return render(request,"index2.html",nombres)
+    return render(request,"index.html", nombres)
 
 
 def vista2(request):

@@ -10,6 +10,10 @@
 <a href= "{% url 'apl:vista1' %}">productos</a> <a href= "{% url 'apl:vista2' %}">categorias</a>
 
 
-    <p>{{nombre}}</p>
+    <p>{{productos}}</p>
+
+    {% block contenido %}
+
+    {% endblock %}
 </body>
 </html>

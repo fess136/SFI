@@ -8,9 +8,7 @@ def vista1(request):
         
         "productos":Productos.objects.all()
     }
-
     return render(request,"index.html", nombres)
-
 
 def vista2(request):
     

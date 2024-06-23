@@ -6,7 +6,7 @@ def listar_tipo(request):
     elementos = {
 
         "titulo": "Listar Tipos", #titulo de la tabla
-        "atributos": Tipo.objects.all() #datos de la tabla tipos
+        "datos": Tipo.objects.all() #datos de la tabla tipos
         
         }
 

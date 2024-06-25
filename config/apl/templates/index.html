@@ -1,19 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>vista1</title>
-</head>
-<body>
+{% extends 'body.html' %}
 
-<a href= "{% url 'apl:vista1' %}">productos</a> <a href= "{% url 'apl:vista2' %}">categorias</a>
+{% block contenido %}
 
-
-    <p>{{productos}}</p>
-
-    {% block contenido %}
-
-    {% endblock %}
-</body>
-</html>
+{% endblock %}

@@ -1,34 +1,25 @@
-{% extends 'listar.html' %}
-
-{% block titulos %}
-
-  {{titulo}}
-
-{% endblock %}
+{% extends "listar.html" %}
 
 {% block columnas %}
+<tr>
+    <th scope="col" style="width: 10%;">#</th>
+    <th scope="col" style="width: 70%;">Nombre</th>
+    <th scope="col" style="width: 20%;">Opciones</th>
 
-  <th> id </th>
-  <th> descripción </th>
-  <th> estado </th>
+</tr>
 
 {% endblock %}
 
 {% block filas %}
-
-  {% for i in datos %}
-    <tr>
-      <td> {{i.id}} </td>
-      <td> {{i.nombre}}</td>
-      <td> {{i.estado}}</td> 
-
-      <!-- Botones editar y eliminar -->
-      <td>
-        <button type = "button" class = "btn-primary btn-xs"><i class = "fas fa-edit"></i></button>
-        <button type = "button" class = "btn-danger btn-xs"><i class = "fas fa-edit"></i></button>
-      <td>
-    </tr>
-
-  {% endfor %}
+{% for c in object_list %}
+<tr>
+    <td>{{c.id}}</td>
+    <td>{{c.nombre}}</td>
+    <td>
+        <button type="button" class="btn btn-warning btn-xs"><i class="fas fa-edit"></i></button>
+        <button type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
+    </td>
+</tr>
+{% endfor %}
 
 {% endblock %}

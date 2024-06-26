@@ -5,7 +5,6 @@ from apl.views.marca.views import *
 from apl.views.presentacion.views import*
 from apl.views.administrador.views import*
 from apl.views.cliente.views import*
-from apl.views.compra.views import*
 app_name = 'apl'
 urlpatterns = [
 
@@ -16,6 +15,6 @@ urlpatterns = [
     path('marcas/listar', MarcaListView.as_view(), name = "listar_marca"),
     path('administrador/listar', AdministradorListView.as_view(), name="listar_administrador"),
     path('clientes/listar', ClienteListView.as_view(), name="listar_cliente"),
-    path('compras/listar',ComprasListView.as_view(), name = "listar_compras")
+    path('compras/listar',C)
 
 ]

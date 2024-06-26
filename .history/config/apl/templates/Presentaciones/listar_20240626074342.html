@@ -1,0 +1,26 @@
+{% extends "listar.html" %}
+{%block titulo%}
+listar presentaciones
+{%endblock%}
+{% block columnas %}
+<tr>
+    <th scope="col" style="width: 10%;">#</th>
+    <th scope="col" style="width: 70%;">Descripcion</th>
+</tr>
+
+{% endblock %}
+
+{% block filas %}
+{% for c in object_list %}
+<tr>
+    <td>{{c.id}}</td>
+    <td>{{c.descripcion}}</td>
+    
+    <td>
+        <button type="button" class="btn btn-warning btn-xs"><i class="fas fa-edit"></i></button>
+        <button type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
+    </td>
+</tr>
+{% endfor %}
+
+{% endblock %}

@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import*
 # Create your models here.
+
+
 class Tipo(models.Model):
     nombre=models.CharField(max_length=150, verbose_name="Nombre")
     estado=models.BooleanField(default=True)

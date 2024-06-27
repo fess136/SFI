@@ -4,13 +4,8 @@ from django.forms import *
 from apl.models import Tipo
 
 class TipoForm(ModelForm):
-    
-    def __init__(self, *args, **kwargs):
 
-        super().__init__(*args, **kwargs)
-
-        self.fields['nombre'].widget.attrs['autofocus'] = False
-
+    #Le agrega un poco de diseño al formulario
     class Meta:
         model = Tipo
         fields = '__all__'

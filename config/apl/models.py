@@ -8,7 +8,7 @@ class Tipo(models.Model):
     estado=models.BooleanField(default=True)
     
     def __str__(self):
-        return self.estado
+        return self.nombre
     
     class Meta:
         verbose_name = "Tipo"

@@ -9,6 +9,9 @@ from apl.views.metodo_pago.views import *
 
 from apl.views.cliente.views import*
 from apl.views.compra.views import*
+from apl.views.producto.views import *
+from apl.views.proveedor.views import *
+
 app_name = 'apl'
 urlpatterns = [
 
@@ -20,8 +23,9 @@ urlpatterns = [
     path('administrador/listar', AdministradorListView.as_view(), name="listar_administrador"),
     path('empleado/listar', EmpleListView.as_view(), name="listar_empleado"),
     path('metodos/listar', MetodosListView.as_view(), name="listar_metodo"),
-
     path('clientes/listar', ClienteListView.as_view(), name="listar_cliente"),
-    path('compras/listar',ComprasListView.as_view(), name = "listar_compras")
+    path('compras/listar',ComprasListView.as_view(), name = "listar_compras"),
+    path('productos/listar', ProductoListView.as_view(), name = "listar_productos"),
+    path('proveedores/listar', ProveedorListView.as_view(), name = "lista_proveedor")
 
 ]

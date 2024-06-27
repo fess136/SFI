@@ -204,3 +204,7 @@ class Ventas(models.Model):
         verbose_name ="Venta"
         verbose_name_plural ="Ventas"
         db_table ="Venta"
+
+
+# class Detalle_venta(models.Model):
+    

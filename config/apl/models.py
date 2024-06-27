@@ -177,7 +177,7 @@ class Metodo_Pago(models.Model):
 
 
 class Compras(models.Model):
-    fecha_compra =models.DateTimeField(verbose_name="Fecha De Compra",auto_now=True)
+    fecha_compra =models.DateField(verbose_name="Fecha De Compra",auto_now=True)
     metodo_pago =models.ForeignKey(Metodo_Pago,on_delete=models.PROTECT)
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
     proveedor = models.ForeignKey(Proveedores,on_delete=models.PROTECT)
@@ -204,3 +204,7 @@ class Ventas(models.Model):
         verbose_name ="Venta"
         verbose_name_plural ="Ventas"
         db_table ="Venta"
+
+
+# class Detalle_venta(models.Model):
+    

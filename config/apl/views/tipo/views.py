@@ -20,7 +20,6 @@ class TipoCreateView(CreateView):
     template_name = 'tipo/crear.html'
     success_url = reverse_lazy('apl:listar_tipo')
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
@@ -80,7 +79,6 @@ class TipoUpdateView(UpdateView):
             return self.form_invalid(form)
 
         return super().form_valid(form)
-
 
 class TipoListView(ListView):
 

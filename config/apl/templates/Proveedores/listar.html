@@ -29,8 +29,8 @@ Listar Proveedores
     <td>{{c.telefono}}</td>
     <td>{{c.correo_electronico}}</td>
     <td>
-        <button type="button" class="btn btn-warning btn-xs"><i class="fas fa-edit"></i></button>
-        <button type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
+        <a href="{% url 'apl:editar_proveedor' c.id %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-edit"></i></a>
+        <a href="{% url 'apl:borrar_proveedor' c.id %}" class = "btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
     </td>
 </tr>
 {% endfor %}

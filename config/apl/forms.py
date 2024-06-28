@@ -41,4 +41,56 @@ class ProductosForm(ModelForm):
         model = Productos
         fields = '__all__'
 
+class PresentacionForm(ModelForm):
 
+    class Meta:
+        model = Presentacion
+        fields = '__all__'
+
+class MedidaForm(ModelForm):
+
+    class Meta:
+        model = Unidad_Medida
+        fields = '__all__'
+
+class EmpleadoForm(ModelForm):
+
+    class Meta:
+
+        model = Empleados
+        fields = '__all__'
+
+class ClienteForm(ModelForm):
+
+    class Meta:
+
+        model = Clientes
+        fields = '__all__'
+
+class IdentificadorForm(ModelForm):
+
+    class Meta:
+
+        model = Tipo_identificador
+        fields = '__all__'
+
+class MetodoForm(ModelForm):
+
+    class Meta:
+
+        model = Metodo_Pago
+        fields = '__all__'
+
+class ProveedorForm(ModelForm):
+
+    class Meta:
+
+        model = Proveedores
+        fields = '__all__'    
+
+class CompraForm(ModelForm):
+
+    class Meta:
+
+        model = Compras
+        fields = '__all__' 

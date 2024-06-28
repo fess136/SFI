@@ -98,7 +98,8 @@ class TipoListView(ListView):
     def post(self, request, *args, **kwargs):
         return JsonResponse({'nombre': "Oscar"})
     
-    # @method_decorator(login_required)
-    @method_decorator(csrf_exempt)
+    
+    # @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)

@@ -4,6 +4,16 @@ URL configuration for config project.
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
 Examples:
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+    path("articles/2003/", views.special_case_2003),
+    path("articles/<int:year>/", views.year_archive),
+    path("articles/<int:year>/<int:month>/", views.month_archive),
+    path("articles/<int:year>/<int:month>/<slug:slug>/", views.article_detail),
+]
 Function views
     1. Add an import:  from my_app import views
     2. Add a URL to urlpatterns:  path('', views.home, name='home')
@@ -16,8 +26,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path ,include
+from login.views import *
+from inicio.views import indexView
+
 from apl.views import *
+
 urlpatterns = [
+
+    path('', indexView.as_view(), name='index'),
+    path('login', include('login.urls')),
     path('admin/', admin.site.urls),
-    path("apl/", include("apl.urls")),
+    path("apl/", include("apl.urls"))
+
+    
 ]

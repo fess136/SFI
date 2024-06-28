@@ -39,6 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apl',
+<<<<<<< HEAD
+    'inicio',
+    'login',
+=======
+>>>>>>> 232157ed74d4b8572520d34ac28fc639376429fb
     'widget_tweaks',
 ]
 

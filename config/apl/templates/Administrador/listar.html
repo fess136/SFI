@@ -9,6 +9,7 @@ listar administras
     <th scope="col" style="width: 20%;">Nombre</th>
     <th scope="col" style="width: 20%;">Apellido</th>
     <th scope="col" style="width: 20%;">Edad</th>
+    <th scope="col"> Cedula </th> 
     <th scope="col" style="width: 60%;">Email</th>
     <th scope="col" style="width: 20%;">Opciones</th>
 
@@ -23,10 +24,11 @@ listar administras
     <td>{{c.nombre}}</td>
     <td>{{c.apellido}}</td>
     <td>{{c.edad}}</td>
+    <td>{{c.cedula}}</td>
     <td>{{c.correo_electronico}}</td>
     <td>
-        <button type="button" class="btn btn-warning btn-xs"><i class="fas fa-edit"></i></button>
-        <button type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
+        <a href="{% url 'apl:editar_administrador' c.id %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-edit"></i></a>
+        <a href="{% url 'apl:borrar_administrador' c.id %}" class = "btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
     </td>
 </tr>
 {% endfor %}

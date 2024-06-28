@@ -1,7 +1,7 @@
 from dataclasses import fields
 from django.forms import *
 
-from apl.models import Tipo
+from apl.models import *
 
 class TipoForm(ModelForm):
 
@@ -15,3 +15,18 @@ class TipoForm(ModelForm):
             ),
 
         }
+
+class MarcaForm(ModelForm):
+
+    class Meta:
+        
+        model = Marcas
+        fields = '__all__'
+
+class AdministradorForm(ModelForm):
+
+    class Meta:
+        model = Administradores
+        fields = '__all__'
+
+

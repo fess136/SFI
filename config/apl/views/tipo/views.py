@@ -24,8 +24,8 @@ class TipoCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         
         #Envia el tiutlo al archivo crear.html
-        context['titulo'] = 'Crear Titulo'
-        
+        context['titulo'] = 'Crear Tipo'
+        context['crear_url'] = reverse_lazy('apl:crear_tipo')
 
         return context
     

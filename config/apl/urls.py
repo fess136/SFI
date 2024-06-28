@@ -29,11 +29,17 @@ urlpatterns = [
 
     #Modulo Marcas
     path('marcas/listar', MarcaListView.as_view(), name = "listar_marca"),
+    path('marcas/crear', MarcaCreateView.as_view(), name = 'crear_marca'),
+    path('marcas/editar/<int:pk>', MarcaUpdateView.as_view(), name = "editar_marca"),
+    path('marcas/borrar/<int:pk>', MarcaDeleteView.as_view(), name = 'borrar_marca'),
 
     #Modulo Administrador
     path('administradores/listar', AdministradorListView.as_view(), name="listar_administrador"),
+    path('administradores/crear', AdministradorCreateView.as_view(), name = "crear_administrador"),
+    path('administradores/editar/<int:pk>', AdministradorUpdateView.as_view(), name = "editar_administrador"),
+    path('administradores/borrar/<int:pk>', AdministradorDeleteView.as_view(), name = 'borrar_administrador'),
 
-    #Modulo Marcas
+    #Modulo Empleados
     path('empleados/listar', EmpleListView.as_view(), name="listar_empleado"),
 
     #Modulo Metodos

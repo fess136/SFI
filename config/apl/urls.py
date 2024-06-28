@@ -53,6 +53,9 @@ urlpatterns = [
 
     #Modulo Productos
     path('productos/listar', ProductoListView.as_view(), name = "listar_productos"),
+    path('productos/crear', ProductoCreateView.as_view(), name = "crear_producto"),
+    path('productos/editar/<int:pk>', ProductoUpdateView.as_view(), name = "editar_producto"),
+    path('productos/borrar/<int:pk>', ProductoDeleteView.as_view(), name = "borrar_producto"),
 
     #Modulo Proveedores
     path('proveedores/listar', ProveedorListView.as_view(), name = "lista_proveedor"),
@@ -66,5 +69,7 @@ urlpatterns = [
     #Modulo Ventas
     path('ventas/listar',VentasListView.as_view(),name = "listar_ventas"),
     path('ventas/crear', VentaCreateView.as_view(), name = 'crear_venta'),
+    path('ventas/editar/<int:pk>', VentaUpdateView.as_view(), name = 'editar_venta'),
+    path('ventas/borrar/<int:pk>', VentaDeleteView.as_view(), name = 'borrar_venta')
     
 ]

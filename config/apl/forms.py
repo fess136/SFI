@@ -34,6 +34,11 @@ class VentaForm(ModelForm):
     class Meta:
         model = Ventas
         fields = '__all__'
-        
+
+class ProductosForm(ModelForm):
+
+    class Meta:
+        model = Productos
+        fields = '__all__'
 
 

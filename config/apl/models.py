@@ -1,12 +1,14 @@
 from django.db import models
 from django.utils import*
 # Create your models here.
+
+
 class Tipo(models.Model):
     nombre=models.CharField(max_length=150, verbose_name="Nombre")
     estado=models.BooleanField(default=True)
     
     def __str__(self):
-        return self.estado
+        return self.nombre
     
     class Meta:
         verbose_name = "Tipo"
@@ -90,7 +92,7 @@ class Administradores(models.Model):
     apellido=models.CharField(max_length=150, verbose_name="Apellido")
     edad=models.PositiveIntegerField(verbose_name="Edad")
     cedula=models.PositiveBigIntegerField(verbose_name="Cedula",unique=True)
-    correo_electronico=models.CharField(max_length=150,verbose_name="Email")
+    correo_electronico=models.EmailField(verbose_name="Email", blank = False)
     
     def __str__(self):
         return self.nombre
@@ -175,7 +177,7 @@ class Metodo_Pago(models.Model):
 
 
 class Compras(models.Model):
-    fecha_compra =models.DateTimeField(verbose_name="Fecha De Compra",auto_now=True)
+    fecha_compra =models.DateField(verbose_name="Fecha De Compra",auto_now=True)
     metodo_pago =models.ForeignKey(Metodo_Pago,on_delete=models.PROTECT)
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
     proveedor = models.ForeignKey(Proveedores,on_delete=models.PROTECT)
@@ -202,3 +204,7 @@ class Ventas(models.Model):
         verbose_name ="Venta"
         verbose_name_plural ="Ventas"
         db_table ="Venta"
+
+
+# class Detalle_venta(models.Model):
+    

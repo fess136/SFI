@@ -1,0 +1,40 @@
+{% extends "listar.html" %}
+{%block titulo%}
+Listar Productos
+{%endblock%}
+{% block columnas %}
+<tr>
+    <th scope="col" style="width: 10%;">#</th>
+    <th scope="col" style="width: 15%;">Nombre</th>
+    <th scope="col" style="width: 15%;">Cantidad</th>
+    <th scope="col" style="width: 10%;">Precio</th>
+    <th scope="col" style="width: 15%;">Marcas</th>
+    <th scope="col" style="width: 15%;">Tipo</th>
+    <th scope="col" style="width: 15%;">Presentacion</th>
+    <th scope="col" style="width: 10%;">Unidad Medida</th>
+    
+    <th scope="col" style="width: 20%;">Opciones</th>
+
+</tr>
+
+{% endblock %}
+
+{% block filas %}
+{% for c in object_list %}
+<tr>
+    <td>{{c.id}}</td>
+    <td>{{c.nombre}}</td>
+    <td>{{c.cantidad}}</td>
+    <td>{{c.precio}}</td>
+    <td>{{c.marcas}}</td>
+    <td>{{c.tipo}}</td>
+    <td>{{c.presentacion}}</td>
+    <td>{{c.unidad_medida}}</td>
+    <td>
+        <button type="button" class="btn btn-warning btn-xs"><i class="fas fa-edit"></i></button>
+        <button type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
+    </td>
+</tr>
+{% endfor %}
+
+{% endblock %}

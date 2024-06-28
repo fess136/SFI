@@ -64,5 +64,7 @@ urlpatterns = [
     path('medidas/listar',MedidasListView.as_view(),name = "listar_medidas"),
 
     #Modulo Ventas
-    path('ventas/listar',VentasListView.as_view(),name = "listar_ventas")
+    path('ventas/listar',VentasListView.as_view(),name = "listar_ventas"),
+    path('ventas/crear', VentaCreateView.as_view(), name = 'crear_venta'),
+    
 ]

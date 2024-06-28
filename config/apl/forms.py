@@ -29,4 +29,11 @@ class AdministradorForm(ModelForm):
         model = Administradores
         fields = '__all__'
 
+class VentaForm(ModelForm):
+
+    class Meta:
+        model = Ventas
+        fields = '__all__'
+        
+
 

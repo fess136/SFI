@@ -1,13 +1,13 @@
 from typing import Any
 from django.urls import reverse_lazy
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.http.response import HttpResponse, JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect
 from apl.models import *
 from apl.forms import TipoForm
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 def listar_tipo(request):
 
@@ -19,6 +19,11 @@ class TipoCreateView(CreateView):
     form_class = TipoForm
     template_name = 'tipo/crear.html'
     success_url = reverse_lazy('apl:listar_tipo')
+    
+      #decorador para proteccion de la vista desde el login
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -47,6 +52,12 @@ class TipoDeleteView(DeleteView):
     template_name = 'tipo/eliminar.html'
     success_url = reverse_lazy('apl:listar_tipo')
 
+      #decorador para proteccion de la vista desde el login
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+
     #Metodo para exportar variables a el template tipo/eliminar.html
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -61,6 +72,12 @@ class TipoUpdateView(UpdateView):
     form_class = TipoForm
     template_name = "tipo/crear.html"
     success_url = reverse_lazy('apl:listar_tipo')
+
+      #decorador para proteccion de la vista desde el login
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
     #Metodo para exportar variables a el template tipo/crear.html
     def get_context_data(self, **kwargs):
@@ -85,6 +102,12 @@ class TipoListView(ListView):
     model = Tipo
     template_name = 'tipo/listar.html'
 
+      #decorador para proteccion de la vista desde el login
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+    
     #Metodo para exportar variables a el template tipo/listar.html
     def get_context_data(self, **kwargs):
 
@@ -94,11 +117,7 @@ class TipoListView(ListView):
         context['entidad'] = 'Tipos'
 
         return context
-
+   
+    
     def post(self, request, *args, **kwargs):
         return JsonResponse({'nombre': "Oscar"})
-    
-    # @method_decorator(login_required)
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs): 
-        return super().dispatch(request, *args, **kwargs)

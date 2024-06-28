@@ -92,7 +92,7 @@ class Administradores(models.Model):
     apellido=models.CharField(max_length=150, verbose_name="Apellido")
     edad=models.PositiveIntegerField(verbose_name="Edad")
     cedula=models.PositiveBigIntegerField(verbose_name="Cedula",unique=True)
-    correo_electronico=models.CharField(max_length=150,verbose_name="Email")
+    correo_electronico=models.EmailField(verbose_name="Email", blank = False)
     
     def __str__(self):
         return self.nombre

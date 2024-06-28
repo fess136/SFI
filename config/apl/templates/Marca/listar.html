@@ -20,8 +20,8 @@ listar Marca
     <td>{{c.nombre}}</td>
     <td>{{c.estado}}</td>
     <td>
-        <button type="button" class="btn btn-warning btn-xs"><i class="fas fa-edit"></i></button>
-        <button type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
+        <a href="{% url 'apl:editar_marca' c.id %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-edit"></i></a>
+        <a href="{% url 'apl:borrar_marca' c.id%}" class = 'btn btn-danger btn btn-xs'><i class = "fas fa-trash"></i></a>
     </td>
 </tr>
 {% endfor %}

@@ -1,0 +1,88 @@
+{% extends 'body.html' %}
+{% load widget_tweaks %}
+{% block contenido %}
+
+    <form method="post">
+
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">
+                <i class="fas fa-trash"></i>
+                    {{titulo}}
+                </h3>
+            </div>
+            <div class="card-body">
+                {% csrf_token %}
+                <!-- Validacion para que no se repitan datos -->
+                {% if form.errors %}
+
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type ="button" class ="close" data-dismiss="alert" aria-hidden="true">x</button>
+                        <h5><i class = "fas fa-ban"></i>
+                            Ha ocurrido un error al intentar guardar los datos ingresados
+                        </h5>
+
+                        <ul>
+                            {% for field in form %}
+                                {% for error in field.errors%}
+
+                                    <li>{{error}}</li>
+
+                                {% endfor %}
+                            {% endfor %}
+                        
+                        </ul>
+
+                    </div>
+
+                {% endif%}
+                    <div class="alert alert-danger alert-dismissible">
+                        <h5><i class ="fas fa-danger"></i> Advertencia!<br>
+                            deseas eliminar el registro #{{object.id}}?
+                        </h5>
+                        
+                    </div>
+                    <!-- Muestra el formulario como por ejemplo los campos de texto -->
+                {% for field in form.visible_fields %}
+                    <div class="form-group">
+                        <label for="email">{{ field.label }}:</label>
+                        {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+                    </div>
+                {% endfor%}
+
+            </div>
+            <!-- Botones para aceptar o cancelar accion -->
+            <div class="card-footer">
+                <button type = "submit" class=" btn btn-success swalDefaultSuccess"><i class = "fas fa-save"></i>
+                    Aceptar
+                </button>
+                <a href="{{crear_url}}" class = "btn btn-primary btn btn-flat">
+                    <i class = "fas fa-times"></i> Cancelar
+                </a>
+            </div>
+        </div>
+    </form>
+
+    <!-- Implementacion de la sweetalert -->
+    <script>
+
+        {% if form.errors %}
+
+            var errors = '';
+
+            {% for field in form %}
+                {% for error in field.errors%}
+                    errors+='{{ error }}\n';
+                {% endfor %}
+            {% endfor %}
+
+            Swal.fire({
+
+                title: 'Error!',
+                text: errors,
+                icon: 'error'
+
+            });
+        {% endif%}
+    </script>
+{% endblock %}

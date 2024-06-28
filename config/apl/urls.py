@@ -17,20 +17,46 @@ from apl.views.ventas.views import*
 app_name = 'apl'
 urlpatterns = [
 
-    path('tipo/listar', TipoListView.as_view(), name = "listar_tipo"),
-    path('tipo/listar2', listar_tipo, name = "listar_tipo2"),
-    path('tipo/crear', TipoCreateView.as_view(), name = "crear_tipo"),
-    path("presentacion/listar",PresentacionListView.as_view(), name="listar_presentacion"),
+    #Modulo Tipo
+    path('tipos/listar', TipoListView.as_view(), name = "listar_tipo"),
+    path('tipos/listar2', TipoListView.as_view(), name = "listar_tipo2"),
+    path('tipos/editar/<int:pk>', TipoUpdateView.as_view(), name = 'editar_tipo'),
+    path('tipos/borrar/<int:pk>', TipoDeleteView.as_view(), name = "borrar_tipo"),
+    path('tipos/crear', TipoCreateView.as_view(), name = "crear_tipo"),
+
+    #Modulo Presentacion
+    path("presentaciones/listar",PresentacionListView.as_view(), name="listar_presentacion"),
+
+    #Modulo Marcas
     path('marcas/listar', MarcaListView.as_view(), name = "listar_marca"),
-    path('administrador/listar', AdministradorListView.as_view(), name="listar_administrador"),
-    path('empleado/listar', EmpleListView.as_view(), name="listar_empleado"),
+
+    #Modulo Administrador
+    path('administradores/listar', AdministradorListView.as_view(), name="listar_administrador"),
+
+    #Modulo Marcas
+    path('empleados/listar', EmpleListView.as_view(), name="listar_empleado"),
+
+    #Modulo Metodos
     path('metodos/listar', MetodosListView.as_view(), name="listar_metodo"),
+
+    #Modulo Clientes
     path('clientes/listar', ClienteListView.as_view(), name="listar_cliente"),
+
+    #Modulo Compras
     path('compras/listar',ComprasListView.as_view(), name = "listar_compras"),
+
+    #Modulo Productos
     path('productos/listar', ProductoListView.as_view(), name = "listar_productos"),
+
+    #Modulo Proveedores
     path('proveedores/listar', ProveedorListView.as_view(), name = "lista_proveedor"),
 
+    #Modulo Indentificadores
     path('identificadores/listar', IdentificadorListView.as_view(), name = "listar_compras"),
+
+    #Modulo Medidas
     path('medidas/listar',MedidasListView.as_view(),name = "listar_medidas"),
+
+    #Modulo Ventas
     path('ventas/listar',VentasListView.as_view(),name = "listar_ventas")
 ]

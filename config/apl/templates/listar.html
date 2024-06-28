@@ -17,7 +17,7 @@
     <div class="card-header">
         <h3 class="card-title">
             <i class="fas fa-search"></i>
-            {% block titulo %} {% endblock %}
+            {{titulo}}
         </h3>
     </div>
     <!-- /.card-header -->
@@ -38,9 +38,7 @@
         </table>
     </div>
     <div class="card-footer" ">
-    <button class=" btn btn-primary btn btn-xs"><i class="fas fa-plus"></i>
-        Nuevo registro
-        </button>
+        <a href="{{crear_url}}" class = "btn btn-primary btn btn-xs"><i class ="fas fa-plus"></i> Agregar</a>
     </div>
     <!-- /.card-body -->
 </div>

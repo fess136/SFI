@@ -1,10 +1,5 @@
 {% extends "listar.html" %}
 
-
-{% block titulo %} 
-Titulo ejemplo 
-{% endblock %}
-
 {% block columnas %}
 <tr>
     <th scope="col" style="width: 10%;">#</th>
@@ -17,14 +12,18 @@ Titulo ejemplo
 {% endblock %}
 
 {% block filas %}
-{% for c in dato %}
+{% for c in object_list%}
+<!-- Filas -->
 <tr>
+    <!-- Atributos de la tabla -->
     <td>{{c.id}}</td>
     <td>{{c.nombre}}</td>
     <td>{{c.estado}}</td>
+
+    <!-- Bototnes de para editar y eliminar -->
     <td>
-        <button type="button" class="btn btn-warning btn-xs"><i class="fas fa-edit"></i></button>
-        <button type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
+        <a href="{% url 'apl:editar_tipo' c.id %}" class="btn btn-primary btn-xs"><i class ="fas fa-edit"></i></a>
+        <a href="{% url 'apl:borrar_tipo' c.id %}" class ="btn btn-danger btn-xs"><i class = "fas fa-trash"></i></a>
     </td>
 </tr>
 {% endfor %}

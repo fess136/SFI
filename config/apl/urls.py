@@ -26,6 +26,9 @@ urlpatterns = [
 
     #Modulo Presentacion
     path("presentaciones/listar",PresentacionListView.as_view(), name="listar_presentacion"),
+    path("presentaciones/crear", PresentacionCreateView.as_view(), name = "crear_presentacion"),
+    path("presentaciones/editar/<int:pk>", PresentacionUpdateView.as_view(), name = "editar_presentacion"),
+    path("presentaciones/borrar/<int:pk>", PresentacionDeleteView.as_view(), name = "borrar_presentacion"),
 
     #Modulo Marcas
     path('marcas/listar', MarcaListView.as_view(), name = "listar_marca"),
@@ -40,29 +43,57 @@ urlpatterns = [
     path('administradores/borrar/<int:pk>', AdministradorDeleteView.as_view(), name = 'borrar_administrador'),
 
     #Modulo Empleados
-    path('empleados/listar', EmpleListView.as_view(), name="listar_empleado"),
+    path('empleados/listar', EmpleadoListView.as_view(), name="listar_empleado"),
+    path('empleados/crear', EmpleadoCreateView.as_view(), name = "crear_empleado"),
+    path('empleados/editar/<int:pk>', EmpleadoUpdateView.as_view(), name = "editar_empleado"),
+    path('empleados/borrar/<int:pk>', EmpleadoDeleteView.as_view(), name = "borrar_empleado"),
 
     #Modulo Metodos
     path('metodos/listar', MetodosListView.as_view(), name="listar_metodo"),
+    path('metodos/crear', MetodoCreateView.as_view(), name = "crear_metodo"),
+    path('metodos/editar/<int:pk>', MetodoUpdateView.as_view(), name = "editar_metodo"),
+    path('metodos/borrar/<int:pk>', MetodoDeleteView.as_view(), name = "borrar_metodo"),
 
     #Modulo Clientes
     path('clientes/listar', ClienteListView.as_view(), name="listar_cliente"),
+    path('clientes/crear', ClienteCreateView.as_view(), name = "crear_cliente"),
+    path('clientes/editar/<int:pk>', ClienteUpdateView.as_view(), name = "editar_cliente"),
+    path('clientes/borrar/<int:pk>', ClienteDeleteView.as_view(), name = "borrar_cliente"),
 
     #Modulo Compras
-    path('compras/listar',ComprasListView.as_view(), name = "listar_compras"),
+    path('compras/listar',ComprasListView.as_view(), name = "listar_compra"),
+    path('compras/crear', CompraCreateView.as_view(), name = "crear_compra"),
+    path('compras/editar/<int:pk>', CompraUpdateView.as_view(), name = 'editar_compra'),
+    path('compras/borrar/<int:pk>', CompraDeleteView.as_view(), name = "borrar_compra"),
 
     #Modulo Productos
-    path('productos/listar', ProductoListView.as_view(), name = "listar_productos"),
+    path('productos/listar', ProductoListView.as_view(), name = "listar_producto"),
+    path('productos/crear', ProductoCreateView.as_view(), name = "crear_producto"),
+    path('productos/editar/<int:pk>', ProductoUpdateView.as_view(), name = "editar_producto"),
+    path('productos/borrar/<int:pk>', ProductoDeleteView.as_view(), name = "borrar_producto"),
 
     #Modulo Proveedores
-    path('proveedores/listar', ProveedorListView.as_view(), name = "lista_proveedor"),
+    path('proveedores/listar', ProveedorListView.as_view(), name = "listar_proveedor"),
+    path('proveedores/crear', ProveedorCreateView.as_view(), name = "crear_proveedor"),
+    path('proveedores/editar/<int:pk>', ProveedorUpdateView.as_view(), name = "editar_proveedor"),
+    path('proveedores/borrar/<int:pk>', ProveedorDeleteView.as_view(), name = "borrar_proveedor"),
 
     #Modulo Indentificadores
-    path('identificadores/listar', IdentificadorListView.as_view(), name = "listar_compras"),
+    path('identificadores/listar', IdentificadorListView.as_view(), name = "listar_identificador"),
+    path('identificadores/crear', IdentificadorCreateView.as_view(), name = "crear_identificador"),
+    path('identificadores/editar/<int:pk>', IdentificadorUpdateView.as_view(), name = "editar_identificador"),
+    path('identificadores/borrar/<int:pk>', IdentificadorDeleteView.as_view(), name = "borrar_identificador"),
 
     #Modulo Medidas
-    path('medidas/listar',MedidasListView.as_view(),name = "listar_medidas"),
+    path('medidas/listar',MedidasListView.as_view(),name = "listar_medida"),
+    path('medidas/crear', MedidaCreateView.as_view(), name = 'crear_medida'),
+    path('medidas/editar/<int:pk>', MedidaUpdateView.as_view(), name = 'editar_medida'),
+    path('medidas/borrar/<int:pk>', MedidaDeleteView.as_view(), name = 'borrar_medida'),
 
     #Modulo Ventas
-    path('ventas/listar',VentasListView.as_view(),name = "listar_ventas")
+    path('ventas/listar',VentasListView.as_view(),name = "listar_venta"),
+    path('ventas/crear', VentaCreateView.as_view(), name = 'crear_venta'),
+    path('ventas/editar/<int:pk>', VentaUpdateView.as_view(), name = 'editar_venta'),
+    path('ventas/borrar/<int:pk>', VentaDeleteView.as_view(), name = 'borrar_venta')
+    
 ]

@@ -3,10 +3,17 @@ from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from django.shortcuts import render
 from apl.forms import AdministradorForm
 from apl.models import *
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 class AdministradorListView(ListView):
     model = Administradores
     template_name = 'Administrador/listar.html'
+
+    #decorador para proteccion de la vista desde el login
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
 
@@ -22,6 +29,12 @@ class AdministradorCreateView(CreateView):
     form_class = AdministradorForm
     template_name = 'Administrador/crear.html'
     success_url = reverse_lazy('apl:listar_administrador')
+
+     #decorador para proteccion de la vista desde el login
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -49,6 +62,11 @@ class AdministradorUpdateView(UpdateView):
     form_class = AdministradorForm
     template_name = "Administrador/crear.html"
     success_url = reverse_lazy('apl:listar_administrador')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

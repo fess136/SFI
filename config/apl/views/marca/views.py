@@ -3,10 +3,17 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from apl.forms import MarcaForm
 from apl.models import *
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 class MarcaListView(ListView):
     model = Marcas
     template_name = 'marca/listar.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -20,6 +27,11 @@ class MarcaCreateView(CreateView):
     form_class = MarcaForm
     template_name = "Marca/crear.html"
     success_url = reverse_lazy('apl:listar_marca')
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
@@ -46,6 +58,11 @@ class MarcaUpdateView(UpdateView):
     template_name = 'Marca/crear.html'
     success_url = reverse_lazy('apl:listar_marca')
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Marca"
@@ -56,6 +73,12 @@ class MarcaDeleteView(DeleteView):
     model = Marcas
     template_name = "Marca/eliminar.html"
     success_url = reverse_lazy('apl:listar_marca')
+    
+      #decorador para proteccion de la vista desde el login
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

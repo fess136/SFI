@@ -104,10 +104,11 @@ class TipoListView(ListView):
 
       #decorador para proteccion de la vista desde el login
     
+    # @method_decorator(csrf_exempt)
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
-    
+
     #Metodo para exportar variables a el template tipo/listar.html
     def get_context_data(self, **kwargs):
 
@@ -119,13 +120,4 @@ class TipoListView(ListView):
         return context
    
     
-<<<<<<< HEAD
     
-    # @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs): 
-        return super().dispatch(request, *args, **kwargs)
-=======
-    def post(self, request, *args, **kwargs):
-        return JsonResponse({'nombre': "Oscar"})
->>>>>>> main

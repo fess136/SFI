@@ -10,7 +10,6 @@ class VentasListView(ListView):
     model = Ventas
     template_name = 'Ventas/listar.html'
 
-<<<<<<< HEAD
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Listar Venta"
@@ -25,14 +24,6 @@ class VentaCreateView(CreateView):
     form_class = VentaForm
     template_name = "Ventas/crear.html"
     success_url = reverse_lazy('apl:listar_venta')
-=======
-      #decorador para proteccion de la vista desde el login
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs): 
-        return super().dispatch(request, *args, **kwargs)
-
->>>>>>> main
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

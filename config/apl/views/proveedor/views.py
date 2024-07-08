@@ -10,7 +10,6 @@ class ProveedorListView(ListView):
     model = Proveedores
     template_name = 'Proveedores/listar.html'
 
-<<<<<<< HEAD
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Listar Proveedores"
@@ -54,10 +53,3 @@ class ProveedorDeleteView(DeleteView):
         context['titulo'] = "Eliminar Proveedor"
         context['crear_url'] = reverse_lazy('apl:listar_proveedor')
         return context
-=======
-      #decorador para proteccion de la vista desde el login
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs): 
-        return super().dispatch(request, *args, **kwargs)
->>>>>>> main

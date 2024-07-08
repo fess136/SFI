@@ -9,7 +9,6 @@ from django.contrib.auth.decorators import login_required
 class EmpleadoListView(ListView):
     model = Empleados
     template_name = 'Empleados/listar.html'
-<<<<<<< HEAD
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -54,10 +53,3 @@ class EmpleadoDeleteView(DeleteView):
         context['titulo'] = "Eliminar Empleados"
         context['crear_url'] = reverse_lazy('apl:listar_empleado')
         return context
-=======
-      #decorador para proteccion de la vista desde el login
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs): 
-        return super().dispatch(request, *args, **kwargs)
-
->>>>>>> main

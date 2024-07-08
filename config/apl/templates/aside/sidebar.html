@@ -3,7 +3,7 @@
     <a href="#" class="brand-link">
         <img src="{% static 'img/sena.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8">
-        <span class="brand-text font-weight-light">SenaVentas</span>
+        <span class="brand-text font-weight-light">SFI</span>
     </a>
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
@@ -11,22 +11,22 @@
                 <img src="{% static 'img/user.png' %}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">SENA</a>
+                <a href="#" class="d-block">SFI</a>
             </div>
         </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-header">Modulos</li>
                 <li class="nav-item">
-                    <a href="" class="nav-link">
+                    <a href="{% url 'apl:listar_tipo' %}" class="nav-link">
                         <i class="nav-icon fas fa-truck-loading"></i>
                         <p>
-                            Categorías
+                            Tipo
                         </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{% url 'apl:listar_producto' %}" class="nav-link">
                         <i class="nav-icon fas fa-boxes"></i>
                         <p>
                             Productos
@@ -34,7 +34,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{% url 'apl:listar_cliente' %}" class="nav-link">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Clientes
@@ -42,11 +42,65 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{% url 'apl:listar_venta' %}" class="nav-link">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
                             Ventas
                         </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'apl:listar_compra' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-cart-plus"></i>
+                    <p>Compras</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'apl:listar_empleado' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-users"></i>
+                    <p>Empleados</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'apl:listar_marca' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-hammer"></i>
+                    <p>Marcas</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'apl:listar_metodo' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-credit-card"></i>
+                    <p>Metodo de pago</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'apl:listar_presentacion' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-box"></i>
+                    <p>Presentaciones</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'apl:listar_producto' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-wrench"></i>
+                    <p>Productos</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'apl:listar_proveedor' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-parachute-box"></i>
+                    <p>Proveedor</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'apl:listar_identificador' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-address-card"></i>
+                    <p>Tipo de identificacion</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'apl:listar_medida' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-pencil-ruler"></i>
+                    <p>Unidades de Medida</p>
                     </a>
                 </li>
             </ul>

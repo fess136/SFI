@@ -1,1 +1,11 @@
 {% extends 'form.html' %}
+
+{% block boton_crear %}
+
+    {% if field.label == "Tipo identificador" %}
+
+    <a href="{% url 'apl:listar_identificador' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+
+    {% endif %}
+
+{% endblock %}

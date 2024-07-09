@@ -1,1 +1,24 @@
 {% extends 'form.html' %}
+
+
+{% block boton_crear %}
+
+{% if field.label == "Marcas" %}
+
+<a href="{% url 'apl:crear_marca' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+
+{% elif field.label == "Tipo" %}
+
+<a href="{% url 'apl:crear_tipo' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+
+{% elif field.label == "Presentacion" %}
+
+<a href="{% url 'apl:crear_presentacion' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+
+{% elif field.label == "Unidad medida" %}
+
+<a href="{% url 'apl:crear_medida' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+
+{% endif %}
+
+{% endblock %}

@@ -41,7 +41,15 @@
                 {% for field in form.visible_fields %}
                     <div class="form-group">
                         <label for="email">{{ field.label }}:</label>
+
+                        <!-- Este bloque debe ser usado para crear botones para los campos que
+                         son foreign keys para que se pueda redirigir a la creacion de un dato nuevo -->
+                        {% block boton_crear %}
+
+                        {% endblock %}
+
                         {{ field|add_class:'form-control'|attr:'autocomplete:off' }}
+                       
                     </div>
                 {% endfor%}
 

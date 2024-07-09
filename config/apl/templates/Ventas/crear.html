@@ -1,1 +1,15 @@
 {% extends 'form.html' %}
+
+{% block boton_crear %}
+
+    {% if field.label == "Producto" %}
+
+        <a href="{% url 'apl:crear_producto' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+
+    {% elif field.label == "Empleado" %}
+
+        <a href="{% url 'apl:crear_producto' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+
+    {% endif %}
+
+{% endblock %}

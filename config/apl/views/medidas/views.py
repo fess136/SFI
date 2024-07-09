@@ -34,6 +34,10 @@ class MedidaCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Unidad de Medida"
         return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
     
 class MedidaUpdateView(UpdateView):
 
@@ -47,6 +51,10 @@ class MedidaUpdateView(UpdateView):
         context['titulo'] = "Actualizar Unidad de Medida"
         return context
     
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+    
 class MedidaDeleteView(DeleteView):
 
     model = Unidad_Medida
@@ -58,3 +66,7 @@ class MedidaDeleteView(DeleteView):
         context['titulo'] = "Eliminar Unidad de Medida"
         context['crear_url'] = reverse_lazy('apl:listar_medida')
         return context
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)

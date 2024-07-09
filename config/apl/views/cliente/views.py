@@ -16,6 +16,9 @@ class ClienteListView(ListView):
         context['crear_url'] = reverse_lazy('apl:crear_cliente')
         return context
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ClienteCreateView(CreateView):
@@ -30,6 +33,10 @@ class ClienteCreateView(CreateView):
         context['titulo'] = "Crear Cliente"
         return context
     
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+    
 class ClienteUpdateView(UpdateView):
 
     model = Clientes
@@ -41,6 +48,9 @@ class ClienteUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Cliente"
         return context
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
     
 class ClienteDeleteView(DeleteView):
 
@@ -53,3 +63,7 @@ class ClienteDeleteView(DeleteView):
         context['titulo'] = "Eliminar Cliente"
         context['crear_url'] = reverse_lazy('apl:listar_cliente')
         return context
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)

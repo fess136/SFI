@@ -16,6 +16,9 @@ class MetodosListView(ListView):
         context['crear_url'] = reverse_lazy('apl:crear_metodo')
         return context
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
 
 class MetodoCreateView(CreateView):
@@ -30,6 +33,10 @@ class MetodoCreateView(CreateView):
         context['titulo'] = "Crear Metodos de Pago"
         return context
     
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+    
 class MetodoUpdateView(UpdateView):
 
     model = Metodo_Pago
@@ -41,6 +48,10 @@ class MetodoUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Metodos de Pago"
         return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
     
 class MetodoDeleteView(DeleteView):
 
@@ -53,3 +64,7 @@ class MetodoDeleteView(DeleteView):
         context['titulo'] = "Eliminar Metodos de Pago"
         context['crear_url'] = reverse_lazy('apl:listar_metodo')
         return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)

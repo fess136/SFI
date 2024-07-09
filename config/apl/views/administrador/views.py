@@ -97,3 +97,7 @@ class AdministradorDeleteView(DeleteView):
         context['crear_url'] = reverse_lazy('apl:listar_administrador')
         
         return context
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)

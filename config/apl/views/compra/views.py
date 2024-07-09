@@ -16,6 +16,10 @@ class ComprasListView(ListView):
         context['crear_url'] = reverse_lazy('apl:crear_compra')
         return context
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+
 
 
 class CompraCreateView(CreateView):
@@ -29,6 +33,10 @@ class CompraCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Compra"
         return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
     
 class CompraUpdateView(UpdateView):
 
@@ -41,6 +49,10 @@ class CompraUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Compra"
         return context
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
     
 class CompraDeleteView(DeleteView):
 

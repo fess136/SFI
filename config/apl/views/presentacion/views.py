@@ -16,7 +16,9 @@ class PresentacionListView(ListView):
         context['crear_url'] = reverse_lazy('apl:crear_presentacion')
         return context
 
-
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
 class PresentacionCreateView(CreateView):
 
@@ -29,7 +31,11 @@ class PresentacionCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Presentacion"
         return context
-    
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+
 class PresentacionUpdateView(UpdateView):
 
     model = Presentacion
@@ -42,6 +48,10 @@ class PresentacionUpdateView(UpdateView):
         context['titulo'] = "Actualizar Presentacion"
         return context
     
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+    
 class PresentacionDeleteView(DeleteView):
 
     model = Presentacion
@@ -53,3 +63,7 @@ class PresentacionDeleteView(DeleteView):
         context['titulo'] = "Eliminar Presentacion"
         context['crear_url'] = reverse_lazy('apl:listar_presentacion')
         return context
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)

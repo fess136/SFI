@@ -15,6 +15,10 @@ class EmpleadoListView(ListView):
         context['titulo'] = "Listar Empleados"
         context['crear_url'] = reverse_lazy('apl:crear_empleado')
         return context
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
 
 
@@ -29,7 +33,11 @@ class EmpleadoCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Empleados"
         return context
-    
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)    
+
 class EmpleadoUpdateView(UpdateView):
 
     model = Empleados
@@ -41,7 +49,11 @@ class EmpleadoUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Empleados"
         return context
-    
+        
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+
 class EmpleadoDeleteView(DeleteView):
 
     model = Empleados
@@ -53,3 +65,7 @@ class EmpleadoDeleteView(DeleteView):
         context['titulo'] = "Eliminar Empleados"
         context['crear_url'] = reverse_lazy('apl:listar_empleado')
         return context
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)

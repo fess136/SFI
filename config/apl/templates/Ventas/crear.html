@@ -8,7 +8,15 @@
 
     {% elif field.label == "Empleado" %}
 
-        <a href="{% url 'apl:crear_producto' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+        <a href="{% url 'apl:crear_empleado' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+
+    {% elif field.label == "Cliente" %}
+
+        <a href="{% url 'apl:crear_cliente' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+
+        {% elif field.label == "Administrador" %}
+
+        <a href="{% url 'apl:crear_administrador    ' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
 
     {% endif %}
 

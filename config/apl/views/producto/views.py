@@ -15,6 +15,10 @@ class ProductoListView(ListView):
         context['titulo'] = "Listar Productos"
         context['crear_url'] = reverse_lazy('apl:crear_producto')
         return context
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
 
 
@@ -29,6 +33,10 @@ class ProductoCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Producto"
         return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
     
 class ProductoUpdateView(UpdateView):
 
@@ -41,6 +49,10 @@ class ProductoUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Producto"
         return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
     
 class ProductoDeleteView(DeleteView):
 
@@ -53,3 +65,7 @@ class ProductoDeleteView(DeleteView):
         context['titulo'] = "Eliminar Producto"
         context['crear_url'] = reverse_lazy('apl:listar_producto')
         return context
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)

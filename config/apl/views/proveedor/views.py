@@ -16,7 +16,9 @@ class ProveedorListView(ListView):
         context['crear_url'] = reverse_lazy('apl:crear_proveedor')
         return context
 
-
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
 class ProveedorCreateView(CreateView):
 
@@ -30,6 +32,10 @@ class ProveedorCreateView(CreateView):
         context['titulo'] = "Crear Proveedor"
         return context
     
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+    
 class ProveedorUpdateView(UpdateView):
 
     model = Proveedores
@@ -41,7 +47,11 @@ class ProveedorUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Proveedor"
         return context
-    
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+
 class ProveedorDeleteView(DeleteView):
 
     model = Proveedores
@@ -53,3 +63,7 @@ class ProveedorDeleteView(DeleteView):
         context['titulo'] = "Eliminar Proveedor"
         context['crear_url'] = reverse_lazy('apl:listar_proveedor')
         return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)

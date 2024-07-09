@@ -37,6 +37,10 @@ class IdentificadorCreateView(CreateView):
         context['titulo'] = "Crear Tipo de Identificador"
         return context
     
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+
 class IdentificadorUpdateView(UpdateView):
 
     model = Tipo_identificador
@@ -48,7 +52,11 @@ class IdentificadorUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Tipo de Identificador"
         return context
-    
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+
 class IdentificadorDeleteView(DeleteView):
 
     model = Tipo_identificador
@@ -60,3 +68,7 @@ class IdentificadorDeleteView(DeleteView):
         context['titulo'] = "Eliminar Tipo de Identificador"
         context['crear_url'] = reverse_lazy('apl:listar_identificador')
         return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)

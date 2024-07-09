@@ -16,7 +16,9 @@ class VentasListView(ListView):
         context['crear_url'] = reverse_lazy('apl:crear_venta')
         return context
 
-
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
 class VentaCreateView(CreateView):
 
@@ -29,7 +31,11 @@ class VentaCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Venta"
         return context
-    
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+
 class VentaUpdateView(UpdateView):
 
     model = Ventas
@@ -41,6 +47,10 @@ class VentaUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Venta"
         return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
     
 class VentaDeleteView(DeleteView):
 
@@ -53,3 +63,7 @@ class VentaDeleteView(DeleteView):
         context['titulo'] = "Eliminar Venta"
         context['crear_url'] = reverse_lazy('apl:listar_venta')
         return context
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)

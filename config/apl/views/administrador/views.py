@@ -10,11 +10,6 @@ class AdministradorListView(ListView):
     model = Administradores
     template_name = 'Administrador/listar.html'
 
-    #decorador para proteccion de la vista desde el login
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs): 
-        return super().dispatch(request, *args, **kwargs)
-
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
@@ -22,6 +17,10 @@ class AdministradorListView(ListView):
         context['crear_url'] = reverse_lazy('apl:crear_administrador')
 
         return context
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
 class AdministradorCreateView(CreateView):
 

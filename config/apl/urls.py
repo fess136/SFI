@@ -18,8 +18,7 @@ app_name = 'apl'
 urlpatterns = [
 
     #Modulo Tipo
-    path('tipos/listar', TipoListView.as_view(), name = "listar_tipo"),
-    path('tipos/listar2', TipoListView.as_view(), name = "listar_tipo2"),
+    path('tipos/listar/', TipoListView.as_view(), name = "listar_tipo"),
     path('tipos/editar/<int:pk>', TipoUpdateView.as_view(), name = 'editar_tipo'),
     path('tipos/borrar/<int:pk>', TipoDeleteView.as_view(), name = "borrar_tipo"),
     path('tipos/crear', TipoCreateView.as_view(), name = "crear_tipo"),

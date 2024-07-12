@@ -5,7 +5,9 @@ from apl.forms import IdentificadorForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+@method_decorator(never_cache, name='dispatch')
 class IdentificadorListView(ListView):
     model = Tipo_identificador
     template_name = 'Tipo_identificador/listar.html'
@@ -24,7 +26,7 @@ class IdentificadorListView(ListView):
         return context
 
 
-
+@method_decorator(never_cache, name='dispatch')
 class IdentificadorCreateView(CreateView):
 
     model = Tipo_identificador
@@ -40,7 +42,7 @@ class IdentificadorCreateView(CreateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
-
+@method_decorator(never_cache, name='dispatch')
 class IdentificadorUpdateView(UpdateView):
 
     model = Tipo_identificador
@@ -56,7 +58,7 @@ class IdentificadorUpdateView(UpdateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
-
+@method_decorator(never_cache, name='dispatch')
 class IdentificadorDeleteView(DeleteView):
 
     model = Tipo_identificador

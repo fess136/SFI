@@ -5,7 +5,10 @@ from apl.forms import MetodoForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+
+@method_decorator(never_cache, name='dispatch')
 class MetodosListView(ListView):
     model = Metodo_Pago
     template_name = 'Metodos_pago/listar.html'
@@ -21,6 +24,7 @@ class MetodosListView(ListView):
         return super().dispatch(request, *args, **kwargs)
 
 
+@method_decorator(never_cache, name='dispatch')
 class MetodoCreateView(CreateView):
 
     model = Metodo_Pago
@@ -37,6 +41,7 @@ class MetodoCreateView(CreateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
     
+@method_decorator(never_cache, name='dispatch')
 class MetodoUpdateView(UpdateView):
 
     model = Metodo_Pago
@@ -53,6 +58,7 @@ class MetodoUpdateView(UpdateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
     
+@method_decorator(never_cache, name='dispatch')
 class MetodoDeleteView(DeleteView):
 
     model = Metodo_Pago

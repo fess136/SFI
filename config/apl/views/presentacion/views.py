@@ -5,7 +5,10 @@ from django.shortcuts import render
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+
+@method_decorator(never_cache, name='dispatch')
 class PresentacionListView(ListView):
     model = Presentacion
     template_name = 'Presentaciones/listar.html'
@@ -20,6 +23,7 @@ class PresentacionListView(ListView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
 
+@method_decorator(never_cache, name='dispatch')
 class PresentacionCreateView(CreateView):
 
     model = Presentacion
@@ -36,6 +40,7 @@ class PresentacionCreateView(CreateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
 
+@method_decorator(never_cache, name='dispatch')
 class PresentacionUpdateView(UpdateView):
 
     model = Presentacion
@@ -52,6 +57,7 @@ class PresentacionUpdateView(UpdateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
     
+@method_decorator(never_cache, name='dispatch')
 class PresentacionDeleteView(DeleteView):
 
     model = Presentacion

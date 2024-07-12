@@ -5,7 +5,10 @@ from apl.forms import ClienteForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+
+@method_decorator(never_cache, name='dispatch')
 class ClienteListView(ListView):
     model = Clientes
     template_name = 'Clientes/listar.html'
@@ -20,7 +23,7 @@ class ClienteListView(ListView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
 
-
+@method_decorator(never_cache, name='dispatch')
 class ClienteCreateView(CreateView):
 
     model = Clientes
@@ -37,6 +40,7 @@ class ClienteCreateView(CreateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
     
+@method_decorator(never_cache, name='dispatch')
 class ClienteUpdateView(UpdateView):
 
     model = Clientes
@@ -52,6 +56,7 @@ class ClienteUpdateView(UpdateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
     
+@method_decorator(never_cache, name='dispatch')
 class ClienteDeleteView(DeleteView):
 
     model = Clientes

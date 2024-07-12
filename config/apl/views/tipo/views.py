@@ -8,11 +8,10 @@ from apl.models import *
 from apl.forms import TipoForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
-def listar_tipo(request):
 
-    return render(request, "tipo/listar.html", {"dato": Tipo.objects.all()});
-
+@method_decorator(never_cache, name='dispatch')
 class TipoCreateView(CreateView):
 
     model = Tipo
@@ -48,6 +47,7 @@ class TipoCreateView(CreateView):
         
 
     
+@method_decorator(never_cache, name='dispatch')
 class TipoDeleteView(DeleteView):
 
     model = Tipo
@@ -68,6 +68,7 @@ class TipoDeleteView(DeleteView):
 
         return context
 
+@method_decorator(never_cache, name='dispatch')
 class TipoUpdateView(UpdateView):
     
     model = Tipo
@@ -89,6 +90,7 @@ class TipoUpdateView(UpdateView):
 
 
 
+@method_decorator(never_cache, name='dispatch')
 class TipoListView(ListView):
 
     model = Tipo

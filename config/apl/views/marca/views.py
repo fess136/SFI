@@ -5,7 +5,10 @@ from apl.forms import MarcaForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+
+@method_decorator(never_cache, name='dispatch')
 class MarcaListView(ListView):
     model = Marcas
     template_name = 'marca/listar.html'
@@ -21,6 +24,7 @@ class MarcaListView(ListView):
         context['crear_url'] = reverse_lazy('apl:crear_marca')
         return context
 
+@method_decorator(never_cache, name='dispatch')
 class MarcaCreateView(CreateView):
 
     model = Marcas
@@ -51,6 +55,7 @@ class MarcaCreateView(CreateView):
 
         return super().form_valid(form)
 
+@method_decorator(never_cache, name='dispatch')
 class MarcaUpdateView(UpdateView):
 
     model = Marcas
@@ -68,6 +73,7 @@ class MarcaUpdateView(UpdateView):
         context['titulo'] = "Actualizar Marca"
         return context
     
+@method_decorator(never_cache, name='dispatch')
 class MarcaDeleteView(DeleteView):
 
     model = Marcas

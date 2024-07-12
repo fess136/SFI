@@ -37,6 +37,25 @@ class ProductoCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Producto"
         return context
+    
+    def form_valid(self, form):
+        # Obtener el nombre de la categoría del formulario
+        nombre = form.cleaned_data.get('nombre').lower()
+        cantidad = form.cleaned_data.get('cantidad')
+
+        if Productos.objects.filter(nombre__iexact=nombre).exists():
+            form.add_error(
+                'nombre', 'Ya existe una categoría con este nombre.')
+            return self.form_invalid(form)
+        
+        elif Productos.objects.filter(cantidad__iexact=cantidad).exists():
+
+            form.add_error(
+                'nombre', 'ya existe una categoría con este nombre.')
+
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 

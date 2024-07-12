@@ -5,7 +5,9 @@ from apl.forms import VentaForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-
+from django.views.decorators.cache import never_cache
+#
+@method_decorator(never_cache, name='dispatch')
 class VentasListView(ListView):
     model = Ventas
     template_name = 'Ventas/listar.html'
@@ -19,7 +21,7 @@ class VentasListView(ListView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
-
+@method_decorator(never_cache, name='dispatch')
 class VentaCreateView(CreateView):
 
     model = Ventas
@@ -35,7 +37,7 @@ class VentaCreateView(CreateView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
-
+@method_decorator(never_cache, name='dispatch')
 class VentaUpdateView(UpdateView):
 
     model = Ventas
@@ -52,6 +54,7 @@ class VentaUpdateView(UpdateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
     
+@method_decorator(never_cache, name='dispatch')
 class VentaDeleteView(DeleteView):
 
     model = Ventas

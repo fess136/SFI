@@ -1,12 +1,17 @@
 {% extends "listar.html" %}
-{%block titulo%}
+{% load humanize %}
+{%block Titulo%}
 listar Ventas
 {%endblock%}
 {% block columnas %}
 <tr>
     <th scope="col" style="width: 10%;">#</th>
-    <th scope="col" style="width: 60%;">Fecha de Venta</th>
+    <th scope="col" style="width: 50%;">Fecha de Venta</th>
     <th scope="col" style="width: 60%;">Producto</th>
+    <th scope="col" style="width: 60%;">Unidades de medida</th>
+    <th scope="col" style="width: 60%;">Cantidad</th>
+    <th scope="col" style="width: 60%;">Precio</th>
+    <th scope="col" style="width: 60%;">Total</th>    
     <th scope="col" style="width: 60%;">Empleado</th>
     <th scope="col" style="width: 60%;">Cliente</th>
     <th scope="col" style="width: 60%;">administrador</th>
@@ -21,7 +26,11 @@ listar Ventas
 <tr>
     <td>{{c.id}}</td>
     <td>{{c.fecha_venta}}</td>
-    <td>{{c.producto}}</td>
+    <td>{{ c.producto.nombre}}</td>
+    <td>{{c.producto.unidad_medida}}</td>
+    <td>{{c.ventas_cantidad}}</td>
+    <td>${{c.producto.precio|floatformat:0|intcomma}}</td>
+    <td>${{c.calcular_total|floatformat:0|intcomma}}</td>
     <td>{{c.empleado}}</td>
     <td>{{c.cliente}}</td>
     <td>{{c.administrador}}</td>

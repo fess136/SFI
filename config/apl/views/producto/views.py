@@ -5,7 +5,10 @@ from django.shortcuts import render
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+
+@method_decorator(never_cache, name='dispatch')
 class ProductoListView(ListView):
     model = Productos
     template_name = 'Productos/listar.html'
@@ -22,6 +25,7 @@ class ProductoListView(ListView):
 
 
 
+@method_decorator(never_cache, name='dispatch')
 class ProductoCreateView(CreateView):
 
     model = Productos
@@ -38,6 +42,7 @@ class ProductoCreateView(CreateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
     
+@method_decorator(never_cache, name='dispatch')
 class ProductoUpdateView(UpdateView):
 
     model = Productos
@@ -54,6 +59,7 @@ class ProductoUpdateView(UpdateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
     
+@method_decorator(never_cache, name='dispatch')
 class ProductoDeleteView(DeleteView):
 
     model = Productos

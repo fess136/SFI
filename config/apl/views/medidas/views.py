@@ -5,7 +5,10 @@ from apl.forms import MedidaForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+
+@method_decorator(never_cache, name='dispatch')
 class MedidasListView(ListView):
     model = Unidad_Medida
     template_name = 'Unidades_medida/listar.html'
@@ -23,6 +26,7 @@ class MedidasListView(ListView):
         context['crear_url'] = reverse_lazy('apl:crear_medida')
         return context
 
+@method_decorator(never_cache, name='dispatch')
 class MedidaCreateView(CreateView):
 
     model = Unidad_Medida
@@ -39,6 +43,7 @@ class MedidaCreateView(CreateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
     
+@method_decorator(never_cache, name='dispatch')
 class MedidaUpdateView(UpdateView):
 
     model = Unidad_Medida
@@ -55,6 +60,7 @@ class MedidaUpdateView(UpdateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
     
+@method_decorator(never_cache, name='dispatch')
 class MedidaDeleteView(DeleteView):
 
     model = Unidad_Medida

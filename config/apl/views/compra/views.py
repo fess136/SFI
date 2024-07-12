@@ -5,7 +5,10 @@ from apl.forms import CompraForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+
+@method_decorator(never_cache, name='dispatch')
 class ComprasListView(ListView):
     model = Compras
     template_name = 'Compras/listar.html'
@@ -22,6 +25,7 @@ class ComprasListView(ListView):
 
 
 
+@method_decorator(never_cache, name='dispatch')
 class CompraCreateView(CreateView):
 
     model = Compras
@@ -38,6 +42,7 @@ class CompraCreateView(CreateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
     
+@method_decorator(never_cache, name='dispatch')
 class CompraUpdateView(UpdateView):
 
     model = Compras
@@ -54,6 +59,7 @@ class CompraUpdateView(UpdateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
     
+@method_decorator(never_cache, name='dispatch')
 class CompraDeleteView(DeleteView):
 
     model = Compras

@@ -5,7 +5,10 @@ from apl.forms import ProveedorForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+
+@method_decorator(never_cache, name='dispatch')
 class ProveedorListView(ListView):
     model = Proveedores
     template_name = 'Proveedores/listar.html'
@@ -20,6 +23,7 @@ class ProveedorListView(ListView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
 
+@method_decorator(never_cache, name='dispatch')
 class ProveedorCreateView(CreateView):
 
     model = Proveedores
@@ -36,6 +40,7 @@ class ProveedorCreateView(CreateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
     
+@method_decorator(never_cache, name='dispatch')
 class ProveedorUpdateView(UpdateView):
 
     model = Proveedores
@@ -52,6 +57,7 @@ class ProveedorUpdateView(UpdateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
 
+@method_decorator(never_cache, name='dispatch')
 class ProveedorDeleteView(DeleteView):
 
     model = Proveedores

@@ -8,17 +8,28 @@ from apl.models import *
 from apl.forms import TipoForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
-def listar_tipo(request):
 
-    return render(request, "tipo/listar.html", {"dato": Tipo.objects.all()});
-
+@method_decorator(never_cache, name='dispatch')
 class TipoCreateView(CreateView):
 
     model = Tipo
     form_class = TipoForm
     template_name = 'tipo/crear.html'
     success_url = reverse_lazy('apl:listar_tipo')
+
+    #valida que no se repitan los datos
+    def form_valid(self, form):
+        # Obtener el nombre de la categoría del formulario
+        nombre = form.cleaned_data.get('nombre').lower()
+
+        if Tipo.objects.filter(nombre__iexact=nombre).exists():
+            form.add_error(
+                'nombre', 'Ya existe una categoría con este nombre.')
+            return self.form_invalid(form)
+
+        return super().form_valid(form)
     
       #decorador para proteccion de la vista desde el login
     @method_decorator(login_required)
@@ -33,19 +44,10 @@ class TipoCreateView(CreateView):
         context['crear_url'] = reverse_lazy('apl:crear_tipo')
 
         return context
-    
-    #Este metodo valida que no se repitan los datos
-    def form_valid(self, form):
-        # Obtener el nombre de la categoría del formulario
-        nombre = form.cleaned_data.get('nombre').lower()
+        
 
-        if Tipo.objects.filter(nombre__iexact=nombre).exists():
-            form.add_error(
-                'nombre', 'Ya existe una categoría con este nombre.')
-            return self.form_invalid(form)
-
-        return super().form_valid(form)
     
+@method_decorator(never_cache, name='dispatch')
 class TipoDeleteView(DeleteView):
 
     model = Tipo
@@ -66,6 +68,7 @@ class TipoDeleteView(DeleteView):
 
         return context
 
+@method_decorator(never_cache, name='dispatch')
 class TipoUpdateView(UpdateView):
     
     model = Tipo
@@ -85,18 +88,9 @@ class TipoUpdateView(UpdateView):
         context['titulo'] = "Actualizar Tipo"
         return context 
 
-    #valida que no se repitan los datos
-    def form_valid(self, form):
-        # Obtener el nombre de la categoría del formulario
-        nombre = form.cleaned_data.get('nombre').lower()
 
-        if Tipo.objects.filter(nombre__iexact=nombre).exists():
-            form.add_error(
-                'nombre', 'Ya existe una categoría con este nombre.')
-            return self.form_invalid(form)
 
-        return super().form_valid(form)
-
+@method_decorator(never_cache, name='dispatch')
 class TipoListView(ListView):
 
     model = Tipo

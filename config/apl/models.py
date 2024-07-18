@@ -1,10 +1,19 @@
+
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils import*
+
 # Create your models here.
 
 
+def validacion_telefono(value):
+
+    if len(str(value)) != 10:
+
+        raise ValidationError("se deben ingresar 10 digitos")
+
 class Tipo(models.Model):
-    nombre=models.CharField(max_length=150, verbose_name="Nombre")
+    nombre=models.CharField(max_length=150, verbose_name="Nombre", unique=True, null=True)
     estado=models.BooleanField(default=True)
     
     def __str__(self):
@@ -109,9 +118,9 @@ class Administradores(models.Model):
 class Clientes(models.Model):
     nombre=models.CharField(max_length=150, verbose_name="Nombre")
     apellido=models.CharField(max_length=150, verbose_name="Apellido")
-    nit=models.PositiveBigIntegerField(verbose_name="Nit",unique=True)
+    nit=models.PositiveBigIntegerField(verbose_name="Numero de Identificacion",unique=True, validators=[validacion_telefono])
     correo_electronico=models.EmailField(max_length=150,verbose_name="Email")
-    telefono=models.PositiveIntegerField(verbose_name="Telefono")
+    telefono=models.PositiveIntegerField(verbose_name="Telefono", validators=[validacion_telefono])
     Tipo_identificador=models.ForeignKey(Tipo_identificador, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -143,12 +152,12 @@ class Empleados(models.Model):
         db_table="Empleados"
 
 
-        
+# SE MODIFICO EL TIPO DE DATO DE PRECIO PARA QUE SE LE PUDIERA DAR FORMATO      
 class Productos(models.Model):
     
-    nombre = models.CharField(max_length=100,verbose_name="Productos")
+    nombre = models.CharField(max_length=100,verbose_name="Nombre")
     cantidad = models.PositiveIntegerField(verbose_name="Cantidad")
-    precio = models.FloatField(verbose_name="Precio")
+    precio = models.DecimalField(max_digits=10,decimal_places=2,verbose_name="Precio")
     marcas = models.ForeignKey(Marcas,on_delete=models.CASCADE)
     tipo = models.ForeignKey(Tipo,on_delete=models.CASCADE)
     presentacion= models.ForeignKey(Presentacion,on_delete=models.CASCADE)
@@ -193,13 +202,16 @@ class Compras(models.Model):
 class Ventas(models.Model):
     fecha_venta=models.DateTimeField(verbose_name="Fecha De Venta",auto_now=True)
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
+    ventas_cantidad= models.PositiveSmallIntegerField(verbose_name="Cantidad")
     empleado= models.ForeignKey(Empleados,on_delete=models.PROTECT,null=True)
     cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
     administrador = models.ForeignKey(Administradores,on_delete=models.PROTECT ,default="no")
     
     def __str__(self):
         return f"{self.fecha_venta}"
-    
+    #EN ESTA FUNCION SE HACE LA OPERACION PARA EL TOTAL 
+    def calcular_total(self):
+        return self.ventas_cantidad * self.producto.precio
     class Meta:
         verbose_name ="Venta"
         verbose_name_plural ="Ventas"

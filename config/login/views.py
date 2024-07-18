@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import RedirectView
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
+from django.urls import reverse_lazy
 # Create your views here.
 
 class LoginFormView(LoginView):

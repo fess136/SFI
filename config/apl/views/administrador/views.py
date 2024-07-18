@@ -5,7 +5,10 @@ from apl.forms import AdministradorForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+#SE UTILIZO EL DECORADOR DE NEVER_CACHE PARA QUE NO MOSTRARA INFORMACION DE LA TABLAS CUANDO SE CERRARA SECION
+@method_decorator(never_cache, name='dispatch')
 class AdministradorListView(ListView):
     model = Administradores
     template_name = 'Administrador/listar.html'
@@ -22,6 +25,7 @@ class AdministradorListView(ListView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
 
+@method_decorator(never_cache, name='dispatch')
 class AdministradorCreateView(CreateView):
 
     model = Administradores
@@ -55,6 +59,7 @@ class AdministradorCreateView(CreateView):
 
         return super().form_valid(form)
     
+@method_decorator(never_cache, name='dispatch')
 class AdministradorUpdateView(UpdateView):
 
     model = Administradores
@@ -84,6 +89,7 @@ class AdministradorUpdateView(UpdateView):
 
     #     return super().form_valid(form)
 
+@method_decorator(never_cache, name='dispatch')
 class AdministradorDeleteView(DeleteView):
 
     model = Administradores

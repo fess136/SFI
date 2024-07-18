@@ -5,7 +5,9 @@ from apl.forms import EmpleadoForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
+@method_decorator(never_cache, name='dispatch')
 class EmpleadoListView(ListView):
     model = Empleados
     template_name = 'Empleados/listar.html'
@@ -20,8 +22,7 @@ class EmpleadoListView(ListView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
 
-
-
+@method_decorator(never_cache, name='dispatch')
 class EmpleadoCreateView(CreateView):
 
     model = Empleados
@@ -38,6 +39,7 @@ class EmpleadoCreateView(CreateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)    
 
+@method_decorator(never_cache, name='dispatch')
 class EmpleadoUpdateView(UpdateView):
 
     model = Empleados
@@ -54,6 +56,7 @@ class EmpleadoUpdateView(UpdateView):
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
 
+@method_decorator(never_cache, name='dispatch')
 class EmpleadoDeleteView(DeleteView):
 
     model = Empleados

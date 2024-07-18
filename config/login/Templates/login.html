@@ -6,11 +6,16 @@
 <html lang="en">
     
 <head>
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login SFI</title>
-    
-    <!-- Font Awesome -->
+
+    <link href="{% static 'img/usuario.png' %}" rel="icon">
+    <!-- estilo de fuente en sfi -->
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Fjalla+One&family=Kalnia+Glaze:wght@100..700&family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+
+
     <link rel="stylesheet" href="styles.css">
     <!-- <!conecta con la carpeta css de diseñol --> -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
@@ -22,13 +27,45 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <!-- Sweetalert2 -->
     <script src="{% static 'lib/sweetalert2/sweetalert2.all.min.js' %}"></script>
+     
+     <!--fuente titulo sfi  -->
+     <style>
+        .login-logo a {
+            font-family: 'Anton', sans-serif; /* Usando la fuente 'Roboto' de Google Fonts */
+            font-size: 100px; /* Tamaño de la fuente */
+            color: #aaa01ac2; 
+            display: flex;
+            justify-content: center;
+            position: relative;
+            height: 200px;
+            align-items: flex-end;
+        }
+    
+
+    .arc-letter {
+        position: null;
+        bottom: 0;
+        transform-origin: bottom center;
+    }
+
+    .arc-letter:nth-child(1) { transform: rotate(-20deg); }
+    .arc-letter:nth-child(2) { transform: rotate(0deg); }
+    .arc-letter:nth-child(3) { transform: rotate(20deg); }
+    
+    </style>
+
+
 
     </head>
 
     <body class="login-page" style="min-height: 496.781px;">
         <div class="login-box">
         <div class="login-logo">
-        <a href="../../index2.html"><b>S F I<I></I></b></a>
+        <a href="../../index2.html">
+            <span class="arc-letter">S</span>
+            <span class="arc-letter">F</span>
+            <span class="arc-letter">I</span>
+        </a>
         </div>
         
         <div class="card">

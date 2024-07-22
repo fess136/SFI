@@ -80,7 +80,7 @@ class MarcaDeleteView(DeleteView):
     template_name = "Marca/eliminar.html"
     success_url = reverse_lazy('apl:listar_marca')
     
-      #decorador para proteccion de la vista desde el login
+    #decorador para proteccion de la vista desde el login
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
@@ -89,4 +89,5 @@ class MarcaDeleteView(DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Eliminar Marca'
+        context["crear_url"] = reverse_lazy("apl:listar_marca")
         return context

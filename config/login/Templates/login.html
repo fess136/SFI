@@ -33,11 +33,11 @@
         
         <div class="card">
         <div class="card-body login-card-body">
-        <p class="login-box-msg">Registrate o inicia sesion</p>
+        <p class="login-box-msg">Registrate o Inicia Sesion</p>
         <form action="#" method="post">
             {% csrf_token %}
         <div class="input-group mb-3">
-        {{ form.username|add_class:'form-control'| attr:'autocomplete:off' | attr:'placeholder:ingrese su usuario' }}
+        {{ form.username|add_class:'form-control'| attr:'autocomplete:off' | attr:'placeholder:Ingrese su Usuario' }}
         <div class="input-group-append">
         <div class="input-group-text">
         <span class="fas fa-envelope"></span>
@@ -45,7 +45,7 @@
         </div>
         </div>
         <div class="input-group mb-3">
-            {{ form.password|add_class:'form-control'| attr:'autocomplete:off'|attr:'placeholder:ingrese su contraseña' }}
+            {{ form.password|add_class:'form-control'| attr:'autocomplete:off'|attr:'placeholder:Ingrese su Contraseña' }}
         
         <div class="input-group-append">
         <div class="input-group-text">
@@ -64,7 +64,7 @@
         </div>
         
         <div class="col-12">
-        <button type="submit" class="btn btn-primary btn-block">Iniciar sesion</button>
+        <button type="submit" class="btn btn-primary btn-block">Iniciar Sesion</button>
         </div>
         
         </div>
@@ -72,7 +72,7 @@
         
         
         <p class="mb-1">
-            <a href="{% url 'reset_password' %}">¿Olvidaste tu contraseña?</a>
+            <a href="{% url 'reset_password' %}">¿Olvidaste tu Contraseña?</a>
         </p>
         <p "      ">
 

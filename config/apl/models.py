@@ -188,17 +188,21 @@ class Metodo_Pago(models.Model):
 class Compras(models.Model):
     fecha_compra =models.DateField(verbose_name="Fecha De Compra",auto_now=True)
     metodo_pago =models.ForeignKey(Metodo_Pago,on_delete=models.PROTECT)
-    producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
     proveedor = models.ForeignKey(Proveedores,on_delete=models.PROTECT)
     
     def __str__(self):
-        return f"{self.fecha_compra}"
+        return f"{self.id}"
     
     class Meta:
         verbose_name ="Compra"
         verbose_name_plural ="Compras"
         db_table ="Compra"
-        
+
+class DetalleCompra(models.Model):
+
+    producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
+
+
 class Ventas(models.Model):
     fecha_venta=models.DateTimeField(verbose_name="Fecha De Venta",auto_now=True)
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)

@@ -11,9 +11,10 @@ from apl.views.cliente.views import*
 from apl.views.compra.views import*
 from apl.views.producto.views import *
 from apl.views.proveedor.views import *
-
 from apl.views.medidas.views import*
 from apl.views.ventas.views import*
+from apl.views.detallecompra.views import *
+
 app_name = 'apl'
 urlpatterns = [
 
@@ -64,6 +65,12 @@ urlpatterns = [
     path('compras/crear', CompraCreateView.as_view(), name = "crear_compra"),
     path('compras/editar/<int:pk>', CompraUpdateView.as_view(), name = 'editar_compra'),
     path('compras/borrar/<int:pk>', CompraDeleteView.as_view(), name = "borrar_compra"),
+
+    #Detalle de Compras
+
+    path('detallecompras/detallar', DetalleCompraDetailView.as_view(), name = "detallar_compra"),
+    path('detallecompras/crear', DetalleCompraCreateView.as_view, name = "crear_detallecompra"),
+    path('detallecompras/borrar', DetalleCompraDetailView.as_view(), name = "borrar_detallecompra"),
 
     #Modulo Productos
     path('productos/listar', ProductoListView.as_view(), name = "listar_producto"),

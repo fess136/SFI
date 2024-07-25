@@ -68,9 +68,8 @@ urlpatterns = [
 
     #Detalle de Compras
 
-    path('detallecompras/detallar', DetalleCompraDetailView.as_view(), name = "detallar_compra"),
-    path('detallecompras/crear', DetalleCompraCreateView.as_view, name = "crear_detallecompra"),
-    path('detallecompras/borrar', DetalleCompraDetailView.as_view(), name = "borrar_detallecompra"),
+    path('detallecompras/detallar/<int:pk>', DetalleCompraDetailView.as_view(), name = "detallar_detallecompra"),
+    path('detallecompras/crear', DetalleCompraCreateView.as_view(), name = "crear_detallecompra"),
 
     #Modulo Productos
     path('productos/listar', ProductoListView.as_view(), name = "listar_producto"),

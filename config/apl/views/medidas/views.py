@@ -22,7 +22,7 @@ class MedidasListView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = "Listar Unidades de Medida"
+        context['titulo'] = "Unidades de Medida"
         context['crear_url'] = reverse_lazy('apl:crear_medida')
         return context
 

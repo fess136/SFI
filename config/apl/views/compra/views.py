@@ -15,7 +15,7 @@ class ComprasListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = "Listar Compras"
+        context['titulo'] = "Compras"
         context['crear_url'] = reverse_lazy('apl:crear_compra')
         return context
 
@@ -31,7 +31,7 @@ class CompraCreateView(CreateView):
     model = Compras
     form_class = CompraForm
     template_name = "Compras/crear.html"
-    success_url = reverse_lazy('apl:listar_compra')
+    success_url = reverse_lazy('apl:crear_detallecompra')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

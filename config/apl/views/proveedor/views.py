@@ -15,7 +15,7 @@ class ProveedorListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = "Listar Proveedores"
+        context['titulo'] = "Proveedores"
         context['crear_url'] = reverse_lazy('apl:crear_proveedor')
         return context
 

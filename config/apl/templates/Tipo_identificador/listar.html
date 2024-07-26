@@ -1,11 +1,11 @@
 {% extends "listar.html" %}
 {%block titulo%}
-listar Identificadores
+Listar Identificadores
 {%endblock%}
 {% block columnas %}
 <tr>
     <th scope="col" style="width: 10%;">#</th>
-    <th scope="col" style="width: 60%;">Nombre</th>
+    <th scope="col" style="width: 50%;">Nombre</th>
     
     <th scope="col" style="width: 20%;">Opciones</th>
 
@@ -20,8 +20,8 @@ listar Identificadores
     <td>{{c.nombre}}</td>
     
     <td>
-        <a href="{% url 'apl:editar_identificador' c.id %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-edit"></i></a>
-        <a href="{% url 'apl:borrar_identificador' c.id %}" class = "btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
+        <a href="{% url 'apl:editar_identificador' c.id %}" class = "btn btn-primary btn btn-xs" data-toggle="tooltip" data-placement="top" title="Editar"><i class = "fas fa-edit"></i></a>
+        <a href="{% url 'apl:borrar_identificador' c.id %}" class = "btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
     </td>
 </tr>
 {% endfor %}

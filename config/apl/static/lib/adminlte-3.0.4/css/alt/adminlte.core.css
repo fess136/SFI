@@ -11110,10 +11110,10 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
 }
 
 .brand-link {
-  display: block;
+  display: -webkit-inline-box;
   font-size: 1.25rem;
   line-height: 1.5;
-  padding: 0.8125rem 0.5rem;
+  padding: 30px;
   transition: width 0.3s ease-in-out;
   white-space: nowrap;
 }
@@ -11348,7 +11348,7 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
   bottom: 0;
   display: none;
   left: 0;
-  position: fixed;
+  position:fixed;
   right: 0;
   top: 0;
   z-index: 1037;
@@ -11356,7 +11356,7 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
 
 @media (max-width: 991.98px) {
   .sidebar-open #sidebar-overlay {
-    display: block;
+    display: flexbox;
   }
 }
 

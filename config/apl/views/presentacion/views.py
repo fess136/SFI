@@ -15,7 +15,7 @@ class PresentacionListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = "Listar Presentaciones"
+        context['titulo'] = "Presentaciones"
         context['crear_url'] = reverse_lazy('apl:crear_presentacion')
         return context
 

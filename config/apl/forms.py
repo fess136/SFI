@@ -95,3 +95,19 @@ class CompraForm(ModelForm):
 
         model = Compras
         fields = '__all__' 
+
+class DetalleCompraForm(ModelForm):
+
+    class Meta:
+        
+        model = DetalleCompra
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+
+        super().__init__(*args, **kwargs)
+        self.fields['compra'].initial = Compras.objects.all()[len(Compras.objects.all())-1]
+        self.fields['compra'].disabled = True
+        
+    def clean_fixed_value(self):
+        return Compras.objects.all()[len(Compras.objects.all())-1]

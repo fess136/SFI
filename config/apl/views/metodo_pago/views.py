@@ -15,7 +15,7 @@ class MetodosListView(ListView):
    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = "Listar Metodos de Pagos"
+        context['titulo'] = "Metodos de Pagos"
         context['crear_url'] = reverse_lazy('apl:crear_metodo')
         return context
 

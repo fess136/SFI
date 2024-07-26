@@ -32,8 +32,10 @@ Listar Productos
     <td>{{c.presentacion}}</td>
     <td>{{c.unidad_medida}}</td>
     <td>
-        <a href="{% url 'apl:editar_producto' c.id %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-edit"></i></a>
-        <a href="{% url 'apl:borrar_producto' c.id %}" class = "btn btn-danger btn btn-xs"><i class = "fas fa-trash"></i></a>
+        <a href="{% url 'apl:editar_producto' c.id %}" class = "btn btn-primary btn btn-xs" data-toggle="tooltip" data-placement="top" title="Editar">
+            <i class = "fas fa-edit"></i></a>
+        <a href="{% url 'apl:borrar_producto' c.id %}" class = "btn btn-danger btn btn-xs" data-toggle="tooltip" data-placement="top" title="Eliminar">
+            <i class = "fas fa-trash"></i></a>
     </td>
 </tr>
 {% endfor %}

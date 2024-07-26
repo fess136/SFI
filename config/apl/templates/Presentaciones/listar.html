@@ -20,8 +20,10 @@ listar presentaciones
     <td>{{c.descripcion}}</td>
     
     <td>
-        <a href="{% url 'apl:editar_presentacion' c.id %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-edit"></i></a>
-        <a href="{% url 'apl:borrar_presentacion' c.id %}" class = "btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
+        <a href="{% url 'apl:editar_presentacion' c.id %}" class = "btn btn-primary btn btn-xs" data-toggle="tooltip" data-placement="top" title="Editar">
+            <i class = "fas fa-edit"></i></a>
+        <a href="{% url 'apl:borrar_presentacion' c.id %}" class = "btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="Eliminar">
+            <i class="fas fa-trash-alt"></i></button>
     </td>
 </tr>
 {% endfor %}

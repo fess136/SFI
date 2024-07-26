@@ -27,6 +27,7 @@ listar clientes
     <td>
         <a href="{% url 'apl:editar_compra' c.id %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-edit"></i></a>
         <a href="{% url 'apl:borrar_compra' c.id %}" class = "btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
+        <a href="{% url 'apl:detallar_detallecompra' c.id %}" class = "btn btn-primary btn-xs"><i class="fas fa-eye"></i></button>
     </td>
 </tr>
 {% endfor %}

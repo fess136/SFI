@@ -200,6 +200,7 @@ class Compras(models.Model):
 
 class DetalleCompra(models.Model):
 
+    compra = models.ForeignKey(Compras, on_delete=models.PROTECT, default=1)
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
 
 

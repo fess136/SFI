@@ -1,11 +1,11 @@
 {% load static %}
 <aside class="main-sidebar sidebar-light-primary elevation-4">
     <a href="#" class="brand-link">
-        <img src="{% static 'img/sena.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+        <img src="{% static 'img/sena.png' %}" alt="" class="brand-image img-circle elevation-3"
             style="opacity: .8">
         <span class="brand-text font-weight-light">SFI</span>
     </a>
-    <div class="sidebar">
+    <div class="sidebar" style=" background:  #3c8dbc; ">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 <img src="{% static 'img/user.png' %}" class="img-circle elevation-2" alt="User Image">
@@ -14,6 +14,29 @@
                 <a href="#" class="d-block">{{ request.user.username }}</a>
             </div>
         </div>
+        <style>
+            .nav-header {
+                color: #ffffff; /* Cambia esto al color que desees */
+                font-size: 30px; /* Cambia esto al tamaño de fuente que desees */
+                font-weight: bold; /* Opcional: hacer que el texto sea negrita */
+            }
+            .info {
+                color: #ffffff; /* Cambia esto al color que desees */
+                font-size: 20px; /* Cambia esto al tamaño de fuente que desees */
+            }
+            .nav-link:hover p {
+                color: #000000; /* Cambia esto al color que desees cuando el elemento está en hover */
+                font-size: 20px; /* Cambia esto al tamaño de fuente que desees cuando el elemento está en hover */
+            }
+            .nav-icon {
+                color: #ffffff; /* Cambia esto al color que desees */
+                font-size: 20px; /* Cambia esto al tamaño de fuente que desees */
+            }
+            .nav-link p {
+                color: #ffffff; /* Cambia esto al color que desees */
+                font-size: 18px; /* Cambia esto al tamaño de fuente que desees */
+            }
+    </style>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-header">Modulos</li>

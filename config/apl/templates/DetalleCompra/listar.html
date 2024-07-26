@@ -22,7 +22,8 @@
 
     <!-- Bototnes de para editar y eliminar -->
     <td>
-        <a href="{% url 'apl:borrar_detallecompra' c.id %}" class ="btn btn-danger btn-xs"><i class = "fas fa-trash"></i></a>
+        <a href="{% url 'apl:borrar_detallecompra' c.id %}" class ="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="Eliminar">
+            <i class = "fas fa-trash"></i></a>
     </td>
 </tr>
 {% endfor %}

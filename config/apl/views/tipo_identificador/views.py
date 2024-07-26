@@ -21,7 +21,7 @@ class IdentificadorListView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['titulo'] = "Listar Tipos de Identificadores"
+        context['titulo'] = "Tipos de Identificadores"
         context['crear_url'] = reverse_lazy('apl:crear_identificador')
         return context
 

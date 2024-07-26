@@ -107,7 +107,7 @@ class TipoListView(ListView):
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
-        context['titulo'] = "Listar Tipo"
+        context['titulo'] = "Tipo"
         context['crear_url'] = reverse_lazy('apl:crear_tipo')
         context['entidad'] = 'Tipos'
 

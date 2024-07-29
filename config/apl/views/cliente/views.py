@@ -17,6 +17,7 @@ class ClienteListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Clientes"
         context['crear_url'] = reverse_lazy('apl:crear_cliente')
+        context['entidad'] = "Clientes"
         return context
 
     @method_decorator(login_required)

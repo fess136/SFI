@@ -1,16 +1,62 @@
 {% extends "listar.html" %}
 
+{% load static %}
 
+{% block Detalle %}
+
+
+<div class="encabezado">
+    
+    <div class="detalles">
+        <h4><strong>Id de Compra: </strong>{{id}}</h4>
+        <h4><strong>Fecha Compra: </strong>{{compra.fecha_compra}}</h4>
+        <h4><strong>Método de Pago: </strong>{{compra.metodo_pago}}</h4>
+        <h4><strong>Proveedor: </strong>{{compra.proveedor}}</h4>
+    </div>
+
+    <img src="{% static 'img/logo-ferreteria.png' %}" alt="Logo de la empresa" class="logo">
+
+</div>
+<style>
+    .encabezado {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .logo {
+        width: 150px;
+        height: 100px;
+        border-radius: 15px;
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 1);
+        margin-right: 15px;
+    }
+    
+    .detalles {
+        text-align: left;
+        padding: 10px;
+        margin: 5px 0;
+        color: #555;
+    }
+    
+    .detalles h4 {
+        margin: 5px 5px;
+        padding: 5px 5px;
+    }
+    
+    </style>
+
+{% endblock %}
 
 {% block columnas %}
 <tr>
     <th scope="col" style="width: 10%;">id</th>
     <th scope="col" style="width: 70%;">Producto</th>
-    <th scope="col" style="width: 70%;">Producto</th>
-    <th scope="col" style="width: 70%;">Producto</th>
-    <th scope="col" style="width: 70%;">Producto</th>
-    
-    <th scope="col">Id de Compra</th>
+    <th scope="col">Cantidad</th>
+    <th scope="col">Precio</th>
 
 </tr>
 
@@ -23,12 +69,12 @@
     <!-- Atributos de la tabla -->
     <td>{{c.id}}</td>
     <td>{{c.producto}}</td>
-    <td>{{c.compra}}</td>
+    <td>{{c.cantidad}}</td>
+    <td>{{c.precio}}</td>
 
     <!-- Bototnes de para editar y eliminar -->
-    <td>
-    </td>
 </tr>
 {% endfor %}
 
 {% endblock %}
+

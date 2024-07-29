@@ -201,7 +201,13 @@ class Compras(models.Model):
 class DetalleCompra(models.Model):
 
     compra = models.ForeignKey(Compras, on_delete=models.PROTECT, default=1)
+    cantidad = models.PositiveIntegerField(verbose_name="Cantidad", null=True)
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
+
+    def precio(self):
+
+        return Productos.objects.get(id=DetalleCompra.objects.get(id=self.id).producto.id).precio
+        
 
 
 class Ventas(models.Model):

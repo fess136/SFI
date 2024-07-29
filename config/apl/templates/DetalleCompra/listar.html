@@ -1,12 +1,38 @@
 {% extends "listar.html" %}
 
+{% load static %}
 
+{% block Detalle %}
+<img src="{% static 'img/logo sfi.png' %}" alt="Logo de la empresa" width="100">
+
+<h3><strong>Id de Compra:</strong> {{id}} </h3>
+<h4>Fecha Compra: {{compra.fecha_compra}}</h4>
+<h4>Metodo de Pago: {{compra.metodo_pago}}</h4>
+<h4>Proveedor: {{compra.proveedor}}</h4>
+
+<style>
+
+    .Detalles{
+
+        text-align: center;
+    }
+    .Detalles h3{
+
+        text-align: left;
+        padding: 19px;
+
+    }
+
+</style>
+
+{% endblock %}
 
 {% block columnas %}
 <tr>
     <th scope="col" style="width: 10%;">id</th>
     <th scope="col" style="width: 70%;">Producto</th>
-    <th scope="col">Id de Compra</th>
+    <th scope="col">Cantidad</th>
+    <th scope="col">Precio</th>
 
 </tr>
 
@@ -19,13 +45,12 @@
     <!-- Atributos de la tabla -->
     <td>{{c.id}}</td>
     <td>{{c.producto}}</td>
-    <td>{{c.compra}}</td>
+    <td>{{c.cantidad}}</td>
+    <td>{{c.precio}}</td>
 
-    <!-- Bototnes de para editar y eliminar -->
-    <td>
-        
-    </td>
+    <!-- Bototnes de para editar y eliminar --> 
 </tr>
 {% endfor %}
 
 {% endblock %}
+

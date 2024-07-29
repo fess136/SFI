@@ -8,7 +8,6 @@ listar clientes
     <th scope="col" style="width: 10%;">#</th>
     <th scope="col" style="width: 20%;">Fecha de compra</th>
     <th scope="col" style="width: 20%;">Metodo de pago</th>
-    <th scope="col" style="width: 20%;">Producto</th>
     <th scope="col" style="width: 20%;">Proveedor</th>
     <th scope="col" style="width: 20%;">Opciones</th>
 
@@ -22,7 +21,6 @@ listar clientes
     <td>{{c.id}}</td>
     <td>{{c.fecha_compra}}</td>
     <td>{{c.metodo_pago}}</td>
-    <td>{{c.producto}}</td>
     <td>{{c.proveedor}}</td>
     <td>
         <a href="{% url 'apl:editar_compra' c.id %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-edit"></i></a>

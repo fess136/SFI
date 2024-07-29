@@ -16,6 +16,7 @@ class EmpleadoListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Empleados"
         context['crear_url'] = reverse_lazy('apl:crear_empleado')
+        context['entidad'] = "Empleados"
         return context
     
     @method_decorator(login_required)

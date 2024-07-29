@@ -24,6 +24,7 @@ class MedidasListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Unidades de Medida"
         context['crear_url'] = reverse_lazy('apl:crear_medida')
+        context['entidad'] = "Medidas"
         return context
 
 @method_decorator(never_cache, name='dispatch')

@@ -18,7 +18,7 @@ class AdministradorListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Administradores"
         context['crear_url'] = reverse_lazy('apl:crear_administrador')
-
+        context['entidad'] = "Administradores"
         return context
     
     @method_decorator(login_required)

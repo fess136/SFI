@@ -23,6 +23,8 @@ class IdentificadorListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Tipos de Identificadores"
         context['crear_url'] = reverse_lazy('apl:crear_identificador')
+        context['entidad'] = "Tipo de identificador"
+        
         return context
 
 

@@ -17,6 +17,7 @@ class ComprasListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Compras"
         context['crear_url'] = reverse_lazy('apl:crear_compra')
+        context['entidad'] = "Compras"
         return context
 
     @method_decorator(login_required)

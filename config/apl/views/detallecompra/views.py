@@ -46,6 +46,7 @@ class DetalleCompraDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['entidad'] = "DetalleCompras"
         context['crear_url'] = reverse_lazy('apl:crear_detallecompra')
         context['id'] = self.kwargs.get('pk')
         context['compra'] = Compras.objects.get(id = self.kwargs.get('pk'))

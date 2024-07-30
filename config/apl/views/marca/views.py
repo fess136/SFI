@@ -22,6 +22,7 @@ class MarcaListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Marcas"
         context['crear_url'] = reverse_lazy('apl:crear_marca')
+        context['entidad'] = "Marcas"
         return context
 
 @method_decorator(never_cache, name='dispatch')

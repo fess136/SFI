@@ -1,4 +1,3 @@
-from django.http.request import HttpRequest as HttpRequest
 from django.http.response import HttpResponse as HttpResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -19,6 +18,7 @@ class AdministradorListView(ListView):
         context['titulo'] = 'Administradores'
         context['entidad'] = 'Administradores'
         context['crear_url'] = reverse_lazy('apl:crear_administrador')
+        context['entidad'] = "Administradores"
         return context
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)

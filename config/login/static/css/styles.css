@@ -5,22 +5,16 @@
 }
 
 body {
-    background-color: #28a745;
+    background-color: #13f748;
 }
 
 /* #modifca el fondo del login */
 
-body::before {
-    content: "";
-    position: fixed;
-    background: #040404 url("../img/llave.jpg") top right no-repeat;
-    background-size: cover;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 100vh;
-    z-index: -1;
-  }
+body.login-page {
+  background: url("../img/win3.jpg") no-repeat center center fixed;
+  background-size: cover;
+  background-color: #f3f4f6;
+}
 
   /* icono de navegacion */
   .navbar {

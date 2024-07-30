@@ -17,6 +17,7 @@ class MetodosListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Metodos de Pagos"
         context['crear_url'] = reverse_lazy('apl:crear_metodo')
+        context['entidad'] = "Metodos de pago"
         return context
 
     @method_decorator(login_required)

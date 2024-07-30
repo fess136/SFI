@@ -17,6 +17,7 @@ class ProductoListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Productos"
         context['crear_url'] = reverse_lazy('apl:crear_producto')
+        context['entidad'] = "Productos"
         return context
     
     @method_decorator(login_required)

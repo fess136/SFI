@@ -3,27 +3,51 @@
 {% load static %}
 
 {% block Detalle %}
-<img src="{% static 'img/logo sfi.png' %}" alt="Logo de la empresa" width="100">
 
-<h3><strong>Id de Compra:</strong> {{id}} </h3>
-<h4>Fecha Compra: {{compra.fecha_compra}}</h4>
-<h4>Metodo de Pago: {{compra.metodo_pago}}</h4>
-<h4>Proveedor: {{compra.proveedor}}</h4>
 
+<div class="encabezado">
+    
+    <div class="detalles">
+        <h4><strong>Id de Compra: </strong>{{id}}</h4>
+        <h4><strong>Fecha Compra: </strong>{{compra.fecha_compra}}</h4>
+        <h4><strong>Método de Pago: </strong>{{compra.metodo_pago}}</h4>
+        <h4><strong>Proveedor: </strong>{{compra.proveedor}}</h4>
+    </div>
+
+    <img src="{% static 'img/logo-ferreteria.png' %}" alt="Logo de la empresa" class="logo">
+
+</div>
 <style>
-
-    .Detalles{
-
-        text-align: center;
+    .encabezado {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
     }
-    .Detalles h3{
-
+    
+    .logo {
+        width: 150px;
+        height: 100px;
+        border-radius: 15px;
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 1);
+        margin-right: 15px;
+    }
+    
+    .detalles {
         text-align: left;
-        padding: 19px;
-
+        padding: 10px;
+        margin: 5px 0;
+        color: #555;
     }
-
-</style>
+    
+    .detalles h4 {
+        margin: 5px 5px;
+        padding: 5px 5px;
+    }
+    
+    </style>
 
 {% endblock %}
 
@@ -48,7 +72,7 @@
     <td>{{c.cantidad}}</td>
     <td>{{c.precio}}</td>
 
-    <!-- Bototnes de para editar y eliminar --> 
+    <!-- Bototnes de para editar y eliminar -->
 </tr>
 {% endfor %}
 

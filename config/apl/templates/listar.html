@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}" />
 <link rel="stylesheet"
     href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}" />
-    <link href="https://fonts.googleapis.com/css2?family=Rahere+Sans:wght@300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rahere+Sans:wght@300&display=swap" rel="stylesheet">
 <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
 <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
 <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
@@ -17,51 +17,45 @@
 <div class="card card-default">
     
     <div class="card-header">
-       
         <h3 class="card-title">
             <i class="fas fa-search"></i>
             {{titulo}}
         </h3>
-        
     </div>
 
     <!-- Este bloque sirve para mostrar los detalles de un modulo -->
-    <div class = "Detalles">
+    <div class="Detalles">
         {% block Detalle %} {% endblock %}
     </div>
 
     <!-- /.card-header -->
-    <div class="card-body">
-        <table class="table" id="tabla">
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered dt-responsive nowrap" id="tabla" style="width:100%">
             <thead>
                 {% block columnas %}
-
+                <!-- Definir columnas aquí -->
                 {% endblock %}
-
             </thead>
             <tbody>
                 {% block filas %}
-
+                <!-- Definir filas aquí -->
                 {% endblock %}
-
             </tbody>
         </table>
     </div>
-    <div class="card-footer" ">
-        <a href="{{crear_url}}" class = "btn btn-primary btn btn-xs"><i class ="fas fa-plus"></i> Agregar</a>
+    <div class="card-footer">
+        <a href="{{crear_url}}" class="btn btn-primary btn-xs"><i class="fas fa-plus"></i> Agregar</a>
     </div>
     <!-- /.card-body -->
 </div>
 {% endblock %}
 
 {% block javascript %}
-
 <script type="application/javascript">
-
     $(document).ready(function () {
-    $('#tabla').DataTable({ 
-        
+        $('#tabla').DataTable({
+            responsive: true
+        });
     });
-});
 </script>
 {% endblock %}

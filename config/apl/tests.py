@@ -10,7 +10,7 @@ from apl.models import*
 # Create your tests here.
 # a = 
 # print(Productos.objects.filter(id=DetalleCompra.objects.filter(id=1).producto.id).precio)
-print(Compras.objects.filter(id = 5))
+print(DetalleCompra.objects.filter(finalizado = True, compra = 3).exists())
 try:
 
         p = Productos.objects.get(id=4)

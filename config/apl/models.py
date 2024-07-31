@@ -224,6 +224,7 @@ class DetalleCompra(models.Model):
     compra = models.ForeignKey(Compras, on_delete=models.PROTECT, default=1)
     cantidad = models.PositiveIntegerField(verbose_name="Cantidad", null=True)
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
+    finalizado = models.BooleanField(default=False, null=True)
 
     def precio(self):
 
@@ -247,3 +248,4 @@ class Ventas(models.Model):
         verbose_name ="Venta"
         verbose_name_plural ="Ventas"
         db_table ="Venta"
+

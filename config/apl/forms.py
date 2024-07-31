@@ -167,7 +167,7 @@ class DetalleCompraForm(ModelForm):
     class Meta:
         
         model = DetalleCompra
-        fields = '__all__'
+        fields = ['compra', 'cantidad', 'producto']
 
     def __init__(self, *args, **kwargs):
 

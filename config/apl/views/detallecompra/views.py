@@ -1,6 +1,7 @@
+from django.db.models.query import QuerySet
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from apl.forms import CompraForm
 from apl.models import *
 from django.utils.decorators import method_decorator
@@ -30,12 +31,32 @@ class DetalleCompraDeleteView(DeleteView):
 
     model = DetalleCompra
     template_name = "DetalleCompra/eliminar.html"
-    success_url = reverse_lazy("apl:listar_detallecompra")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Eliminar Detalle de Compra"
+        return context
+    
+    def get_success_url(self):
+        
+        return reverse_lazy('apl:detallar_detallecompra', args=[DetalleCompra.objects.get(id = self.kwargs.get('pk')).compra])
 
+
+
+class DetalleCompraUpdateView(UpdateView):
+
+    model = DetalleCompra
+    form_class = DetalleCompraForm
+    template_name = "DetalleCompra/crear.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['titulo'] = "Editar Detalle de Compra"
+        return context
+
+    def get_success_url(self):
+        
+        return reverse_lazy('apl:detallar_detallecompra', args=[DetalleCompra.objects.get(id = self.kwargs.get('pk')).compra])
 
 class DetalleCompraDetailView(DetailView):
 
@@ -44,11 +65,28 @@ class DetalleCompraDetailView(DetailView):
     context_object_name = "objeto"
     success_url = reverse_lazy("apl:listar_compra")
 
+
+    
+    def post(self,  request, *args, **kwargs):
+
+        accion = request.POST.get('accion')
+
+        if accion == "finalizar":
+
+            DetalleCompra.objects.filter(compra = self.kwargs.get('pk')).update(finalizado = True)
+
+            return redirect('apl:listar_compra')
+
+        return redirect('apl:detallar_detallecompra', pk=self.kwargs.get('pk'))
+
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['entidad'] = "DetalleCompras"
         context['crear_url'] = reverse_lazy('apl:crear_detallecompra')
         context['id'] = self.kwargs.get('pk')
         context['compra'] = Compras.objects.get(id = self.kwargs.get('pk'))
+        context['finalizo'] = DetalleCompra.objects.filter(finalizado = True, compra = self.kwargs.get('pk')).exists()
 
         return context

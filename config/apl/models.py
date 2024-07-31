@@ -2,9 +2,11 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import*
-
-# Create your models here.
-
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
+from django.core.validators import MinLengthValidator
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 def validacion_telefono(value):
 
@@ -96,23 +98,42 @@ class Tipo_identificador(models.Model):
         
         
 class Administradores(models.Model):
-    
-    nombre=models.CharField(max_length=150, verbose_name="Nombre")
-    apellido=models.CharField(max_length=150, verbose_name="Apellido")
-    edad=models.PositiveIntegerField(verbose_name="Edad")
-    cedula=models.PositiveBigIntegerField(verbose_name="Cedula",unique=True)
-    correo_electronico=models.EmailField(verbose_name="Email", blank = False)
-    
-    def __str__(self):
+    class TipoDocumento(models.TextChoices):
+        CC = 'CC', 'Cédula de Ciudadanía'
+        CE = 'CE', 'Cédula de Extranjería'
+       
+        
+
+    # def validar_numero_documento(value):
+    #     if value < 10000000 or value > 9999999999:
+    #         raise ValidationError("El número de documento debe tener entre 8 y 10 dígitos")
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='administrador')
+    nombre = models.CharField(max_length=50, verbose_name="Nombre")
+    tipo_documento = models.CharField(max_length=3, choices=TipoDocumento.choices, default=TipoDocumento.CC, verbose_name="Tipo de documento")
+    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True)
+    telefono = models.PositiveIntegerField(verbose_name="Teléfono")
+    contrasena = models.CharField(max_length=128, validators=[MinLengthValidator(8)], verbose_name="Contraseña")
+    conf_contrasena = models.CharField(max_length=128, verbose_name="Confirmación de contraseña", default="")
+
+    def clean(self):
+        super().clean()
+        if self.contrasena != self.conf_contrasena:
+            raise ValidationError({"conf_contrasena": "Las contraseñas no coinciden"})
+
+    def _str_(self):
         return self.nombre
-    
 
     class Meta:
-        
         verbose_name = "Administrador"
         verbose_name_plural = "Administradores"
-        db_table="Administrador"
+        db_table = 'Administrador'
 
+@receiver(post_delete, sender=Administradores)
+def eliminar_usuario_relacionado(sender, instance, **kwargs):
+    user = instance.user
+    if user:
+        user.delete()
         
 
 class Clientes(models.Model):
@@ -216,7 +237,6 @@ class Ventas(models.Model):
     ventas_cantidad= models.PositiveSmallIntegerField(verbose_name="Cantidad")
     empleado= models.ForeignKey(Empleados,on_delete=models.PROTECT,null=True)
     cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
-    administrador = models.ForeignKey(Administradores,on_delete=models.PROTECT ,default="no")
     
     def __str__(self):
         return f"{self.fecha_venta}"
@@ -227,7 +247,3 @@ class Ventas(models.Model):
         verbose_name ="Venta"
         verbose_name_plural ="Ventas"
         db_table ="Venta"
-
-
-# class Detalle_venta(models.Model):
-    

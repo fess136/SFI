@@ -13,6 +13,12 @@ def validacion_telefono(value):
     if len(str(value)) != 10:
 
         raise ValidationError("se deben ingresar 10 digitos")
+    
+def validacion_numeros_negativos(value):
+
+    if value <= 0:
+
+        raise ValidationError("no se puede ingresar solo 0 ni numeros negativos")
 
 class Tipo(models.Model):
     nombre=models.CharField(max_length=150, verbose_name="Nombre", unique=True, null=True)
@@ -178,7 +184,7 @@ class Productos(models.Model):
     
     nombre = models.CharField(max_length=100,verbose_name="Nombre")
     cantidad = models.PositiveIntegerField(verbose_name="Cantidad")
-    precio = models.DecimalField(max_digits=10,decimal_places=2,verbose_name="Precio")
+    precio = models.DecimalField(max_digits=10,decimal_places=2,verbose_name="Precio", validators=[validacion_numeros_negativos])
     marcas = models.ForeignKey(Marcas,on_delete=models.CASCADE)
     tipo = models.ForeignKey(Tipo,on_delete=models.CASCADE)
     presentacion= models.ForeignKey(Presentacion,on_delete=models.CASCADE)
@@ -229,7 +235,20 @@ class DetalleCompra(models.Model):
     def precio(self):
 
         return Productos.objects.get(id=DetalleCompra.objects.get(id=self.id).producto.id).precio
-        
+    
+
+    def precio_total_por_registro(self):
+
+        return self.precio() * self.cantidad
+    
+    def save(self, *args, **kwargs):
+
+        #cada vez que se compre un nuevo producto se actualizara la cantidad de la tabla productos
+        if Productos.objects.get(id = self.producto.id).cantidad >= self.cantidad:
+
+            Productos.objects.filter(id = self.producto.id).update(cantidad = Productos.objects.get(id = self.producto.id).cantidad + self.cantidad)
+
+        super(DetalleCompra, self).save(args, kwargs)
 
 
 class Ventas(models.Model):

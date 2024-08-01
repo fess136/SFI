@@ -1,14 +1,30 @@
 {% extends "listar.html" %}
-
+{% load humanize %}
 {% load static %}
 
 {% block Detalle %}
 <div class="encabezado">
     <div class="detalles">
+        
         <h4><strong>Id de Compra: </strong>{{ id }}</h4>
         <h4><strong>Fecha Compra: </strong>{{ compra.fecha_compra }}</h4>
         <h4><strong>Método de Pago: </strong>{{ compra.metodo_pago }}</h4>
-        <h4><strong>Proveedor: </strong>{{ compra.proveedor }}</h4>
+        <h4><strong>Proveedor: </strong>{{ compra.proveedor }}</h4><br>
+        <h4><strong>Total: </strong> ${{precio_total_compra|floatformat:0|intcomma}} </h4>
+
+        <div class ="botones">
+            {% if not finalizo %}
+            <a href="{{crear_url}}" class = "btn btn-primary btn btn-xs"><i class ="fas fa-plus"></i> Agregar</a>
+
+            {% endif %}
+
+            {% if not finalizo %}
+
+                    <button id ="finalizar" class = "btn btn-success btn btn-xs"><i class = "fas fa-check"></i>Finalizar Compra</button>
+
+            {% endif %}
+
+        </div>
     </div>
     <img src="{% static 'img/logo-ferreteria.png' %}" alt="Logo de la empresa" class="logo">
 </div>
@@ -41,6 +57,18 @@
     .detalles h4 {
         margin: 5px 0;
     }
+
+    .botones {
+
+        display: flex;
+        justify-content: left;
+        gap: 10px;
+    }
+    .btn btn-success, btn btn-primary {
+
+        padding: 10px 20px;
+        font-size: 16px;
+    }
 </style>
 {% endblock %}
 
@@ -50,7 +78,8 @@
     <th scope="col">Compra</th>
     <th scope="col" style="width: 70%;">Producto</th>
     <th scope="col">Cantidad</th>
-    <th scope="col">Precio</th>
+    <th scope="col">Precio Unitario</th>
+    <th scope="col">Precio Total</th>
     {% if not finalizo %}
         <th scope="col">Opciones</th>
     {% endif %}
@@ -64,11 +93,12 @@
     <td>{{c.compra}}</td>
     <td>{{ c.producto }}</td>
     <td>{{ c.cantidad }}</td>
-    <td>{{ c.precio }}</td>
+    <td>{{ c.precio|floatformat:0|intcomma}}</td>
+    <td>{{ c.precio_total_por_registro|floatformat:0|intcomma}}</td>
     {% if not finalizo %}
         <td>
-            <a href="{% url 'apl:editar_detallecompra' c.id %}" >
-                <button class="btn btn-primary btn-xs"><i class="fas fa-edit"></i></button>
+            <a href="{% url 'apl:editar_detallecompra' c.id %}" class="btn btn-primary btn-xs">
+                <i class="fas fa-edit"></i>
             </a>
             <a href="{% url 'apl:borrar_detallecompra' c.id %}" class="btn btn-danger btn-xs">
                 <i class="fas fa-trash"></i>
@@ -79,14 +109,57 @@
 {% endfor %}
 {% endblock %}
 
+{% block javascript %}
 
-    {% block botones_opc %}
-    {% if not finalizo %}
-        <a href="{{crear_url}}" class = "btn btn-primary btn btn-xs"><i class ="fas fa-plus"></i> Agregar</a>
-        <form method="post">
-            {% csrf_token %}
-            <button type = "submit" name = "accion" value = "finalizar" class = "btn btn-success btn btn-xs"><i class = "fas fa-check"></i>Finalizar Compra</button>
-        </form>
-    {% endif %}
-    {% endblock %}
+<script type="application/javascript">
+
+    $(document).ready(function () {
+    $('#tabla').DataTable({ 
+        
+        responsive:true
+        
+    });
+});
+</script>
+
+<script>
+
+
+$(document).ready(function() {
+            $('#finalizar').click(function() {
+                Swal.fire({
+                    title: "¿Estas Seguro(a) que deseas finalizar la compra?",
+                    text: "Despues de finalizar, no podras realizar mas cambios en la compra",
+                    showDenyButton: true,
+                    confirmButtonText: "Si, Finalizar",
+                    denyButtonText: `Cancelar`
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Enviar una solicitud POST
+                        $.ajax({
+                            type: 'POST',
+                            data: {
+                                'csrfmiddlewaretoken': '{{ csrf_token }}', 
+                                'accion': 'finalizar' 
+                            },
+                            success: function(response) {
+                                Swal.fire("¡Compra Finalizada!", "", "success").then(() => {
+                                    // Redirigir si es necesario
+                                    window.location.href = "{% url 'apl:listar_compra' %}";
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                Swal.fire("Error", "No se pudo registrar la Compra", "error");
+                            }
+                        });
+                    } else if (result.isDenied) {
+                        Swal.fire("La Compra no fue finalizada", "", "info");
+                    }
+                });
+            });
+        });
+    
+</script>
+
+{% endblock %}
 

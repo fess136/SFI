@@ -58,14 +58,13 @@ class DetalleCompraUpdateView(UpdateView):
         
         return reverse_lazy('apl:detallar_detallecompra', args=[DetalleCompra.objects.get(id = self.kwargs.get('pk')).compra])
 
+@method_decorator(never_cache, name='dispatch')
 class DetalleCompraDetailView(DetailView):
 
     model = Compras
     template_name = "DetalleCompra/listar.html"
     context_object_name = "objeto"
     success_url = reverse_lazy("apl:listar_compra")
-
-
     
     def post(self,  request, *args, **kwargs):
 
@@ -88,5 +87,6 @@ class DetalleCompraDetailView(DetailView):
         context['id'] = self.kwargs.get('pk')
         context['compra'] = Compras.objects.get(id = self.kwargs.get('pk'))
         context['finalizo'] = DetalleCompra.objects.filter(finalizado = True, compra = self.kwargs.get('pk')).exists()
+        context['precio_total_compra'] = sum([j.precio_total_por_registro() for j in [i for i in DetalleCompra.objects.filter(compra = self.kwargs.get('pk'))]])
 
         return context

@@ -1,1 +1,63 @@
-.img
+.Dark-mode .user-panel {
+    background-color: #1f1e1e;
+
+    color: #fff;
+}
+
+.Dark-mode .content-wrapper {
+    background-color: #1f1e1e;
+    color: #fff;
+}
+.Dark-mode .content-header {
+    background-color: #1f1e1e;
+    color: #fff;
+}
+
+
+.Dark-mode .main-header {
+    background-color: #1f1e1e;
+    border-color: ;   
+    color: #fff;
+}
+.Dark-mode .table-responsive {
+    background-color: #1f1e1e;
+    border-color: #1f1e1e ;   
+    color: #fff;
+}
+.Dark-mode .card-header {
+    background-color: #1f1e1e;
+    border-color: ;   
+    color: #fff;
+}
+.Dark-mode .card-footer {
+    background-color: #1f1e1e;
+    border-color: ;   
+    color: #fff;
+    
+}
+.Dark-mode .sidebar {
+    background-color:  #1f1e1e;
+    border-color: ;   
+    color: #fff;
+}
+.Dark-mode .main-sidebar {
+    background-color:  #1f1e1e;
+    border-color: ;   
+    color: #fff;
+}
+.Dark-mode .dataTables_length {
+    background-color:  #1f1e1e;
+    border-color: ;   
+    color: #fff;
+}
+.Dark-mode .main-footer {
+    background-color: #1f1e1e;
+    border-color: ;   
+    color: #fff;
+    
+}
+
+
+.info  {
+    color: white;
+}

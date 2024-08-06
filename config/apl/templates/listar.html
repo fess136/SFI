@@ -3,13 +3,27 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}" />
-<link rel="stylesheet"
-    href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}" />
-    <link href="https://fonts.googleapis.com/css2?family=Rahere+Sans:wght@300&display=swap" rel="stylesheet">
-<script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
-<script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
-<script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
-<script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}" />
+<link href="https://fonts.googleapis.com/css2?family=Rahere+Sans:wght@300&display=swap" rel="stylesheet">
+
+<!-- Este bloque sirve para el estilo de los botones -->
+<link rel="stylesheet" href="{% static 'export/buttons.dataTables.css' %}" />
+<link rel="stylesheet" href="{% static 'export/dataTables.dataTables.css' %}" />
+
+<!-- Este bloque sirve para implemetar los botones de exportacion -->
+<script src="{% static 'export/jquery-3.7.1.js' %}"></script>
+
+<script src="{% static 'export/dataTables.js' %}"></script>
+
+<script src="{% static 'export/dataTables.buttons.js' %}"></script>
+<script src="{% static 'export/buttons.dataTables.js' %}"></script>
+
+<script src="{% static 'export/buttons.html5.min.js' %}"></script>
+<script src="{% static 'export/jszip.min.js' %}"></script>
+
+<script src="{% static 'export/pdfmake.min.js' %}"></script>
+<script src="{% static 'export/vfs_fonts.js' %}"></script>
+
 {% endblock %}
 
 {% block contenido %}
@@ -54,14 +68,36 @@
 </div>
 {% endblock %}
 
+
+<script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'node_modules/sienna-accessibility/sienna.min.js' %}"></script>
+
+
+
+
 {% block javascript %}
 
-<script type="application/javascript">
+{% comment %} <script type="application/javascript">
 
     $(document).ready(function () {
     $('#tabla').DataTable({ 
         
     });
 });
-</script>
+
+</script> {% endcomment %}
+
+<script>
+        $(document).ready(function() {
+            $('#tabla').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        });
+    </script>
 {% endblock %}

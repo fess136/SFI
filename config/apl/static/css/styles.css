@@ -1,1 +1,12 @@
-.img
+.watermark {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 200px; /* Ajusta el tamaño de la imagen según tus necesidades */
+    height: 200px;
+    opacity: 0.2; /* Ajusta la opacidad para que no interfiera con el contenido */
+    background: url('logo-ferret.png') no-repeat center center;
+    background-size: contain;
+    transform: translate(-50%, -50%);
+    z-index: -1; /* Asegúrate de que la marca de agua esté detrás del contenido */
+}

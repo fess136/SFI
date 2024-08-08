@@ -2,41 +2,49 @@
 <aside class="main-sidebar sidebar-light-primary elevation-4">
     
     </a>
-    <div class="sidebar" style=" background:  #3c8dbc; ">
+    <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 <img src="{% static 'img/user.png' %}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ request.user.username }}</a>
+                <a href="#" class="d-block" style="color: rgb(255, 255, 255);">{{ request.user.username }}</a>
             </div>
         </div>
         <style>
+            .request.user.username{
+                color: #ffffff; 
+
+            }          
+              .sidebar{
+                background-color: rgb(96, 129, 190);
+            }
+            
             .nav-header {
-                color: #ffffff; /* Cambia esto al color que desees */
-                font-size: 30px; /* Cambia esto al tamaño de fuente que desees */
-                font-weight: bold; /* Opcional: hacer que el texto sea negrita */
+                color: #ffffff;
+                font-size: 30px; 
+                font-weight: bold;
             }
             .info {
-                color: #ffffff; /* Cambia esto al color que desees */
-                font-size: 20px; /* Cambia esto al tamaño de fuente que desees */
+                color: #ffffff; 
+                font-size: 20px; 
             }
             .nav-link:hover p {
-                color: #000000; /* Cambia esto al color que desees cuando el elemento está en hover */
-                font-size: 20px; /* Cambia esto al tamaño de fuente que desees cuando el elemento está en hover */
+                color: #000000;
+                font-size: 20px; 
             }
             .nav-icon {
-                color: #ffffff; /* Cambia esto al color que desees */
-                font-size: 20px; /* Cambia esto al tamaño de fuente que desees */
+                color: #ffffff; 
+                font-size: 20px; 
             }
             .nav-link p {
-                color: #ffffff; /* Cambia esto al color que desees */
-                font-size: 18px; /* Cambia esto al tamaño de fuente que desees */
+                color: #ffffff; 
+                font-size: 18px; 
             }
     </style>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-header">Modulos</li>
+                <li class="nav-header" style="color: rgb(255, 255, 255);">Modulos</li>
 
                 <li class="nav-item"  data-toggle="tooltip" data-placement="top" title="Tipo">
                     <a href="{% url 'apl:listar_tipo' %}" class="nav-link">

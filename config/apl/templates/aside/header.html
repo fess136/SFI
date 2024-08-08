@@ -71,19 +71,34 @@
 </nav>
 
 <script type="application/javascript">
-    document.getElementById('increase-text').addEventListener('click', function() {
-        document.body.style.fontSize = 'larger';
-    });
+    document.addEventListener('DOMContentLoaded', function() {
+        // Verificar si el modo oscuro está habilitado
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('Dark-mode');
+        }
 
-    document.getElementById('decrease-text').addEventListener('click', function() {
-        document.body.style.fontSize = 'smaller';
-    });
+        document.getElementById('increase-text').addEventListener('click', function() {
+            document.body.style.fontSize = 'larger';
+        });
 
-    document.getElementById('normal-text').addEventListener('click', function() {
-        document.body.style.fontSize = '16px';  
-    });
+        document.getElementById('decrease-text').addEventListener('click', function() {
+            document.body.style.fontSize = 'smaller';
+        });
 
-    document.getElementById('toggle-contrast').addEventListener('click', function() {
-        document.body.classList.toggle('Dark-mode');
+        document.getElementById('normal-text').addEventListener('click', function() {
+            document.body.style.fontSize = '16px';  
+        });
+
+        document.getElementById('toggle-contrast').addEventListener('click', function() {
+            document.body.classList.toggle('Dark-mode');
+
+            // Guardar el estado del modo oscuro en localStorage
+            if (document.body.classList.contains('Dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
     });
 </script>
+

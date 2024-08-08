@@ -1,1 +1,89 @@
-.img
+/* CAMBIA EL COLOR DEL BODY PARA EL MODO OSCURO */
+.Dark-mode .user-panel {
+    background-color: #1f1e1e;
+
+    color: #fff;
+}
+
+.Dark-mode .content-wrapper {
+    background-color: #1f1e1e;
+    color: #fff;
+}
+.Dark-mode .content-header {
+    background-color: #1f1e1e;
+    color: #fff;
+}
+
+
+.Dark-mode .main-header {
+    background-color: #1f1e1e;
+    border-color:  #1f1e1e;    
+    color: #fff;
+}
+.Dark-mode .table-responsive {
+    background-color: #1f1e1e;
+    border-color: #1f1e1e ;   
+    color: #fff;
+}
+.Dark-mode .card-header {
+    background-color: #1f1e1e;
+    border-color:  #1f1e1e;
+    color: #fff;
+}
+
+.Dark-mode .card-body {
+    background-color:#1f1e1e;
+    border-color:#1f1e1e;
+    color: #fff;
+}
+.Dark-mode .card-footer {
+    background-color: #1f1e1e;
+    border-color:  #1f1e1e;
+    color: #fff;
+    
+}
+.Dark-mode .sidebar {
+    background-color:  #1f1e1e;
+    border-color:  #1f1e1e;
+    color: #fff;
+}
+.Dark-mode .main-sidebar {
+    background-color:  #1f1e1e;
+    border-color:  #1f1e1e;
+    color: #fff;
+}
+.Dark-mode .dataTables_length {
+    background-color:  #1f1e1e;
+    border-color:#1f1e1e; 
+    color: #fff;
+}
+.Dark-mode .main-footer {
+    background-color: #1f1e1e;
+    border-color:#1f1e1e;
+    color: #fff;
+    
+}
+.Dark-mode .form-group {
+    background-color:#1f1e1e;
+    border-color: #1f1e1e;
+    color: #fff;
+    
+}
+.Dark-mode .form-control{
+    background-color: #ffffff;
+    border-color:#ffffff;
+    color: #000000;
+    
+}
+
+.info  {
+    color: white;
+}
+
+
+
+.Dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+

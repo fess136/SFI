@@ -9,18 +9,14 @@
     
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login SFI</title>
+    <title>Acceso SFI</title>
     <!-- icono de navegacion -->
     <link href="{% static 'img/usuario.png' %}" rel="icon">
     <!-- estilo de fuente en sfi -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Fjalla+One&family=Kalnia+Glaze:wght@100..700&family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
 
-     
-  
     <!-- <!conecta con la carpeta css de diseñol -->
-    <link rel="stylesheet" href="{% static 'config\login\static\css\styles.css' %}">
-
-
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
     <link rel="stylesheet" href="{% static 'lib/adminlte-3.0.4/plugins/font-awesome-5.11.1/css/all.min.css' %}">
     <!-- Theme style -->
@@ -35,13 +31,16 @@
         .login-logo a {
             font-family: 'Anton', sans-serif; /* Usando la fuente 'Roboto' de Google Fonts */
             font-size: 80px; /* Tamaño de la fuente */
-            color: #254997c2;
+            color: #ffffff;
             display: flex;
             justify-content: center;
             position: relative;
             height: 200px;
             align-items: flex-end;
+            transform: translateX(20px);
         }
+    
+        
     
        
     .arc-letter {
@@ -52,10 +51,18 @@
       
     .card-body {
     border-radius: 50px 0 50px 0; /* Borde redondeado en la esquina superior izquierda e inferior derecha */
+    padding: 20px; /* Ajusta el padding para manejar el contenido */
+    background-color: #ffffff; 
+    
 }
     .card {
     border-radius: 20px;
-    box-shadow: 0 45px 45px #254997c2; /* Sombra alrededor de la tarjeta */
+    box-shadow: 0 45px 45px #5a6bccc2; /* Sombra alrededor de la tarjeta */
+    width: 410px; /* Ajusta el ancho de la tarjeta */
+        height: 300px; /* Ajusta la altura de la tarjeta */
+        margin: 0 auto; /* Centra la tarjeta en la pantalla */
+        background-color: #052daf; 
+        position: relative;
 }
 
     .input-group .form-control {
@@ -87,8 +94,9 @@
         
         <div class="card">
         <div class="card-body login-card-body">
-        <p class="login-box-msg">
-            Acceso</p>
+        <p class="login-box-msg" style="font-size: 24px;  font-weight: bold; text-align:  center; "color text-white; >
+            Acceso
+        </p>
         <form action="#" method="post">
             {% csrf_token %}
         <div class="input-group mb-3">
@@ -117,7 +125,7 @@
         </div>
         
         <div class="col-12">
-        <button type="submit" class="btn btn-primary btn-block">Iniciar Sesion</button>
+        <button type="submit" class="btn btn-primary btn-block">Iniciar sesion</button>
         </div>
         
         </div>

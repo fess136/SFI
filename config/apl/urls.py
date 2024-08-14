@@ -72,7 +72,7 @@ urlpatterns = [
     path('detallecompras/detallar/<int:pk>', DetalleCompraDetailView.as_view(), name = "detallar_detallecompra"),
     path('detallecompras/editar/<int:pk>', DetalleCompraUpdateView.as_view(), name = "editar_detallecompra" ),
     path('detallarcompras/borrar/<int:pk>', DetalleCompraDeleteView.as_view(), name = "borrar_detallecompra"),
-    path('detallecompras/crear', DetalleCompraCreateView.as_view(), name = "crear_detallecompra"),
+    path('detallecompras/crear/<int:pk>', DetalleCompraCreateView.as_view(), name = "crear_detallecompra"),
 
     #Modulo Productos
     path('productos/listar', ProductoListView.as_view(), name = "listar_producto"),

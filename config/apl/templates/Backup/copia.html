@@ -1,0 +1,42 @@
+
+{% extends "form.html" %}
+
+{% block head %}
+    
+{% endblock %}
+
+{% block contenido %}
+<div class="containers">
+    <h1>Gestión de Copias de Seguridad</h1>
+    
+    <!-- Sección para hacer una copia de seguridad -->
+
+
+    <h2>Hacer Copia de Seguridad</h2>
+    <form action="{% url 'apl:hacer_copia_de_seguridad' %}" method="get" class="form-backup">
+        <button type="submit" class="btn btn-primary">Generar copia de seguridad de la base de datos</button>
+    </form>
+
+    <!-- Sección para restaurar una copia de seguridad -->
+    <h2>Restaurar Copia de Seguridad</h2>
+    {% if archivos_zip %}
+    <form action="{% url 'apl:restaurar_copia_de_seguridad' %}" method="post" class="form-restore">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="nombre">Selecciona la copia de seguridad para restaurar:</label>
+            <select id="nombre" name="nombre" required class="form-control">
+                {% for archivo in archivos_zip %}
+                    <option value="{{ archivo }}">{{ archivo }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Restaurar</button>
+    </form>
+    {% else %}
+        <p>No hay copias de seguridad disponibles para restaurar.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block Bienvenidos %}
+{% endblock %}

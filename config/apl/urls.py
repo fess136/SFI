@@ -14,6 +14,7 @@ from apl.views.proveedor.views import *
 from apl.views.medidas.views import*
 from apl.views.ventas.views import*
 from apl.views.detallecompra.views import *
+from apl.views.backup.views import *
 
 app_name = 'apl'
 urlpatterns = [
@@ -71,7 +72,7 @@ urlpatterns = [
     path('detallecompras/detallar/<int:pk>', DetalleCompraDetailView.as_view(), name = "detallar_detallecompra"),
     path('detallecompras/editar/<int:pk>', DetalleCompraUpdateView.as_view(), name = "editar_detallecompra" ),
     path('detallarcompras/borrar/<int:pk>', DetalleCompraDeleteView.as_view(), name = "borrar_detallecompra"),
-    path('detallecompras/crear', DetalleCompraCreateView.as_view(), name = "crear_detallecompra"),
+    path('detallecompras/crear/<int:pk>', DetalleCompraCreateView.as_view(), name = "crear_detallecompra"),
 
     #Modulo Productos
     path('productos/listar', ProductoListView.as_view(), name = "listar_producto"),
@@ -101,6 +102,10 @@ urlpatterns = [
     path('ventas/listar',VentasListView.as_view(),name = "listar_venta"),
     path('ventas/crear', VentaCreateView.as_view(), name = 'crear_venta'),
     path('ventas/editar/<int:pk>', VentaUpdateView.as_view(), name = 'editar_venta'),
-    path('ventas/borrar/<int:pk>', VentaDeleteView.as_view(), name = 'borrar_venta')
+    path('ventas/borrar/<int:pk>', VentaDeleteView.as_view(), name = 'borrar_venta'),
     
+    #modulo de copia de seguridad
+    path('backup/copia', backup_restore_view, name='backup_restore_view'),
+    path('hacer-copia/', hacer_copia_de_seguridad, name='hacer_copia_de_seguridad'),
+    path('restaurar-copia/', restaurar_copia_de_seguridad, name='restaurar_copia_de_seguridad'),
 ]

@@ -2,6 +2,7 @@
 
 {% load static %}
 
+
 {% block head %}
 <!-- Urls de los archivos CSS -->
 <link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/dataTables-bs4/css/dataTables.bootstrap4.min.css' %}" />
@@ -30,6 +31,14 @@
 {% endblock %}
 
 {% block contenido %}
+
+{% block alertas %}
+
+{% endblock %}
+
+{% block Detalle %}
+{% endblock %}
+
 <div class="card card-default">
     <div class="card-header">
         <h3 class="card-title">
@@ -55,9 +64,11 @@
         </table>
     </div>
     <div class="card-footer">
+        {% block botones_opc %}
         <a href="{{ crear_url }}" class="btn btn-flat" style="background-color: #23853a; border: 1px solid #23853a; color: #fff; margin: 5px; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
             <i class="fas fa-plus"></i> Agregar
         </a>
+        {% endblock %}
     </div>
 </div>
 

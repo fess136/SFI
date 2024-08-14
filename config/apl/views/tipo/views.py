@@ -1,14 +1,16 @@
 from typing import Any
-from django.urls import reverse_lazy
-from django.views.decorators.csrf import csrf_exempt
-from django.http.response import HttpResponse, JsonResponse
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.shortcuts import render, redirect
-from apl.models import *
+
+from django.http import JsonResponse
 from apl.forms import TipoForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.shortcuts import render, redirect
+from apl.models import *
+
 
 
 @method_decorator(never_cache, name='dispatch')
@@ -19,17 +21,34 @@ class TipoCreateView(CreateView):
     template_name = 'tipo/crear.html'
     success_url = reverse_lazy('apl:listar_tipo')
 
-    #valida que no se repitan los datos
+    # #valida que no se repitan los datos
+    # def form_valid(self, form):
+    #     # Obtener el nombre de la categoría del formulario
+    #     nombre = form.cleaned_data.get('nombre').lower()
+
+    #     if Tipo.objects.filter(nombre__iexact=nombre).exists():
+    #         form.add_error(
+    #             'nombre', 'Ya existe una categoría con este nombre.')
+    #         return self.form_invalid(form)
+
+    #     return super().form_valid(form)
+
     def form_valid(self, form):
-        # Obtener el nombre de la categoría del formulario
-        nombre = form.cleaned_data.get('nombre').lower()
+        response = super().form_valid(form)
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'status': 'success'})
+        return response
 
-        if Tipo.objects.filter(nombre__iexact=nombre).exists():
-            form.add_error(
-                'nombre', 'Ya existe una categoría con este nombre.')
-            return self.form_invalid(form)
-
-        return super().form_valid(form)
+    def form_invalid(self, form):
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            errors = {}
+            for field, error_list in form.errors.items():
+                errors[field] = [str(error) for error in error_list]
+            return JsonResponse({
+                'status': 'error',
+                'errors': errors
+            }, status=400)
+        return super().form_invalid(form)
     
       #decorador para proteccion de la vista desde el login
     @method_decorator(login_required)
@@ -41,8 +60,7 @@ class TipoCreateView(CreateView):
         
         #Envia el tiutlo al archivo crear.html
         context['titulo'] = 'Crear Tipo'
-        context['crear_url'] = reverse_lazy('apl:crear_tipo')
-
+        context['crear_url'] = reverse_lazy('apl:listar_tipo')
         return context
         
 
@@ -86,8 +104,25 @@ class TipoUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Tipo"
+        context['crear_url'] = reverse_lazy('apl:listar_tipo')
         return context 
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'status': 'success'})
+        return response
+
+    def form_invalid(self, form):
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            errors = {}
+            for field, error_list in form.errors.items():
+                errors[field] = [str(error) for error in error_list]
+            return JsonResponse({
+                'status': 'error',
+                'errors': errors
+            }, status=400)
+        return super().form_invalid(form)
 
 
 @method_decorator(never_cache, name='dispatch')

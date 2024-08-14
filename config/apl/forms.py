@@ -20,6 +20,7 @@ class TipoForm(ModelForm):
             ),
 
         }
+    
 
 class MarcaForm(ModelForm):
 
@@ -160,7 +161,7 @@ class CompraForm(ModelForm):
     class Meta:
 
         model = Compras
-        fields = '__all__' 
+        fields = ['metodo_pago', 'proveedor']
 
 class DetalleCompraForm(ModelForm):
 
@@ -171,9 +172,27 @@ class DetalleCompraForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
 
+        self.id_compra = kwargs.pop('id_compra', None)
+
+        #Retorna Verdadero si se esta editando un detalle de compra y si se esta agregando un nuevo detalle de compra Retorna Falso
+        self.edicion = kwargs.pop('hay_edicion', None)
+        
         super().__init__(*args, **kwargs)
-        self.fields['compra'].initial = Compras.objects.all()[len(Compras.objects.all())-1]
+
+        self.fields['compra'].initial = self.id_compra
         self.fields['compra'].disabled = True
         
     def clean_fixed_value(self):
-        return Compras.objects.all()[len(Compras.objects.all())-1]
+        return self.id_compra
+    
+    def clean(self):
+
+        campos = super().clean()
+
+        id = campos.get('compra')
+        producto = campos.get('producto')
+
+        if id and producto and not self.edicion:
+            if DetalleCompra.objects.filter(compra = id, producto = Productos.objects.get(nombre = producto).id).exists():
+
+                self.add_error("producto", f"{producto} ya existe en esta compra, ya puede ser editado en la tabla")

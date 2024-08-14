@@ -20,6 +20,7 @@ body {
 body::before {
   content: "";
   position: fixed;
+  /* Imagen exportada desde https://pixabay.com/photos/hardware-tool-wrench-metal-tool-7381713/ */
   background: #040404 url("../img/llave.jpg") top right no-repeat;
   background-size: cover;
   left: 0;

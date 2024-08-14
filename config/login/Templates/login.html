@@ -85,16 +85,16 @@
     <body class="login-page" style="min-height: 496.781px;">
         <div class="login-box">
         <div class="login-logo">
-        <a href="../../index2.html">
+        <a href="">
             <span class="arc-letter">S</span>
             <span class="arc-letter">F</span>
             <span class="arc-letter">I</span>
         </a>
         </div>
         
-        <div class="card">
+        <div class="card" style="center;">
         <div class="card-body login-card-body">
-        <p class="login-box-msg" style="font-size: 24px;  font-weight: bold; text-align:  center; "color text-white; >
+        <p class="login-box-msg" style="font-size: 26px;  font-weight: bold; text-align:  center; "color text-white; >
             Acceso
         </p>
         <form action="#" method="post">
@@ -152,8 +152,23 @@
         <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         
         <script src="../../dist/js/adminlte.min.js?v=3.2.0"></script>
+        <script>
+            {% if form.errors %}
+            var errors = '';
+            {% for field in form %}
+            {% for error in field.errors %}
+            errors += '{{ error }}';
+            {% endfor %}
+            {% endfor %}
         
+            Swal.fire({
+                title: 'Usuario o contraseña incorrectos',
+                text: errors,
+                icon: 'error',
+            });
+            {% endif %}
+        </script>
         
-        </body>
+    </body>
         
             </html>

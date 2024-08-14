@@ -7,14 +7,14 @@ from django.views.generic import RedirectView
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
 from django.urls import reverse_lazy
-
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm
 class LoginFormView(LoginView):
      
      template_name = 'login.html'
-     def loginview(request):
+     def loginview(request: HttpRequest) -> HttpResponse:
           if request.method == 'POST':
                form = LoginForm(request.POST)
                if form.is_valid():
@@ -25,7 +25,8 @@ class LoginFormView(LoginView):
                     login(request, user)
                     return redirect('apl:listar_tipo')  # Redirige a la página de inicio después del login
                else:
-                    form.add_error(None, 'Nombre de usuario o contraseña incorrectos')
+                    # Aquí manejamos el error
+                    messages.error(request, 'Usuario o contraseña incorrectos.')
           else:
                form = LoginForm()
 

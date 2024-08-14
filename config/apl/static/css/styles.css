@@ -81,9 +81,21 @@
 }
 
 
-
 .Dark-mode {
     background-color: #121212;
     color: #ffffff;
 }
 
+
+/* header barra */
+.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+}
+
+.navbar-logo {
+    max-height: 40px; /* Ajusta este tamaño según tu preferencia */
+}

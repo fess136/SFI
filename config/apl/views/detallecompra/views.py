@@ -1,4 +1,5 @@
 from django.db.models.query import QuerySet
+from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
@@ -10,7 +11,7 @@ from django.views.decorators.cache import never_cache
 
 from apl.forms import DetalleCompraForm
 
-
+@method_decorator(never_cache, name='dispatch')
 class DetalleCompraCreateView(CreateView):
 
     model = DetalleCompra
@@ -18,15 +19,39 @@ class DetalleCompraCreateView(CreateView):
     template_name = "DetalleCompra/crear.html"
 
     def get_success_url(self):
-        # Obtén el último ID de la tabla Compras
-        ultimo_id = Compras.objects.values_list('id', flat=True).last()
-        return reverse_lazy('apl:detallar_detallecompra', args=[ultimo_id])
+
+        return reverse_lazy('apl:detallar_detallecompra', args=[self.kwargs.get('pk')])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Detalle de Compra"
+        context['crear_url'] = reverse_lazy('apl:detallar_detallecompra', args=[self.kwargs.get('pk')])
         return context
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'status': 'success'})
+        return response
 
+    def form_invalid(self, form):
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            errors = {}
+            for field, error_list in form.errors.items():
+                errors[field] = [str(error) for error in error_list]
+            return JsonResponse({
+                'status': 'error',
+                'errors': errors
+            }, status=400)
+        return super().form_invalid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['id_compra'] = self.kwargs.get('pk')
+        kwargs['hay_edicion'] = False
+
+        return kwargs
+@method_decorator(never_cache, name='dispatch')
 class DetalleCompraDeleteView(DeleteView):
 
     model = DetalleCompra
@@ -42,7 +67,7 @@ class DetalleCompraDeleteView(DeleteView):
         return reverse_lazy('apl:detallar_detallecompra', args=[DetalleCompra.objects.get(id = self.kwargs.get('pk')).compra])
 
 
-
+@method_decorator(never_cache, name='dispatch')
 class DetalleCompraUpdateView(UpdateView):
 
     model = DetalleCompra
@@ -52,11 +77,35 @@ class DetalleCompraUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Editar Detalle de Compra"
+        context['crear_url'] = reverse_lazy('apl:detallar_detallecompra', args=[DetalleCompra.objects.get(id = self.kwargs.get('pk')).compra.id])
         return context
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'status': 'success'})
+        return response
+
+    def form_invalid(self, form):
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            errors = {}
+            for field, error_list in form.errors.items():
+                errors[field] = [str(error) for error in error_list]
+            return JsonResponse({
+                'status': 'error',
+                'errors': errors
+            }, status=400)
+        return super().form_invalid(form)
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+
+        kwargs['hay_edicion'] = True
+        return kwargs
 
     def get_success_url(self):
         
-        return reverse_lazy('apl:detallar_detallecompra', args=[DetalleCompra.objects.get(id = self.kwargs.get('pk')).compra])
+        return reverse_lazy('apl:detallar_detallecompra', args=[DetalleCompra.objects.get(id = self.kwargs.get('pk')).compra.id])
 
 @method_decorator(never_cache, name='dispatch')
 class DetalleCompraDetailView(DetailView):
@@ -72,7 +121,13 @@ class DetalleCompraDetailView(DetailView):
 
         if accion == "finalizar":
 
-            DetalleCompra.objects.filter(compra = self.kwargs.get('pk')).update(finalizado = True)
+            #Cada vez que se presione el boton finalizar compra, la misma tendra el estado compra finalizada
+            Compras.objects.filter(id = self.kwargs.get('pk')).update(finalizado = True)
+            
+            #Aqui se actualiza la cantidad de cada uno de los productos seleccionados en la compra
+            for i in DetalleCompra.objects.filter(compra = self.kwargs.get('pk')):
+
+                Productos.objects.filter(id = i.producto.id).update(cantidad = i.producto.cantidad + i.cantidad)
 
             return redirect('apl:listar_compra')
 
@@ -86,7 +141,8 @@ class DetalleCompraDetailView(DetailView):
         context['crear_url'] = reverse_lazy('apl:crear_detallecompra')
         context['id'] = self.kwargs.get('pk')
         context['compra'] = Compras.objects.get(id = self.kwargs.get('pk'))
-        context['finalizo'] = DetalleCompra.objects.filter(finalizado = True, compra = self.kwargs.get('pk')).exists()
-        context['precio_total_compra'] = sum([j.precio_total_por_registro() for j in [i for i in DetalleCompra.objects.filter(compra = self.kwargs.get('pk'))]])
+        context['finalizo'] = Compras.objects.filter(finalizado = True, id = self.kwargs.get('pk')).exists()
+        # context['precio_total_compra'] = sum([j.precio_total_por_registro() for j in [i for i in DetalleCompra.objects.filter(compra = self.kwargs.get('pk'))]])
+        context['hay_productos'] = DetalleCompra.objects.filter(compra = self.kwargs.get('pk')).exists()
 
         return context

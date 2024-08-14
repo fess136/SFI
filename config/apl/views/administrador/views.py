@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.http.response import HttpResponse as HttpResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -40,14 +41,25 @@ class AdministradorCreateView(CreateView):
         context['titulo'] = 'Crear Administrador'
         context['entidad'] = 'Registrar administrador'
         context['listar_url'] = reverse_lazy('apl:listar_administrador')
+        context['crear_url'] = reverse_lazy('apl:listar_administrador')
         return context
 
     def form_valid(self, form):
-        try:
-            return super().form_valid(form)
-        except ValidationError as e:
-            form.add_error(None, e)
-            return self.form_invalid(form)
+        response = super().form_valid(form)
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'status': 'success'})
+        return response
+
+    def form_invalid(self, form):
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            errors = {}
+            for field, error_list in form.errors.items():
+                errors[field] = [str(error) for error in error_list]
+            return JsonResponse({
+                'status': 'error',
+                'errors': errors
+            }, status=400)
+        return super().form_invalid(form)
 
 @method_decorator(never_cache , name='dispatch')
 @method_decorator(login_required, name='dispatch')
@@ -67,13 +79,25 @@ class AdministradorUpdateView(UpdateView):
         context['titulo'] = 'Editar administrador'
         context['entidad'] = 'Editar administrador'
         context['listar_url'] = reverse_lazy('apl:listar_administrador')
+        context['crear_url'] = reverse_lazy('apl:listar_administrador')
         return context
-    
-    
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'status': 'success'})
+        return response
+
+    def form_invalid(self, form):
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            errors = {}
+            for field, error_list in form.errors.items():
+                errors[field] = [str(error) for error in error_list]
+            return JsonResponse({
+                'status': 'error',
+                'errors': errors
+            }, status=400)
+        return super().form_invalid(form)
 @method_decorator(never_cache , name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class AdministradorDeleteView(DeleteView):

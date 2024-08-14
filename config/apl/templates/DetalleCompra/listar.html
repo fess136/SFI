@@ -124,12 +124,6 @@
 </tr>
 {% endfor %}
 {% endblock %}
-
-<!-- Para que no se visualice el boton de agregar por defecto debajo de la tabla -->
-{% block botones_opc %}{% endblock %}
-
-{% block javascript %}
-
 <script type="application/javascript">   
 
     $(document).ready(function () {
@@ -176,6 +170,6 @@ $(document).ready(function() {
         });
     
 </script>
-
-{% endblock %}
+<!-- Para que no se visualice el boton de agregar por defecto debajo de la tabla -->
+{% block botones_opc %}{% endblock %}
 

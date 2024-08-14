@@ -2,79 +2,7 @@
 {% extends "form.html" %}
 
 {% block head %}
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            margin: 0 auto;
-            
-            
-        }
-
-        
-
-        h1 {
-            color: #4CAF50;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            color: #333;
-            border-bottom: 2px solid #4CAF50;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            padding-left: 0px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        select, button {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-
-
-        .btn-primary {
-            background-color: #007bff;
-            color: #fff;
-            display: block;
-            margin: 20px auto; /* Añade margen arriba y abajo */
-            width: fit-content;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .btn-success {
-            background-color: #28a745;
-            display: block;
-            margin: 20px auto; /* Añade margen arriba y abajo */
-            width: fit-content;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-    </style>
+    
 {% endblock %}
 
 {% block contenido %}
@@ -82,6 +10,8 @@
     <h1>Gestión de Copias de Seguridad</h1>
     
     <!-- Sección para hacer una copia de seguridad -->
+
+
     <h2>Hacer Copia de Seguridad</h2>
     <form action="{% url 'apl:hacer_copia_de_seguridad' %}" method="get" class="form-backup">
         <button type="submit" class="btn btn-primary">Generar copia de seguridad de la base de datos</button>

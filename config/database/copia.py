@@ -26,7 +26,7 @@ def hacer_copia():
     print(f"Fecha y hora actual: {dt}")
 
     # Crear un nombre para la copia de seguridad basado en la fecha y hora actual
-    nombre = "Copia de seguridad {}-{}-{}  {}{}".format(dt.day,dt.month, dt.year, dt.hour,dt.minute)
+    nombre = "Copia de seguridad {}-{}-{}  {} {}".format(dt.day,dt.month, dt.year, dt.hour,dt.minute)
     print(f"Nombre de la copia de seguridad: {nombre}")
 
     # Crear un directorio temporal para la copia de la base de datos

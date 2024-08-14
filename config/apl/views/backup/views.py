@@ -5,9 +5,14 @@ import os
 from django.shortcuts import render, redirect
 from django.contrib import messages
 import logging
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.http.response import HttpResponse as HttpResponse
 
 logger = logging.getLogger(__name__)
-
+@login_required
+@never_cache
 def backup_restore_view(request):
     directorio_copias = os.path.join(settings.BASE_DIR, 'database')
     archivos_zip = [f for f in os.listdir(directorio_copias) if f.endswith('.zip')]
@@ -15,7 +20,8 @@ def backup_restore_view(request):
     return render(request, 'backup/copia.html', {
         'archivos_zip': archivos_zip,
     })
-
+@login_required
+@never_cache
 def hacer_copia_de_seguridad(request):
     try:
         archivo_zip_path = hacer_copia()
@@ -29,7 +35,9 @@ def hacer_copia_de_seguridad(request):
     except Exception as e:
         return HttpResponse(f"Se creo la copia correctamente: ")
     
-    
+
+@login_required
+@never_cache 
 def restaurar_copia_de_seguridad(request):
     if request.method == 'POST':
         nombre_copia = request.POST.get('nombre')

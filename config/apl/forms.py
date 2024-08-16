@@ -101,7 +101,7 @@ class VentaForm(ModelForm):
 
     class Meta:
         model = Ventas
-        fields = '__all__'
+        fields = ['empleado', 'cliente', 'metodo_pago']
 
 class ProductosForm(ModelForm):
 
@@ -196,3 +196,43 @@ class DetalleCompraForm(ModelForm):
             if DetalleCompra.objects.filter(compra = id, producto = Productos.objects.get(nombre = producto).id).exists():
 
                 self.add_error("producto", f"{producto} ya existe en esta compra, ya puede ser editado en la tabla")
+
+class DetalleVentaForm(ModelForm):
+
+    class Meta:
+
+        model =  DetalleVenta
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        
+        self.id_venta = kwargs.pop("id_venta",  None)
+
+        self.edicion = kwargs.pop('hay_edicion', None) if kwargs.pop('hay_edicion', None) else False
+
+        super().__init__(*args, **kwargs)
+
+        self.fields['venta'].initial = self.id_venta
+        self.fields['venta'].disabled = True
+        
+    def clean_fixed_value(self):
+        return self.id_venta
+    
+    def clean(self):
+
+        campos = super().clean()
+
+        id = campos.get('venta')
+        cantidad = campos.get('cantidad')
+        producto = campos.get('producto')
+
+        if id and producto and not self.edicion:
+            if DetalleVenta.objects.filter(venta = id, producto = Productos.objects.get(nombre = producto).id).exists():
+
+                self.add_error("producto", f"{producto} ya existe en esta compra, ya puede ser editado en la tabla")
+        
+        print(Productos.objects.get(nombre = producto).cantidad)
+        if cantidad > Productos.objects.get(nombre = producto).cantidad:
+
+            
+            self.add_error("cantidad", f"Quieres vender {cantidad} productos pero solo hay {Productos.objects.get(nombre = producto).cantidad} productos en stock")

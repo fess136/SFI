@@ -18,6 +18,7 @@ class VentasListView(ListView):
         context['titulo'] = "Ventas"
         context['crear_url'] = reverse_lazy('apl:crear_venta')
         context['entidad'] = "Ventas"
+        context['hay_ventas_pendientes'] = Ventas.objects.filter(finalizado = False)
         return context
 
     @method_decorator(login_required)
@@ -29,18 +30,20 @@ class VentaCreateView(CreateView):
     model = Ventas
     form_class = VentaForm
     template_name = "Ventas/crear.html"
-    success_url = reverse_lazy('apl:listar_venta')
+    
+    def get_success_url(self):
+        return reverse_lazy('apl:crear_detalleventa', args = [Ventas.objects.all().last()])
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Venta"
-        context['crear_url'] = self.success_url
         return context
 
     def form_valid(self, form):
         response = super().form_valid(form)
+        self.object = form.save() # Guarda el fomulario
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success', "id": self.object.id, 'es_venta': True})
         return response
 
     def form_invalid(self, form):

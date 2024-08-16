@@ -15,6 +15,7 @@ from apl.views.medidas.views import*
 from apl.views.ventas.views import*
 from apl.views.detallecompra.views import *
 from apl.views.backup.views import *
+from apl.views.dertalleventa.views import *
 
 app_name = 'apl'
 urlpatterns = [
@@ -103,6 +104,13 @@ urlpatterns = [
     path('ventas/crear', VentaCreateView.as_view(), name = 'crear_venta'),
     path('ventas/editar/<int:pk>', VentaUpdateView.as_view(), name = 'editar_venta'),
     path('ventas/borrar/<int:pk>', VentaDeleteView.as_view(), name = 'borrar_venta'),
+
+    #Detalle de Ventas
+
+    path('detalleventa/listar/<int:pk>', DetalleVentaDetailView.as_view(), name = "listar_detalleventa"),
+    path('detalleventa/crear/<int:pk>', DetalleVentaCreateView.as_view(), name = "crear_detalleventa"),
+    path('detalleventa/editar/<int:pk>', DetalleVentaUpdateView.as_view(), name = "editar_detalleventa"),
+    path('detalleventa/borrar/<int:pk>', DetalleVentaDeleteView.as_view(), name = "borrar_detalleventa"),
     
     #modulo de copia de seguridad
     path('backup/copia', backup_restore_view, name='backup_restore_view'),

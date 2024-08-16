@@ -65,31 +65,47 @@
 
     <!-- Implementacion de la alerta sweetalert -->
     <script>
-        document.getElementById('formulario-registro').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            fetch(this.action, {
-                method: 'POST',
-                body: new FormData(this),
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',
-                    'X-Requested-With': 'XMLHttpRequest'
+document.getElementById('formulario-registro').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: new FormData(this),
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json().then(data => ({status: response.status, body: data})))
+    .then(({status, body}) => {
+        if (status === 200 && body.status === 'success') {
+            Swal.fire({
+                title: '¡Éxito!',
+                text: 'El registro se ha completado correctamente.',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                    //Si lo que se creo fue una compra entonces se redirigira al detalle de compra y como argumento
+                    //de la url se coloca el id que recien se creo
+                    if (body.es_compra){
+
+                        window.location.href = "{% url 'apl:crear_detallecompra' 0 %}".replace('0', body.id);
+
+                    } else if (body.es_venta){ //aqui es lo mismo que lo anterior pero con venta
+
+                        window.location.href = "{% url 'apl:crear_detalleventa' 0 %}".replace('0', body.id);
+                    } else {
+
+                        window.location.href = "{{crear_url}}"
+
+                    }
+                    
+                    
                 }
-            })
-            .then(response => response.json().then(data => ({status: response.status, body: data})))
-            .then(({status, body}) => {
-                if (status === 200 && body.status === 'success') {
-                    Swal.fire({
-                        title: '¡Éxito!',
-                        text: 'El registro se ha completado correctamente.',
-                        icon: 'success',
-                        confirmButtonText: 'Ok'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "{{crear_url}}";
-                        }
-                    });
-                } else if (body.errors) {
+            });
+        }else if (body.errors) {
                     let errorMessage = '<ul>';
                     for (const [field, messages] of Object.entries(body.errors)) {
                         errorMessage += `<li><strong>Campo ${field}:</strong> ${messages.join(', ')}</li>`;
@@ -115,19 +131,6 @@
             });
         });
         
-        {% if form.errors %}
-            var errors = '';
-            {% for field in form %}
-                {% for error in field.errors%}
-                    errors += '{{ error }}\n';
-                {% endfor %}
-            {% endfor %}
-            Swal.fire({
-                title: 'Error!',
-                text: errors,
-                icon: 'error'
-            });
-        {% endif %}
         </script>
 
 {% endblock %}

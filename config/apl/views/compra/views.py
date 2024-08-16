@@ -37,18 +37,19 @@ class CompraCreateView(CreateView):
     template_name = "Compras/crear.html"
 
     def get_success_url(self):
-        return reverse_lazy('apl:crear_detallecompra', args = [Compras.objects.all()[len(Compras.objects.all())-1]])
+        return reverse_lazy('apl:crear_detallecompra', args = [Compras.objects.all().last()])
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Compra"
-        context['crear_url'] = reverse_lazy('apl:crear_detallecompra', args = [Compras.objects.all()[len(Compras.objects.all())-1]])
         return context
     
     def form_valid(self, form):
         response = super().form_valid(form)
+        self.object = form.save()
+        print(self.object.id)
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success', 'id': self.object.id, 'es_compra': True})
         return response
 
     def form_invalid(self, form):

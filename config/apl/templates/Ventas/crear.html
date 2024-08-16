@@ -5,21 +5,6 @@
     {% if field.label == "Producto" %}
 
         <a href="{% url 'apl:crear_producto' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
-    {% elif field.label == "Unidad de medida" %}
-
-        <a href="{% url 'apl:crear_medida' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
-    
-    {% elif field.label == "cantidad" %}
-
-        <a href="{% url 'apl:crear_cantidad' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
-    
-    {% elif field.label == "precio" %}
-
-        <a href="{% url 'apl:crear_precio' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
-        
-    {% elif field.label == "Totales" %}
-
-        <a href="{% url 'apl:crear_total' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
     
     {% elif field.label == "Empleado" %}
 
@@ -30,9 +15,9 @@
 
         <a href="{% url 'apl:crear_cliente' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
 
-    {% elif field.label == "Administrador" %}
+    {% elif field.label == "Metodo de Pago" %}
 
-        <a href="{% url 'apl:crear_administrador' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+        <a href="{% url 'apl:crear_metodo' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
 
     {% endif %}
 

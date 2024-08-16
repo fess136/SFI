@@ -219,7 +219,13 @@ class Compras(models.Model):
     metodo_pago =models.ForeignKey(Metodo_Pago,on_delete=models.PROTECT)
     proveedor = models.ForeignKey(Proveedores,on_delete=models.PROTECT)
     finalizado = models.BooleanField(default=False, null=True)
-    
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Guarda el ID en la sesión
+        if hasattr(self, 'request') and hasattr(self.request, 'session'):
+            self.request.session['ultimo_id_creado'] = self.id
+
     def __str__(self):
         return f"{self.id}"
     
@@ -261,17 +267,15 @@ class DetalleCompra(models.Model):
         
         return 0
 
-
-
 class Ventas(models.Model):
     fecha_venta=models.DateTimeField(verbose_name="Fecha De Venta",auto_now=True)
-    producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
-    ventas_cantidad= models.PositiveSmallIntegerField(verbose_name="Cantidad", validators=[validacion_numeros_negativos])
     empleado= models.ForeignKey(Empleados,on_delete=models.PROTECT,null=True)
     cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
+    metodo_pago = models.ForeignKey(Metodo_Pago, on_delete=models.PROTECT, null=True, verbose_name="Metodo de Pago")
+    finalizado = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"{self.fecha_venta}"
+        return f"{self.id}"
     #EN ESTA FUNCION SE HACE LA OPERACION PARA EL TOTAL 
     def calcular_total(self):
         return self.ventas_cantidad * self.producto.precio
@@ -280,3 +284,38 @@ class Ventas(models.Model):
         verbose_name_plural ="Ventas"
         db_table ="Venta"
 
+class DetalleVenta(models.Model):
+
+    venta = models.ForeignKey(Ventas, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(validators=[validacion_numeros_negativos], verbose_name="Cantidad")
+
+    def __str__(self):
+
+        return self.id
+
+    def precio(self):
+
+        return self.producto.precio
+    
+
+    def Total(self):
+
+        if str(Productos.objects.get(id = self.producto.id).tipo) == "Construcción":
+
+            return (self.producto.precio + Decimal((19 * int(self.producto.precio)) / 100)) * self.cantidad
+        
+        return self.Subtotal()
+    
+    def Subtotal(self):
+
+        return self.precio() * self.cantidad
+    
+    def Iva(self):
+
+        if str(Productos.objects.get(id = self.producto.id).tipo) == "Construcción":
+
+            return Decimal((19 * self.Subtotal()) / 100)
+        
+        
+        return 0

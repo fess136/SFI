@@ -25,7 +25,7 @@ class DetalleCompraCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Detalle de Compra"
-        context['crear_url'] = reverse_lazy('apl:detallar_detallecompra', args=[self.kwargs.get('pk')])
+        context['crear_url'] = self.get_success_url() 
         return context
     
     def form_valid(self, form):
@@ -48,9 +48,13 @@ class DetalleCompraCreateView(CreateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['id_compra'] = self.kwargs.get('pk')
-        kwargs['hay_edicion'] = False
 
         return kwargs
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
+    
 @method_decorator(never_cache, name='dispatch')
 class DetalleCompraDeleteView(DeleteView):
 
@@ -65,7 +69,10 @@ class DetalleCompraDeleteView(DeleteView):
     def get_success_url(self):
         
         return reverse_lazy('apl:detallar_detallecompra', args=[DetalleCompra.objects.get(id = self.kwargs.get('pk')).compra])
-
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
 @method_decorator(never_cache, name='dispatch')
 class DetalleCompraUpdateView(UpdateView):
@@ -99,13 +106,16 @@ class DetalleCompraUpdateView(UpdateView):
     
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-
         kwargs['hay_edicion'] = True
         return kwargs
 
     def get_success_url(self):
         
         return reverse_lazy('apl:detallar_detallecompra', args=[DetalleCompra.objects.get(id = self.kwargs.get('pk')).compra.id])
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
 @method_decorator(never_cache, name='dispatch')
 class DetalleCompraDetailView(DetailView):
@@ -139,10 +149,13 @@ class DetalleCompraDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['entidad'] = "DetalleCompras"
         context['crear_url'] = reverse_lazy('apl:crear_detallecompra', args = [self.kwargs.get('pk')])
-        context['id'] = self.kwargs.get('pk')
         context['compra'] = Compras.objects.get(id = self.kwargs.get('pk'))
-        context['finalizo'] = Compras.objects.filter(finalizado = True, id = self.kwargs.get('pk')).exists()
-        # context['precio_total_compra'] = sum([j.precio_total_por_registro() for j in [i for i in DetalleCompra.objects.filter(compra = self.kwargs.get('pk'))]])
-        context['hay_productos'] = DetalleCompra.objects.filter(compra = self.kwargs.get('pk')).exists()
+        context['finalizo'] = Compras.objects.filter(finalizado = True, id = self.kwargs.get('pk')).exists() # Valida si la compra se finalizo para mostrar o no botones
+        context['Total'] = sum([j.Total() for j in [i for i in DetalleCompra.objects.filter(compra = self.kwargs.get('pk'))]]) # Muestra El precio total
+        context['hay_productos'] = DetalleCompra.objects.filter(compra = self.kwargs.get('pk')).exists() # Valida si hay productos agregados al detalle de compra
 
         return context
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)

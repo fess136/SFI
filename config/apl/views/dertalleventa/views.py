@@ -23,6 +23,7 @@ class DetalleVentaDetailView(DetailView):
         context['id'] = self.kwargs.get('pk')
         context['detalle_venta'] = DetalleVenta.objects.all()
         context['hay_productos'] = DetalleVenta.objects.filter(venta = self.kwargs.get('pk')).exists()
+        context['Total'] = sum(i.Total() for i in DetalleVenta.objects.filter(venta = self.kwargs.get('pk')))
         context['venta'] = Ventas.objects.get(id = self.kwargs.get('pk'))
         context['finalizo'] = Ventas.objects.filter(finalizado = True, id = self.kwargs.get('pk')).exists()
 

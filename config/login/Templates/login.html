@@ -85,7 +85,7 @@
     <body class="login-page" style="min-height: 496.781px;">
         <div class="login-box">
         <div class="login-logo">
-        <a href="../../index2.html">
+        <a href="">
             <span class="arc-letter">S</span>
             <span class="arc-letter">F</span>
             <span class="arc-letter">I</span>
@@ -145,7 +145,22 @@
         
         </div>
         </div>
+        <script>
+            {% if form.errors %}
+            var errors = '';
+            {% for field in form %}
+            {% for error in field.errors %}
+            errors += '{{ error }}';
+            {% endfor %}
+            {% endfor %}
         
+            Swal.fire({
+                title: 'Usuario o contraseña incorrectos',
+                text: errors,
+                icon: 'error',
+            });
+            {% endif %}
+        </script>
         
         <script src="../../plugins/jquery/jquery.min.js"></script>
         

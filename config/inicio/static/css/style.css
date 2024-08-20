@@ -17,6 +17,7 @@ body {
   background: transparent;
 }
 
+/* Imagen exportada desde https://pixabay.com/photos/hardware-tool-wrench-metal-tool-7381713/ */
 body::before {
   content: "";
   position: fixed;

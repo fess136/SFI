@@ -2,7 +2,6 @@
 
 {% load static %}
 
-
 {% block head %}
 <!-- Urls de los archivos CSS -->
 <link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/dataTables-bs4/css/dataTables.bootstrap4.min.css' %}" />
@@ -12,6 +11,7 @@
 <link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/icheck-bootstrap/icheck-bootstrap.min.css' %}" />
 
 <style>
+    /* Contenedor general para hacer el diseño más flexible */
     .custom-button {
         background-color: #1f5a96;
         border: 2px solid hwb(0 100% 0%);
@@ -21,11 +21,36 @@
         border-radius: 4px;
         cursor: pointer;
         display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .custom-button:hover {
         background-color: #1d3c5d;
         border: 2px solid #09335f;
+    }
+
+    /* Ajustes responsivos */
+    @media (max-width: 768px) {
+        .card-title {
+            font-size: 1.25rem;
+        }
+
+        .card-tools {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .custom-button {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Ajustar el tamaño de la tabla en pantallas pequeñas */
+        .table-responsive {
+            overflow-x: auto;
+        }
     }
 </style>
 {% endblock %}
@@ -33,39 +58,40 @@
 {% block contenido %}
 
 {% block alertas %}
-
 {% endblock %}
 
 {% block Detalle %}
 {% endblock %}
 
 <div class="card card-default">
-    <div class="card-header">
-        <h3 class="card-title">
+    <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+        <h3 class="card-title d-flex align-items-center">
             <i class="fas fa-address-book" style="margin-right: 5px;"></i>
             {{ titulo }}
         </h3>
-        <div class="card-tools">
+        <div class="card-tools mt-2 mt-md-0">
             <button type="button" class="btn btn-secondary btn-sm custom-button" data-toggle="modal" data-target="#filtroModal">
                 <i class="fas fa-filter"></i> Filtrar
             </button>
         </div>
     </div>
     <div class="card-body">
-        <table id="tabla" class="table table-bordered table-striped">
-            <thead>
-                {% block columnas %}
-                {% endblock %}
-            </thead>
-            <tbody>
-                {% block filas %}
-                {% endblock %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table id="tabla" class="table table-bordered table-striped">
+                <thead>
+                    {% block columnas %}
+                    {% endblock %}
+                </thead>
+                <tbody>
+                    {% block filas %}
+                    {% endblock %}
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="card-footer">
+    <div class="card-footer d-flex justify-content-end flex-wrap">
         {% block botones_opc %}
-        <a href="{{ crear_url }}" class="btn btn-flat" style="background-color: #23853a; border: 1px solid #23853a; color: #fff; margin: 5px; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+        <a href="{{ crear_url }}" class="btn btn-flat custom-button" style="background-color: #23853a; border: none;">
             <i class="fas fa-plus"></i> Agregar
         </a>
         {% endblock %}
@@ -87,9 +113,9 @@
                 {% endblock %}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="applyFilters()">Filtrar</button>
-                <button type="button" class="btn btn-danger" onclick="clearFilters()">Limpiar Filtros</button>
+                <button type="button" class="btn btn-secondary custom-button" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary custom-button" onclick="applyFilters()">Filtrar</button>
+                <button type="button" class="btn btn-danger custom-button" onclick="clearFilters()">Limpiar Filtros</button>
             </div>
         </div>
     </div>

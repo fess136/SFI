@@ -7,7 +7,7 @@
 
 
 /* #modifca el fondo del login */
-
+/* Imagen exportada desde https://pixabay.com/photos/hardware-tool-wrench-metal-tool-7381713/ */
 body.login-page {
   background: url("../img/win5.jpg") ;
   background-size: cover;

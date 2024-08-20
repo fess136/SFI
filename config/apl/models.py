@@ -243,6 +243,7 @@ class Ventas(models.Model):
     #EN ESTA FUNCION SE HACE LA OPERACION PARA EL TOTAL 
     def calcular_total(self):
         return self.ventas_cantidad * self.producto.precio
+    
     class Meta:
         verbose_name ="Venta"
         verbose_name_plural ="Ventas"

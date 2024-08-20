@@ -139,4 +139,4 @@ EMAIL_PORT = 587  # puerto de tu servidor SMTP
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'andy16mendez@gmail.com'
 EMAIL_HOST_PASSWORD = 'lscv faaz mwgc lgod'
-PASSWORD_RESET_TIMEOUT_DAYS = 1
+PASSWORD_RESET_TIMEOUT_DAYS = 0.23

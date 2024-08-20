@@ -54,12 +54,12 @@ class DetalleVentaCreateView(CreateView):
     template_name = "DetalleVenta/crear.html"
     
     def get_success_url(self):
-        return reverse_lazy('apl:listar_detalleventa', args=[Ventas.objects.all().last()])
+        return reverse_lazy('apl:listar_detalleventa', args=[self.kwargs.get('pk')])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Detalle de Venta"
-        context['crear_url'] = reverse_lazy('apl:listar_detalleventa', args=[Ventas.objects.all().last()])
+        context['crear_url'] = self.get_success_url()
         return context
     
     def form_valid(self, form):

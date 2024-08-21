@@ -42,24 +42,23 @@
 <div class="encabezado">
     <div class="detalles">
         
-        <h4><strong>Id de Compra: </strong>{{ compra.id }}</h4>
-        <h4><strong>Fecha Compra: </strong>{{ compra.fecha_compra }}</h4>
-        <h4><strong>Método de Pago: </strong>{{ compra.metodo_pago }}</h4>
-        <h4><strong>Proveedor: </strong>{{ compra.proveedor }}</h4>
-        {% if compra.finalizado %}
+        <h4><strong>Id de Venta: </strong>{{ venta.id }}</h4>
+        <h4><strong>Fecha Venta: </strong>{{ venta.fecha_venta }}</h4>
+        <h4><strong>Método de Pago: </strong>{{ venta.metodo_pago }}</h4>
+        {% if venta.finalizado %}
 
-        <h4><strong>Estado: </strong>Compra Finalizada</h4><br>
+        <h4><strong>Estado: </strong>Venta Finalizada</h4><br>
 
         {% else %}
 
-            <h4><strong>Estado: </strong>Compra Pendiente</h4><BR>
+            <h4><strong>Estado: </strong>Venta Pendiente</h4><BR>
 
         {% endif %}
         <h4><strong>Total: </strong> ${{Total|floatformat:0|intcomma}} </h4>
 
         <div class ="botones">
             {% if not finalizo %}
-            <a href="{% url 'apl:crear_detallecompra' compra.id %}" class = "btn btn-primary btn btn-xs"><i class ="fas fa-plus"></i> Agregar</a>
+            <a href="{% url 'apl:crear_detalleventa' venta.id %}" class = "btn btn-primary btn btn-xs"><i class ="fas fa-plus"></i> Agregar</a>
 
             {% endif %}
 
@@ -115,19 +114,18 @@
         font-size: 16px;
     }
 </style>
-
 {% endblock %}
 <!-- Tabla con los productos seleccionados -->
 {% block columnas %}
 <tr>
-    <th scope="col" style="width: 10%;">ID</th>
-    <th scope="col">Compra</th>
-    <th scope="col" style="width: 70%;">Producto</th>
+    <th scope="col">ID</th>
+    <th scope="col">Venta</th>
+    <th scope="col">Producto</th>
     <th scope="col">Cantidad</th>
-    <th scope="col">Precio Unitario</th>
-    <th scope="col">Subtotal</th>
-    <th scope="col">Iva</th>
-    <th scope="col">Total</th>
+    <td scope="col">Precio</td>
+    <td scope="col">Subtotal</td>
+    <td scope="col">Iva</td>
+    <td scope="col">Total</td>
 
     <!-- Cuando la compra ha sido finalizada ya no se podra editar ni eliminar los productos seleccionados -->
     {% if not finalizo %}
@@ -137,10 +135,10 @@
 {% endblock %}
 
 {% block filas %}
-{% for c in object.detallecompra_set.all %}
+{% for c in object.detalleventa_set.all %}
 <tr>
     <td>{{ c.id }}</td>
-    <td>{{c.compra}}</td>
+    <td>{{ c.venta }}</td>
     <td>{{ c.producto }}</td>
     <td>{{ c.cantidad }}</td>
     <td>{{ c.precio|floatformat:0|intcomma}}</td>
@@ -149,18 +147,16 @@
     <td>{{ c.Total|floatformat:0|intcomma}}</td>
     {% if not finalizo %}
         <td>
-            <a href="{% url 'apl:editar_detallecompra' c.id %}" class="btn btn-primary btn-xs">
+            <a href="{% url 'apl:editar_detalleventa' c.id %}" class="btn btn-primary btn-xs">
                 <i class="fas fa-edit"></i>
             </a>
-            <a href="{% url 'apl:borrar_detallecompra' c.id %}" class="btn btn-danger btn-xs">
+            <a href="{% url 'apl:borrar_detalleventa' c.id %}" class="btn btn-danger btn-xs">
                 <i class="fas fa-trash"></i>
             </a>
         </td>
     {% endif %}
 </tr>
 {% endfor %}
-
 {% endblock %}
-
-<!-- Para que no se visualice el boton de agregar por defecto debajo de la tabla -->
-{% block botones_opc %}{% endblock %}
+{% block botones_opc %}
+{% endblock %}

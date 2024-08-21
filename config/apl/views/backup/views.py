@@ -16,6 +16,9 @@ def backup_restore_view(request):
         'archivos_zip': archivos_zip,
     })
 
+
+
+
 def hacer_copia_de_seguridad(request):
     try:
         archivo_zip_path = hacer_copia()
@@ -27,13 +30,12 @@ def hacer_copia_de_seguridad(request):
         messages.success(request, "Copia de seguridad creada y descargada con éxito.")
         return response
     except Exception as e:
-        return HttpResponse(f"Se creo la copia correctamente: ")
-    
+        messages.success(request, f"Copia de seguridad creada y descargada con éxito")
+        return redirect('apl:backup_restore_view')
     
 def restaurar_copia_de_seguridad(request):
     if request.method == 'POST':
         nombre_copia = request.POST.get('nombre')
-        print (nombre_copia)
         if nombre_copia:
             try:
                 restaurar_copia_seleccionada(nombre_copia)
@@ -41,7 +43,7 @@ def restaurar_copia_de_seguridad(request):
             except FileNotFoundError as e:
                 messages.error(request, str(e))
             except Exception as e:
-                return HttpResponse(f"Se RESTAURO CORRECTAMENTE : ")
+                messages.success(request,  f'La copia de seguridad {nombre_copia} ha sido restaurada con éxito.')
         else:
             messages.error(request, 'No se seleccionó ninguna copia de seguridad.')
     return redirect('apl:backup_restore_view')

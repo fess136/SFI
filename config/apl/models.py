@@ -1,4 +1,5 @@
 
+from decimal import Decimal
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import*
@@ -117,8 +118,8 @@ class Administradores(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='administrador')
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
     tipo_documento = models.CharField(max_length=3, choices=TipoDocumento.choices, default=TipoDocumento.CC, verbose_name="Tipo de documento")
-    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True)
-    telefono = models.PositiveIntegerField(verbose_name="Teléfono")
+    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True, validators=[validacion_telefono])
+    telefono = models.PositiveIntegerField(verbose_name="Teléfono", validators=[validacion_telefono])
     contrasena = models.CharField(max_length=128, validators=[MinLengthValidator(8)], verbose_name="Contraseña")
     conf_contrasena = models.CharField(max_length=128, verbose_name="Confirmación de contraseña", default="")
 
@@ -216,7 +217,14 @@ class Compras(models.Model):
     fecha_compra =models.DateField(verbose_name="Fecha De Compra",auto_now=True)
     metodo_pago =models.ForeignKey(Metodo_Pago,on_delete=models.PROTECT)
     proveedor = models.ForeignKey(Proveedores,on_delete=models.PROTECT)
-    
+    finalizado = models.BooleanField(default=False, null=True)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # Guarda el ID en la sesión
+        if hasattr(self, 'request') and hasattr(self.request, 'session'):
+            self.request.session['ultimo_id_creado'] = self.id
+
     def __str__(self):
         return f"{self.id}"
     
@@ -228,43 +236,82 @@ class Compras(models.Model):
 class DetalleCompra(models.Model):
 
     compra = models.ForeignKey(Compras, on_delete=models.PROTECT, default=1)
-    cantidad = models.PositiveIntegerField(verbose_name="Cantidad", null=True)
+    cantidad = models.PositiveIntegerField(verbose_name="Cantidad", validators=[validacion_numeros_negativos], null=True)
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
-    finalizado = models.BooleanField(default=False, null=True)
+    
 
     def precio(self):
 
         return Productos.objects.get(id=DetalleCompra.objects.get(id=self.id).producto.id).precio
     
 
-    def precio_total_por_registro(self):
+    def Total(self):
+
+        if str(Productos.objects.get(id = self.producto.id).tipo) == "Construcción":
+
+            return (self.producto.precio + Decimal((19 * int(self.producto.precio)) / 100)) * self.cantidad
+        
+        return self.Subtotal()
+    
+    def Subtotal(self):
 
         return self.precio() * self.cantidad
     
-    def save(self, *args, **kwargs):
+    def Iva(self):
 
-        #cada vez que se compre un nuevo producto se actualizara la cantidad de la tabla productos
-        if Productos.objects.get(id = self.producto.id).cantidad >= self.cantidad:
+        if str(Productos.objects.get(id = self.producto.id).tipo) == "Construcción":
 
-            Productos.objects.filter(id = self.producto.id).update(cantidad = Productos.objects.get(id = self.producto.id).cantidad + self.cantidad)
-
-        super(DetalleCompra, self).save(args, kwargs)
-
+            return Decimal((19 * self.Subtotal()) / 100)
+        
+        
+        return 0
 
 class Ventas(models.Model):
     fecha_venta=models.DateTimeField(verbose_name="Fecha De Venta",auto_now=True)
-    producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
-    ventas_cantidad= models.PositiveSmallIntegerField(verbose_name="Cantidad")
     empleado= models.ForeignKey(Empleados,on_delete=models.PROTECT,null=True)
     cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
+    metodo_pago = models.ForeignKey(Metodo_Pago, on_delete=models.PROTECT, null=True, verbose_name="Metodo de Pago")
+    finalizado = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"{self.fecha_venta}"
-    #EN ESTA FUNCION SE HACE LA OPERACION PARA EL TOTAL 
-    def calcular_total(self):
-        return self.ventas_cantidad * self.producto.precio
+        return f"{self.id}"
     class Meta:
         verbose_name ="Venta"
         verbose_name_plural ="Ventas"
         db_table ="Venta"
 
+class DetalleVenta(models.Model):
+
+    venta = models.ForeignKey(Ventas, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(validators=[validacion_numeros_negativos], verbose_name="Cantidad")
+
+    def __str__(self):
+
+        return self.id
+
+    def precio(self):
+
+        return self.producto.precio
+    
+
+    def Total(self):
+
+        if str(Productos.objects.get(id = self.producto.id).tipo) == "Construcción":
+
+            return (self.producto.precio + Decimal((19 * int(self.producto.precio)) / 100)) * self.cantidad
+        
+        return self.Subtotal()
+    
+    def Subtotal(self):
+
+        return self.precio() * self.cantidad
+    
+    def Iva(self):
+
+        if str(Productos.objects.get(id = self.producto.id).tipo) == "Construcción":
+
+            return Decimal((19 * self.Subtotal()) / 100)
+        
+        
+        return 0

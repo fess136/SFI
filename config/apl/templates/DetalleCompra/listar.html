@@ -2,23 +2,68 @@
 {% load humanize %}
 {% load static %}
 
+<!-- Detalle de la Compra -->
 {% block Detalle %}
+<!-- Script del SweetAlert para la confirmacion de la finalizacion de la compra -->
+<script>
+    $(document).ready(function() {
+                $('#finalizar').click(function() {
+                    Swal.fire({
+                        title: "¿Estas Seguro(a) que deseas finalizar la compra?",
+                        text: "Despues de finalizar, no podras realizar mas cambios en la compra",
+                        showDenyButton: true,
+                        confirmButtonText: "Si, Finalizar",
+                        denyButtonText: `Cancelar`
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Enviar una solicitud POST
+                            $.ajax({
+                                type: 'POST',
+                                data: {
+                                    'csrfmiddlewaretoken': '{{ csrf_token }}', 
+                                    'accion': 'finalizar' 
+                                },
+                                success: function(response) {
+                                    Swal.fire("¡Compra Finalizada!", "", "success").then(() => {
+                                        // Redirigir si es necesario
+                                        window.location.href = "{% url 'apl:listar_compra' %}";
+                                    });
+                                },
+                                error: function(xhr, status, error) {
+                                    Swal.fire("Error", "No se pudo registrar la Compra", "error");
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        
+    </script>
 <div class="encabezado">
     <div class="detalles">
         
-        <h4><strong>Id de Compra: </strong>{{ id }}</h4>
+        <h4><strong>Id de Compra: </strong>{{ compra.id }}</h4>
         <h4><strong>Fecha Compra: </strong>{{ compra.fecha_compra }}</h4>
         <h4><strong>Método de Pago: </strong>{{ compra.metodo_pago }}</h4>
-        <h4><strong>Proveedor: </strong>{{ compra.proveedor }}</h4><br>
-        <h4><strong>Total: </strong> ${{precio_total_compra|floatformat:0|intcomma}} </h4>
+        <h4><strong>Proveedor: </strong>{{ compra.proveedor }}</h4>
+        {% if compra.finalizado %}
+
+        <h4><strong>Estado: </strong>Compra Finalizada</h4><br>
+
+        {% else %}
+
+            <h4><strong>Estado: </strong>Compra Pendiente</h4><BR>
+
+        {% endif %}
+        <h4><strong>Total: </strong> ${{Total|floatformat:0|intcomma}} </h4>
 
         <div class ="botones">
             {% if not finalizo %}
-            <a href="{{crear_url}}" class = "btn btn-primary btn btn-xs"><i class ="fas fa-plus"></i> Agregar</a>
+            <a href="{% url 'apl:crear_detallecompra' compra.id %}" class = "btn btn-primary btn btn-xs"><i class ="fas fa-plus"></i> Agregar</a>
 
             {% endif %}
 
-            {% if not finalizo %}
+            {% if not finalizo and hay_productos %}
 
                     <button id ="finalizar" class = "btn btn-success btn btn-xs"><i class = "fas fa-check"></i>Finalizar Compra</button>
 
@@ -28,7 +73,7 @@
     </div>
     <img src="{% static 'img/logo-ferreteria.png' %}" alt="Logo de la empresa" class="logo">
 </div>
-
+<!-- Estilo del Detalle de la Compra -->
 <style>
     .encabezado {
         display: flex;
@@ -70,8 +115,9 @@
         font-size: 16px;
     }
 </style>
-{% endblock %}
 
+{% endblock %}
+<!-- Tabla con los productos seleccionados -->
 {% block columnas %}
 <tr>
     <th scope="col" style="width: 10%;">ID</th>
@@ -79,7 +125,11 @@
     <th scope="col" style="width: 70%;">Producto</th>
     <th scope="col">Cantidad</th>
     <th scope="col">Precio Unitario</th>
-    <th scope="col">Precio Total</th>
+    <th scope="col">Subtotal</th>
+    <th scope="col">Iva</th>
+    <th scope="col">Total</th>
+
+    <!-- Cuando la compra ha sido finalizada ya no se podra editar ni eliminar los productos seleccionados -->
     {% if not finalizo %}
         <th scope="col">Opciones</th>
     {% endif %}
@@ -94,7 +144,9 @@
     <td>{{ c.producto }}</td>
     <td>{{ c.cantidad }}</td>
     <td>{{ c.precio|floatformat:0|intcomma}}</td>
-    <td>{{ c.precio_total_por_registro|floatformat:0|intcomma}}</td>
+    <td>{{ c.Subtotal|floatformat:0|intcomma}}</td>
+    <td>{{ c.Iva|floatformat:0|intcomma}}</td>
+    <td>{{ c.Total|floatformat:0|intcomma}}</td>
     {% if not finalizo %}
         <td>
             <a href="{% url 'apl:editar_detallecompra' c.id %}" class="btn btn-primary btn-xs">
@@ -107,59 +159,8 @@
     {% endif %}
 </tr>
 {% endfor %}
-{% endblock %}
-
-{% block javascript %}
-
-<script type="application/javascript">
-
-    $(document).ready(function () {
-    $('#tabla').DataTable({ 
-        
-        responsive:true
-        
-    });
-});
-</script>
-
-<script>
-
-
-$(document).ready(function() {
-            $('#finalizar').click(function() {
-                Swal.fire({
-                    title: "¿Estas Seguro(a) que deseas finalizar la compra?",
-                    text: "Despues de finalizar, no podras realizar mas cambios en la compra",
-                    showDenyButton: true,
-                    confirmButtonText: "Si, Finalizar",
-                    denyButtonText: `Cancelar`
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Enviar una solicitud POST
-                        $.ajax({
-                            type: 'POST',
-                            data: {
-                                'csrfmiddlewaretoken': '{{ csrf_token }}', 
-                                'accion': 'finalizar' 
-                            },
-                            success: function(response) {
-                                Swal.fire("¡Compra Finalizada!", "", "success").then(() => {
-                                    // Redirigir si es necesario
-                                    window.location.href = "{% url 'apl:listar_compra' %}";
-                                });
-                            },
-                            error: function(xhr, status, error) {
-                                Swal.fire("Error", "No se pudo registrar la Compra", "error");
-                            }
-                        });
-                    } else if (result.isDenied) {
-                        Swal.fire("La Compra no fue finalizada", "", "info");
-                    }
-                });
-            });
-        });
-    
-</script>
 
 {% endblock %}
 
+<!-- Para que no se visualice el boton de agregar por defecto debajo de la tabla -->
+{% block botones_opc %}{% endblock %}

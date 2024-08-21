@@ -1,19 +1,29 @@
 {% extends "listar.html" %}
 {% load humanize %}
-{%block Titulo%}
-listar Ventas
-{%endblock%}
+
+{% block alertas %}
+
+    {% if hay_ventas_pendientes %}
+        <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="fas fa-bullhorn"></i> <strong>¡Alerta!</strong></h5>
+            Las siguientes Ventas estan pendientes:    <br>
+            {% for i in hay_ventas_pendientes %}
+
+                Venta #{{i.id}}<br>
+
+            {% endfor %}
+        </div>
+    
+    {% endif %}
+{% endblock %}
 {% block columnas %}
 <tr>
     <th scope="col" style="width: 10%;">#</th>
-    <th scope="col" style="width: 50%;">Fecha de Venta</th>
-    <th scope="col" style="width: 60%;">Producto</th>
-    <th scope="col" style="width: 60%;">Unidades de medida</th>
-    <th scope="col" style="width: 60%;">Cantidad</th>
-    <th scope="col" style="width: 60%;">Precio</th>
-    <th scope="col" style="width: 60%;">Total</th>    
+    <th scope="col" style="width: 50%;">Fecha de Venta</th> 
     <th scope="col" style="width: 60%;">Empleado</th>
     <th scope="col" style="width: 60%;">Cliente</th>
+    <th scope="col">Estado</th>
     <th scope="col" style="width: 100%;">Opciones</th>
 
 </tr>
@@ -25,19 +35,22 @@ listar Ventas
 <tr>
     <td>{{c.id}}</td>
     <td>{{c.fecha_venta}}</td>
-    <td>{{ c.producto.nombre}}</td>
-    <td>{{c.producto.unidad_medida}}</td>
-    <td>{{c.ventas_cantidad}}</td>
-    <td>${{c.producto.precio|floatformat:0|intcomma}}</td>
-    <td>${{c.calcular_total|floatformat:0|intcomma}}</td>
     <td>{{c.empleado}}</td>
     <td>{{c.cliente}}</td>
+    {% if c.finalizado %}
+        <td>Finalizado</td>
+    {% else %}
+        <td>Pendiente</td>
+    {% endif %}
     <td>
-        <a href="{% url 'apl:editar_venta' c.id %}" class = "btn btn-primary btn btn-xs" data-toggle="tooltip" data-placement="top" title="Editar">
-            <i class = "fas fa-edit"></i></a>
-        <a href="{% url 'apl:borrar_venta' c.id %}" class = "btn btn-danger btn btn-xs" data-toggle="tooltip" data-placement="top" title="Eliminar">
-            <i class = "fas fa-trash"></i></a>
-        <a href="" class = "btn btn-primary btn btn-xs" data-toggle="tooltip" data-placement="top" title="Visualizar"><i class="fas fa-eye"></i></a>
+        {% if not c.finalizado %}
+            <a href="{% url 'apl:editar_venta' c.id %}" class = "btn btn-primary btn btn-xs" data-toggle="tooltip" data-placement="top" title="Editar">
+                <i class = "fas fa-edit"></i></a>
+            <a href="{% url 'apl:borrar_venta' c.id %}" class = "btn btn-danger btn btn-xs" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                <i class = "fas fa-trash"></i></a>
+        {% endif %}
+
+        <a href="{% url 'apl:listar_detalleventa' c.id %}" class = "btn btn-primary btn btn-xs" data-toggle="tooltip" data-placement="top" title="Visualizar"><i class="fas fa-eye"></i></a>
     </td>
 </tr>
 {% endfor %}

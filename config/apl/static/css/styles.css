@@ -87,3 +87,17 @@
     color: #ffffff;
 }
 
+.custom-button {
+    background-color: #1f5a96;
+    border: 2px solid hwb(0 100% 0%);
+    color: #fff;
+    margin: 0;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+}
+
+.custom-button:hover {
+    background-color: #1d3c5d;
+    border: 2px solid #09335f;}

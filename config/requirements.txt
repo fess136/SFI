@@ -1,7 +1,7 @@
 django
 django-widget-tweaks
 
-
+mysqlclient
 # # JavaScript dependencies (for reference only, install with npm)
 # jspdf==2.5.1
 # jspdf-autotable==3.5.29

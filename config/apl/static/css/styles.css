@@ -75,6 +75,170 @@
     color: #000000;
     
 }
+.Dark-mode .encabezado{
+    background-color: #ffffff;
+    border-color:#ffffff;
+    color: #000000;
+    
+}
+
+/* Alto contraste */
+.Contraste .user-panel {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+.Contraste .content-wrapper {
+    background-color: #1A237E;
+    border-color: #FF0000;
+    color: #FFFF00;
+}
+.Contraste .content-header {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+
+
+.Contraste .main-header {
+    background-color: #1A237E;
+    border-color: #FF0000;
+    color: #FFFF00;
+}
+.Contraste .table-responsive {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+.Contraste .card-header {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+
+.Contraste .card-body {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+.Contraste .card-footer {
+    background-color: #1A237E;
+    border-color: #FF0000;
+    color: #FFFF00;
+    
+}
+.Contraste .sidebar {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+.Contraste .main-sidebar {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+.Contraste .dataTables_length {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+.Contraste .main-footer {
+    background-color: #1A237E;
+    border-color: #FF0000;
+    color: #FFFF00;
+    
+}
+.Contraste .form-group {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+    
+}
+.Contraste .form-control{
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+    
+}
+
+/* Modo daltonico */
+.Daltonico .user-panel {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .content-wrapper {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .content-header {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+
+
+.Daltonico .main-header {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .table-responsive {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .card-header {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+
+.Daltonico .card-body {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .card-footer {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+    
+}
+.Daltonico .sidebar {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .main-sidebar {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .dataTables_length {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .main-footer {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+    
+}
+.Daltonico .form-group {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+    
+}
+.Daltonico .form-control{
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+    
+}
 
 .info  {
     color: white;
@@ -87,6 +251,115 @@
     color: #ffffff;
 }
 
+<<<<<<< HEAD
+
+/* Diseño boton de accesibilidad */
+
+/* Estilo del cuadro desplegable */
+.nav-item .dropdown-menu {
+    background-color: #5d64af; /* Fondo azul oscuro */
+    border-radius: 8px; /* Bordes redondeados */
+    border: 2px solid #000000; /* Borde amarillo */
+    padding: 10px; /* Espaciado interno */
+}
+
+/* Estilo de los elementos dentro del cuadro desplegable */
+.nav-item .dropdown-menu .dropdown-item {
+    color: #ffffff; /* Texto naranja */
+    padding: 8px 16px; /* Espaciado interno en cada opción */
+    transition: background-color 0.3s ease-in-out; /* Transición suave al cambiar el fondo */
+}
+
+/* Estilo al pasar el mouse sobre una opción */
+.nav-item .dropdown-menu .dropdown-item:hover {
+    background-color: #000000; /* Fondo amarillo al hacer hover */
+    color: #ffffff; /* Texto azul oscuro al hacer hover */
+}
+
+/* Cambiar la sombra del cuadro desplegable */
+.nav-item .dropdown-menu {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra del cuadro */
+}
+
+
+#help-manual-link i {
+    color: #b49b47; /* Cambia el color del ícono */
+    font-size: 25px; /* Ajusta el tamaño del ícono */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Agrega sombra al ícono */
+    transition: transform 0.3s ease; /* Transición suave en hover */
+}
+
+
+/* Estilo para el ícono de ayuda */
+.nav-item.dropdown .nav-link i {
+    color: #b49b47; /* Cambia el color del ícono a verde */
+    font-size: 25px; /* Ajusta el tamaño del ícono */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Agrega sombra al ícono */
+    transition: transform 0.3s ease, color 0.3s ease; /* Transición suave en hover */
+}
+
+
+
+/* Estilo para el ícono de cerrar sesión */
+.nav-item .nav-link i.fas.fa-power-off {
+    color: #ffffff; /* Cambia el color del ícono a rojo */
+    font-size: 25px; /* Ajusta el tamaño del ícono */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Agrega sombra al ícono */
+    transition: transform 0.3s ease, color 0.3s ease; /* Transición suave en hover */
+}
+
+/* dieño del logo del sidebar */
+.sidebar-logo {
+    position: absolute; /* Posición absoluta para ubicarlo al final */
+    width: 100%; /* Ancho completo del sidebar */
+
+}
+    
+
+
+.logo-side {
+    max-width: 100%; /* Ancho máximo del logo */
+    height: auto; /* Mantiene la relación de aspecto */
+    vertical-align: middle; /* Alinea verticalmente el logo */
+}
+
+
+/* diseño logo data table */
+.logo-container {
+    text-align: center; /* Centra el contenido horizontalmente */
+    margin-bottom: 00px; /* Espacio debajo del logo para separación */
+}
+
+/* Estilo para la imagen del logo */
+.logo-img {
+    max-width: 20%; /* Ajusta el tamaño máximo del logo para que no se desborde */
+    
+}
+
+/* ESTILO DEL FONDO DEL CONTENT */
+.content-wrapper {
+    background-image: url("/static/img/s.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+.main-header.navbar {
+    height: 80px; /* Cambia este valor según el tamaño deseado */
+    padding: 0 15px; /* Ajusta el espaciado interno según sea necesario */
+}
+
+/* Centrar el contenido verticalmente dentro del header */
+.main-header .navbar-nav {
+    align-items: center; /* Centra los elementos verticalmente */
+}
+
+/* Ajustar el ícono para que se alinee verticalmente */
+.main-header .nav-link i {
+    font-size: 1.5rem; /* Ajusta el tamaño del ícono si es necesario */
+    line-height: 1; /* Asegúrate de que el ícono esté alineado correctamente */
+}
+=======
 .custom-button {
     background-color: #1f5a96;
     border: 2px solid hwb(0 100% 0%);
@@ -101,3 +374,4 @@
 .custom-button:hover {
     background-color: #1d3c5d;
     border: 2px solid #09335f;}
+>>>>>>> 4cd9bb274eeb38ed092d0456c4ceeb6535b31610

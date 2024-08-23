@@ -1,4 +1,3 @@
-
 {% extends "form.html" %}
 
 {% block head %}
@@ -8,11 +7,7 @@
             background-color: #f4f4f4;
             color: #333;
             margin: 0 auto;
-            
-            
         }
-
-        
 
         h1 {
             color: #4CAF50;
@@ -46,13 +41,11 @@
             margin-bottom: 20px;
         }
 
-
-
         .btn-primary {
             background-color: #007bff;
             color: #fff;
             display: block;
-            margin: 20px auto; /* Añade margen arriba y abajo */
+            margin: 20px auto;
             width: fit-content;
             padding: 10px 20px;
             border: none;
@@ -63,7 +56,7 @@
         .btn-success {
             background-color: #28a745;
             display: block;
-            margin: 20px auto; /* Añade margen arriba y abajo */
+            margin: 20px auto;
             width: fit-content;
             padding: 10px 20px;
             border: none;
@@ -75,12 +68,31 @@
             opacity: 0.9;
         }
     </style>
+
+    <!-- Incluir SweetAlert desde CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 
 {% block contenido %}
 <div class="containers">
     <h1>Gestión de Copias de Seguridad</h1>
-    
+
+    <!-- SweetAlert para mensajes -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if messages %}
+                {% for message in messages %}
+                    Swal.fire({
+                        icon: '{{ message.tags }}',  // Tipo de mensaje: success, error, etc.
+                        title: '{% if message.tags == "success" %}¡Éxito!{% elif message.tags == "error" %}¡Error!{% endif %}',  // Título basado en el tipo de mensaje
+                        text: "{{ message }}",  // Mensaje del contenido
+                        confirmButtonText: 'OK'
+                    });
+                {% endfor %}
+            {% endif %}
+        });
+    </script>
+
     <!-- Sección para hacer una copia de seguridad -->
     <h2>Hacer Copia de Seguridad</h2>
     <form action="{% url 'apl:hacer_copia_de_seguridad' %}" method="get" class="form-backup">

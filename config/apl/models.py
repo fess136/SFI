@@ -1,4 +1,5 @@
 
+from decimal import Decimal
 from django.db import models
 from decimal import *
 from django.core.exceptions import ValidationError
@@ -276,9 +277,12 @@ class Ventas(models.Model):
     
     def __str__(self):
         return f"{self.id}"
+<<<<<<< HEAD
     #EN ESTA FUNCION SE HACE LA OPERACION PARA EL TOTAL 
     def calcular_total(self):
         return self.ventas_cantidad * self.producto.precio
+=======
+>>>>>>> afd96ee8bb750d50b66441bdec0d2242a44b11a3
     class Meta:
         verbose_name ="Venta"
         verbose_name_plural ="Ventas"

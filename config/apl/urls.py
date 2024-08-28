@@ -15,7 +15,11 @@ from apl.views.medidas.views import*
 from apl.views.ventas.views import*
 from apl.views.detallecompra.views import *
 from apl.views.backup.views import *
+<<<<<<< HEAD
 from apl.views.dertalleventa.views import *
+=======
+from apl.views.detalleventa.views import *
+>>>>>>> afd96ee8bb750d50b66441bdec0d2242a44b11a3
 
 app_name = 'apl'
 urlpatterns = [

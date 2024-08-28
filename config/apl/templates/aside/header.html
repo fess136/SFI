@@ -10,6 +10,7 @@
             </li>
         </ul>
 
+<<<<<<< HEAD
         <div class="navbar-brand mx-auto d-none d-md-block">
             <a href="#">
                 <img src="{% static 'img/sfi3.png' %}" alt="Logo" style="max-height: 50px; width: auto;">
@@ -45,30 +46,116 @@
             </li>
         </ul>
     </div>
+=======
+    <ul class="navbar-nav ml-auto">
+        <!-- Botón de ayuda -->
+        <li class="nav-item" data-toggle="tooltip" data-placement="top" title="Manual de Ayuda">
+            <a class="nav-link" href="#" id="help-manual-link">
+                <i class="fas fa-info-circle fa-lg"></i> <!-- Ícono cambiado y aumentado de tamaño -->
+            </a>
+        </li>
+        <!-- Botón de Accesibilidad -->
+        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="Accesibilidad">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <i class="fas fa-universal-access fa-lg"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                <a href="#" class="dropdown-item" id="increase-text">
+                    <i class="fas fa-text-height mr-2"></i> Aumentar Texto
+                </a>
+                <a href="#" class="dropdown-item" id="decrease-text">
+                    <i class="fas fa-text-width mr-2"></i> Disminuir Texto
+                </a>
+                <a href="#" class="dropdown-item" id="normal-text">
+                    <i class="fas fa-font mr-2"></i> Tamaño Normal
+                </a>
+                <a href="#" class="dropdown-item" id="toggle-contrast">
+                    <i class="fas fa-adjust mr-2"></i> Modo oscuro
+                </a>
+                <a href="#" class="dropdown-item" id="high-contrast">
+                    <i class="fas fa-adjust mr-2"></i> Modo alto contraste
+                </a>
+                <a href="#" class="dropdown-item" id="color-blind">
+                    <i class="fas fa-adjust mr-2"></i> Modo daltonico
+                </a>               
+                <a href="#" class="dropdown-item" id="toggle-reader-bar">
+                    <i class="fas fa-book-reader mr-2"></i> Barra Lectora
+                </a>
+            </div>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="top" title="Cerrar Sesión">
+            <a class="nav-link" href="{% url 'logout' %}">
+                <i class="fas fa-power-off" fa-lg"></i>
+            </a>
+        </li>
+       
+    </ul>
+>>>>>>> fb2fe514129f612a99a55e727b1a31b586c7c7c5
 </nav>
+
+<!-- Barra lectora  -->
+<div id="reader-bar" class="reader-bar" style="display: none;">
+    <div class="reader-bar-content"></div>
+</div>
+
+<!-- Filtro de opacidad ) -->
+<div id="page-overlay" class="page-overlay" style="display: none;"></div>
+
+
 
 <script type="application/javascript">
     document.addEventListener('DOMContentLoaded', function() {
-        // Verificar si el modo oscuro está habilitado
+        // Verifica si el modo oscuro está habilitado
         if (localStorage.getItem('darkMode') === 'enabled') {
             document.body.classList.add('Dark-mode');
         }
-
+        if (localStorage.getItem('contraste') === 'enabled') {
+            document.body.classList.add('Contraste');
+        }
+        if (localStorage.getItem('daltonico') === 'enabled') {
+            document.body.classList.add('Daltonico');
+        }
+    
+        // Definir los tamaños de texto
+        const textSizes = ['12px', '14px', '16px', '18px', '20px', '22px', '24px'];
+        let currentSizeIndex = 2; // Índice del tamaño normal (16px)
+    
+        // Función para actualizar el tamaño del texto
+        function updateTextSize() {
+            document.body.style.fontSize = textSizes[currentSizeIndex];
+            localStorage.setItem('textSize', textSizes[currentSizeIndex]);
+        }
+    
+        // Cargar el tamaño de texto guardado
+        const savedSize = localStorage.getItem('textSize');
+        if (savedSize) {
+            currentSizeIndex = textSizes.indexOf(savedSize);
+            if (currentSizeIndex === -1) currentSizeIndex = 2;
+            updateTextSize();
+        }
+    
         document.getElementById('increase-text').addEventListener('click', function() {
-            document.body.style.fontSize = 'larger';
+            if (currentSizeIndex < textSizes.length - 1) {
+                currentSizeIndex++;
+                updateTextSize();
+            }
         });
-
+    
         document.getElementById('decrease-text').addEventListener('click', function() {
-            document.body.style.fontSize = 'smaller';
+            if (currentSizeIndex > 0) {
+                currentSizeIndex--;
+                updateTextSize();
+            }
         });
-
+    
         document.getElementById('normal-text').addEventListener('click', function() {
-            document.body.style.fontSize = '16px';  
+            currentSizeIndex = 2; // Índice del tamaño normal (16px)
+            updateTextSize();
         });
-
+    
         document.getElementById('toggle-contrast').addEventListener('click', function() {
             document.body.classList.toggle('Dark-mode');
-
+    
             // Guardar el estado del modo oscuro en localStorage
             if (document.body.classList.contains('Dark-mode')) {
                 localStorage.setItem('darkMode', 'enabled');
@@ -76,5 +163,86 @@
                 localStorage.setItem('darkMode', 'disabled');
             }
         });
+
+        document.getElementById('high-contrast').addEventListener('click', function() {
+            document.body.classList.toggle('Contraste');
+    
+            // Guardar el estado del modo alto contraste en localStorage
+            if (document.body.classList.contains('Contraste')) {
+                localStorage.setItem('contraste', 'enabled');
+            } else {
+                localStorage.setItem('contraste', 'disabled');
+            }
+        });
+
+        document.getElementById('color-blind').addEventListener('click', function() {
+            document.body.classList.toggle('Daltonico');
+    
+            // Guardar el estado del modo alto contraste en localStorage
+            if (document.body.classList.contains('Daltonico')) {
+                localStorage.setItem('daltonico', 'enabled');
+            } else {
+                localStorage.setItem('daltonico', 'disabled');
+            }
+        });
+
+        let readerBarActive = false;
+        const readerBar = document.getElementById('reader-bar');
+        const readerBarContent = readerBar.querySelector('.reader-bar-content');
+        const pageOverlay = document.getElementById('page-overlay');
+
+        document.getElementById('toggle-reader-bar').addEventListener('click', function() {
+            readerBarActive = !readerBarActive;
+            readerBar.style.display = readerBarActive ? 'block' : 'none';
+            pageOverlay.style.display = readerBarActive ? 'block' : 'none';
+
+            if (readerBarActive) {
+                document.addEventListener('mousemove', updateReaderBar);
+            } else {
+                document.removeEventListener('mousemove', updateReaderBar);
+            }
+        });
+
+        function updateReaderBar(e) {
+            const y = e.clientY;
+            readerBar.style.top = `${y}px`;
+
+           
+        }
     });
+<<<<<<< HEAD
 </script>
+=======
+</script>
+<style>
+    .reader-bar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.4); /* Barra semitransparente */
+        z-index: 9999;
+        pointer-events: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .reader-bar-content {
+        padding: 10px;
+        font-size: 16px;
+        color: #000;
+        background-color: rgba(255, 255, 255, 0.8);
+        display: inline-block;
+    }
+
+    .page-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5); /* Oscurecer fondo */
+        z-index: 9998;
+        pointer-events: none;
+    }
+</style>
+>>>>>>> fb2fe514129f612a99a55e727b1a31b586c7c7c5

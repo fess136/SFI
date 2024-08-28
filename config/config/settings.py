@@ -86,8 +86,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'database', 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db',
+        'USER': 'root',
+        'PASSWORD': '123456',
+        'HOST': 'localhost',  # O la dirección de tu servidor de MySQL
+        'PORT': '3306',  # O el puerto de MySQL que estás usando
     }
 }
 

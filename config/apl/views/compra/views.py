@@ -62,6 +62,7 @@ class CompraCreateView(CreateView):
                 'errors': errors
             }, status=400)
         return super().form_invalid(form)
+    
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)

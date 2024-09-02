@@ -238,6 +238,10 @@ class DetalleCompra(models.Model):
     compra = models.ForeignKey(Compras, on_delete=models.PROTECT, default=1)
     cantidad = models.PositiveIntegerField(verbose_name="Cantidad", validators=[validacion_numeros_negativos], null=True)
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
+
+    def __str__(self):
+
+        return f"Detalle de Compra: #{self.id}"
     
 
     def precio(self):
@@ -274,7 +278,7 @@ class Ventas(models.Model):
     finalizado = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"{self.id}"
+        return f"Venta: #{self.id}"
     class Meta:
         verbose_name ="Venta"
         verbose_name_plural ="Ventas"

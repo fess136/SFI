@@ -251,7 +251,6 @@ color: #ECF0F1;
     color: #ffffff;
 }
 
-<<<<<<< HEAD
 
 /* Diseño boton de accesibilidad */
 
@@ -359,19 +358,3 @@ color: #ECF0F1;
     font-size: 1.5rem; /* Ajusta el tamaño del ícono si es necesario */
     line-height: 1; /* Asegúrate de que el ícono esté alineado correctamente */
 }
-=======
-.custom-button {
-    background-color: #1f5a96;
-    border: 2px solid hwb(0 100% 0%);
-    color: #fff;
-    margin: 0;
-    padding: 4px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-}
-
-.custom-button:hover {
-    background-color: #1d3c5d;
-    border: 2px solid #09335f;}
->>>>>>> 4cd9bb274eeb38ed092d0456c4ceeb6535b31610

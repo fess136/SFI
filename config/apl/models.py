@@ -90,25 +90,41 @@ class Proveedores(models.Model):
         db_table = "Proveedores"
 
     
+class ActivoManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(estado='activo')
+
 class Tipo_identificador(models.Model):
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    ]
     
-    nombre=models.CharField(max_length=150, verbose_name="Nombre")
+    nombre = models.CharField(max_length=150, verbose_name="Nombre")
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADO_CHOICES,
+        default='activo',
+        verbose_name="Estado"
+    )
     
+    # Managers
+    objects = models.Manager()  # The default manager
+    activos = ActivoManager()  # Our custom manager
     
     def __str__(self):
-        return self.nombre
+        return f"{self.nombre}"
     
     class Meta:
         verbose_name = "Tipo Identificador"
         verbose_name_plural = "Tipos Identificadores"
         db_table = "Tipo_identificador"
         
-        
 class Administradores(models.Model):
     class TipoDocumento(models.TextChoices):
         CC = 'CC', 'Cédula de Ciudadanía'
         CE = 'CE', 'Cédula de Extranjería'
-       
+
         
 
     # def validar_numero_documento(value):
@@ -149,7 +165,7 @@ class Clientes(models.Model):
     nit=models.PositiveBigIntegerField(verbose_name="Numero de Identificacion",unique=True, validators=[validacion_telefono])
     correo_electronico=models.EmailField(max_length=150,verbose_name="Email")
     telefono=models.PositiveIntegerField(verbose_name="Telefono", validators=[validacion_telefono])
-    Tipo_identificador=models.ForeignKey(Tipo_identificador, on_delete=models.CASCADE)
+    Tipo_identificador=models.ForeignKey(Tipo_identificador, on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
     
     def __str__(self):
         return self.nombre

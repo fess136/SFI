@@ -6,7 +6,7 @@ Listar Identificadores
 <tr>
     <th scope="col" style="width: 10%;">#</th>
     <th scope="col" style="width: 50%;">Nombre</th>
-    
+    <th scope="col" style="width: 50%;">Estado</th>
     <th scope="col" style="width: 20%;">Opciones</th>
 
 </tr>
@@ -18,6 +18,8 @@ Listar Identificadores
 <tr>
     <td>{{c.id}}</td>
     <td>{{c.nombre}}</td>
+    <td>{{c.estado}}</td>
+
     
     <td>
         <a href="{% url 'apl:editar_identificador' c.id %}" class = "btn btn-primary btn btn-xs" data-toggle="tooltip" data-placement="top" title="Editar"><i class = "fas fa-edit"></i></a>

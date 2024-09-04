@@ -152,7 +152,22 @@
         <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         
         <script src="../../dist/js/adminlte.min.js?v=3.2.0"></script>
+        <script>
+            {% if form.errors %}
+            var errors = '';
+            {% for field in form %}
+            {% for error in field.errors %}
+            errors += '{{ error }}';
+            {% endfor %}
+            {% endfor %}
         
+            Swal.fire({
+                title: '¡Usuario o contraseña incorrectos!',
+                text: errors,
+                icon: 'error',
+            });
+            {% endif %}
+        </script>
         
         </body>
         

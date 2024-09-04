@@ -194,3 +194,52 @@ border-radius: 0 30px 30px 0; /* Para el borde derecho de los íconos */
 .arc-letter:nth-child(1) { transform: rotate(-20deg); }
 .arc-letter:nth-child(2) { transform: rotate(0deg); }
 .arc-letter:nth-child(3) { transform: rotate(20deg); }
+
+
+.login-logo a {
+  font-family: 'Anton', sans-serif; /* Usando la fuente 'Roboto' de Google Fonts */
+  font-size: 80px; /* Tamaño de la fuente */
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  height: 200px;
+  align-items: flex-end;
+  transform: translateX(20px);
+}
+
+
+
+
+.arc-letter {
+position: null;
+bottom: 0;
+transform-origin: bottom center;
+}
+
+.card-body {
+border-radius: 50px 0 50px 0; /* Borde redondeado en la esquina superior izquierda e inferior derecha */
+padding: 20px; /* Ajusta el padding para manejar el contenido */
+background-color: #ffffff; 
+
+}
+.card {
+border-radius: 20px;
+box-shadow: 0 45px 45px #5a6bccc2; /* Sombra alrededor de la tarjeta */
+width: 410px; /* Ajusta el ancho de la tarjeta */
+height: 300px; /* Ajusta la altura de la tarjeta */
+margin: 0 auto; /* Centra la tarjeta en la pantalla */
+background-color: #052daf; 
+position: relative;
+}
+
+.input-group .form-control {
+border-radius: 10px; /* Ajusta el valor según tus preferencias */
+}
+
+.input-group-append .input-group-text {
+border-radius: 0 30px 30px 0; /* Para el borde derecho de los íconos */
+}
+.arc-letter:nth-child(1) { transform: rotate(-20deg); }
+.arc-letter:nth-child(2) { transform: rotate(0deg); }
+.arc-letter:nth-child(3) { transform: rotate(20deg); }

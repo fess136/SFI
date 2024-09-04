@@ -8,7 +8,8 @@
 <link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/datatables-responsive/css/responsive.bootstrap4.min.css' %}" />
 <link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/datatables-buttons/css/buttons.bootstrap4.min.css' %}" />
 <link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/icheck-bootstrap/icheck-bootstrap.min.css' %}" />
-
+<link href="{% static 'css/styles.css' %}" rel="stylesheet">
+<link href="{% static 'css/styles.css' %}" rel="stylesheet">
 <style>
     .custom-button {
         background-color: #1f5a96;
@@ -33,8 +34,7 @@
 {% block alertas %}
 {% endblock %}
 
-{% block Detalle %}
-{% endblock %}
+
 
 <div class="card card-default">
     <div class="card-header">
@@ -49,6 +49,8 @@
         </div>
     </div>
     <div class="card-body">
+        {% block Detalle %}
+        {% endblock %}
         <div class="logo-container">
             <img src="{% static 'img/logosfi.png' %}" alt="Logo" class="logo-img">
         </div>

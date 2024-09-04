@@ -1,9 +1,10 @@
 from django.db.models.query import QuerySet
 from django.http import JsonResponse
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
-from django.shortcuts import redirect, render
-from apl.forms import CompraForm
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.db.models import ProtectedError
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -73,6 +74,23 @@ class DetalleCompraDeleteView(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        
+        try:
+
+            response = super().delete(request, args, kwargs)
+            messages.success(request, "Detalle de compra eliminada con éxito.")
+            return response
+            
+        except ProtectedError:
+
+            messages.error(request, f"No se ha logrado eliminar el detalle de compra.")
+            return redirect(self.success_url + f"?pk={self.kwargs.get('pk')}")
+        
+        except Exception as e:
+
+            messages.error(request, f"Ha ocurrido un error inesperado \n{e}")
 
 @method_decorator(never_cache, name='dispatch')
 class DetalleCompraUpdateView(UpdateView):

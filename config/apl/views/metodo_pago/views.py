@@ -1,7 +1,9 @@
 from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.db.models import ProtectedError
 from apl.forms import MetodoForm
 from apl.models import *
 from django.utils.decorators import method_decorator
@@ -18,6 +20,14 @@ class MetodosListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Metodos de Pagos"
         context['crear_url'] = reverse_lazy('apl:crear_metodo')
+
+        #Para mostrar la alerta de objetos relacionados primero verificamos si existe la variable pk en la url
+        #y si lo hay entonces se hace la consulta del metodo de pago para luego mostrar cuales son las realciones que tiene
+        #metodo de pago con otros registros
+
+        MetodoPago = Metodo_Pago.objects.get(id = self.request.GET.get('pk')) if self.request.GET.get('pk') else None
+        context['obj_relacionados'] = ', '.join([i.__str__() for i in MetodoPago.compras_set.all()] + [i.__str__() for i in MetodoPago.ventas_set.all()]) if MetodoPago else None 
+        
         context['entidad'] = "Metodos de pago"
         return context
 
@@ -106,6 +116,24 @@ class MetodoDeleteView(DeleteView):
         context['titulo'] = "Eliminar Metodos de Pago"
         context['crear_url'] = reverse_lazy('apl:listar_metodo')
         return context
+    
+    def post(self, request, *args, **kwargs):
+
+        try:
+
+            response = super().delete(request, args, kwargs)
+            messages.success(request, 'Metodo de pago eliminado con exito')
+            return response
+
+        except ProtectedError:
+
+            messages.error(request, 'No se ha logrado eliminar la unidad de medida')
+            return redirect(self.success_url + f'?pk={self.kwargs.get('pk')}')
+
+        except Exception as e:
+            
+            messages.error(request, f'Ha ocurrido un error inesperado\n{e}')
+
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 

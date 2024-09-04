@@ -1,0 +1,38 @@
+{% extends "listar.html" %}
+{%block titulo%}
+Listar Empleados
+{%endblock%}
+{% block columnas %}
+<tr>
+    <th scope="col" style="width: 10%;">#</th>
+    <th scope="col" style="width: 15%;">Nombre</th>
+    <th scope="col" style="width: 15%;">Apellido</th>
+    <th scope="col" style="width: 10%;">Edad</th>
+    <th scope="col" style="width: 15%;">Cedula</th>
+    <th scope="col" style="width: 20%;">Correo</th>
+    
+    <th scope="col" style="width: 20%;">Opciones</th>
+
+</tr>
+
+{% endblock %}
+
+{% block filas %}
+{% for c in object_list %}
+<tr>
+    <td>{{c.id}}</td>
+    <td>{{c.nombre}}</td>
+    <td>{{c.apellido}}</td>
+    <td>{{c.edad}}</td>
+    <td>{{c.cedula}}</td>
+    <td>{{c.correo_electronico}}</td>
+    <td>
+        <a href="{% url 'apl:editar_empleado' c.id %}" class = "btn btn-primary btn btn-xs" data-toggle="tooltip" data-placement="top" title="Editar">
+            <i class = "fas fa-edit"></i></a>
+        <a href="{% url 'apl:borrar_empleado' c.id %}" class = "btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="Eliminar">
+            <i class="fas fa-trash-alt"></i></button>
+    </td>
+</tr>
+{% endfor %}
+
+{% endblock %}

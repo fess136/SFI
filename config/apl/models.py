@@ -147,7 +147,7 @@ class Clientes(models.Model):
     nombre=models.CharField(max_length=150, verbose_name="Nombre")
     apellido=models.CharField(max_length=150, verbose_name="Apellido")
     nit=models.PositiveBigIntegerField(verbose_name="Numero de Identificacion",unique=True, validators=[validacion_telefono])
-    correo_electronico=models.EmailField(max_length=150,verbose_name="Email")
+    correo_electronico=models.EmailField(max_length=150,verbose_name="Correo")
     telefono=models.PositiveIntegerField(verbose_name="Telefono", validators=[validacion_telefono])
     Tipo_identificador=models.ForeignKey(Tipo_identificador, on_delete=models.CASCADE)
     

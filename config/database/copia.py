@@ -30,11 +30,11 @@ def hacer_copia():
     print(f"Directorio temporal creado: {temp_dir}")
 
     # Definir los parámetros de conexión a la base de datos MySQL
-    db_name = 'db'  # Nombre de la base de datos
-    db_user = 'root'  # Usuario de MySQL
-    db_password = '123456'  # Contraseña de MySQL
-    db_host = 'localhost'  # Host de MySQL
-    db_port = '3306'  # Puerto de MySQL
+    db_name = 'db'
+    db_user = 'root'  
+    db_password = '123456'  
+    db_host = 'localhost' 
+    db_port = '3306'  
 
     # Definir el archivo de respaldo
     backup_file = os.path.join(temp_dir, f"{nombre}.sql")

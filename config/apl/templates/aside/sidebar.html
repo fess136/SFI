@@ -1,5 +1,5 @@
 {% load static %}
-<aside class="main-sidebar sidebar-light-primary elevation-4">
+<aside class="main-sidebar sidebar-light-primary ">
     
     </a>
     <div class="sidebar">
@@ -11,37 +11,7 @@
                 <a href="#" class="d-block" style="color: rgb(255, 255, 255);">{{ request.user.username }}</a>
             </div>
         </div>
-        <style>
-            .request.user.username{
-                color: #ffffff; 
-
-            }          
-              .sidebar{
-                background-color:#1f5a96;
-            }
-            
-            .nav-header {
-                color: #ffffff;
-                font-size: 30px; 
-                font-weight: bold;
-            }
-            .info {
-                color: #ffffff; 
-                font-size: 20px; 
-            }
-            .nav-link:hover p {
-                color: #000000;
-                font-size: 20px; 
-            }
-            .nav-icon {
-                color: #ffffff; 
-                font-size: 20px; 
-            }
-            .nav-link p {
-                color: #ffffff; 
-                font-size: 18px; 
-            }
-    </style>
+        
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-header" style="color: rgb(255, 255, 255);">Modulos</li>
@@ -138,6 +108,7 @@
         <div class="sidebar-logo">
             <img src="{% static 'img/logosfi.png' %}" alt="Logo" class="logo-side">
         </div>
+       
     </div>
     
 </aside>

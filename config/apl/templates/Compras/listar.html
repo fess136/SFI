@@ -3,17 +3,29 @@
 <!-- Este bloque avisa al usuario de compras que no se ha completado -->
 {% block alertas %}
 
+    {% if messages and obj_relacionados %}
+    <div class="alert alert-danger alert-dismissible">
+        <button type ="button" class ="close" data-dismiss="alert" aria-hidden="true">x</button>
+        <h3><i class = "fas fa-ban"></i>Error</h3>
+        <h5>
+            El registro que se intentó eliminar está relacionado con los siguientes registros: <br>
+            {{obj_relacionados}}
+        </h5>
+    </div>
+    {% endif %}
+
     {% if hay_compras_pendientes %}
 
         <div class="alert alert-info alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h5><i class="fas fa-bullhorn"></i> <strong>¡Alerta!</strong></h5>
-            Las siguientes compras estan pendientes:    <br>
+            <h3><i class="fas fa-bullhorn"></i> <strong>¡Alerta!</strong></h3>
+            <h5>Las siguientes compras estan pendientes:    <br>
             {% for i in hay_compras_pendientes %}
 
                 Compra #{{i.id}}<br>
 
             {% endfor %}
+            </h5>
         </div>
 
     {% endif %}

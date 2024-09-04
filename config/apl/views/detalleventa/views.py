@@ -2,7 +2,7 @@ from django.db.models.query import QuerySet
 from django.http import JsonResponse
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from apl.forms import DetalleVentaForm
 from apl.models import *
 from django.utils.decorators import method_decorator
@@ -136,3 +136,4 @@ class DetalleVentaDeleteView(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
+    

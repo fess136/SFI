@@ -95,12 +95,11 @@ class AdministradorForm(ModelForm):
             "password": PasswordInput(attrs={"min": 1, "placeholder": "Contraseña"}),
             "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
-
 class VentaForm(ModelForm):
 
     class Meta:
         model = Ventas
-        fields = ['empleado', 'cliente', 'metodo_pago']
+        fields = ['cliente', 'metodo_pago', 'usuario']
 
 class ProductosForm(ModelForm):
 
@@ -120,12 +119,6 @@ class MedidaForm(ModelForm):
         model = Unidad_Medida
         fields = '__all__'
 
-class EmpleadoForm(ModelForm):
-
-    class Meta:
-
-        model = Empleados
-        fields = '__all__'
 
 class ClienteForm(ModelForm):
 
@@ -160,7 +153,7 @@ class CompraForm(ModelForm):
     class Meta:
 
         model = Compras
-        fields = ['metodo_pago', 'proveedor']
+        fields = ['metodo_pago', 'proveedor', 'usuario']
 
 class DetalleCompraForm(ModelForm):
 

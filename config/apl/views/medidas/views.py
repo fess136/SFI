@@ -1,7 +1,9 @@
 from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.db.models import ProtectedError
 from apl.forms import MedidaForm
 from apl.models import *
 from django.utils.decorators import method_decorator
@@ -26,6 +28,7 @@ class MedidasListView(ListView):
         context['titulo'] = "Unidades de Medida"
         context['crear_url'] = reverse_lazy('apl:crear_medida')
         context['entidad'] = "Medidas"
+        context['obj_relacionados'] = ', '.join([i.__str__() for i in Unidad_Medida.objects.get(id = self.request.GET.get('pk')).productos_set.all()]) if self.request.GET.get('pk') else None
         return context
 
 @method_decorator(never_cache, name='dispatch')
@@ -108,6 +111,23 @@ class MedidaDeleteView(DeleteView):
         context['titulo'] = "Eliminar Unidad de Medida"
         context['crear_url'] = reverse_lazy('apl:listar_medida')
         return context
+    
+    def post(self, request, *args, **kwargs):
+        
+        try:
+
+            response = super().delete(request, args, kwargs)
+            messages.success(request, "Unidad de medida eliminada con éxito.")
+            return response
+            
+        except ProtectedError:
+
+            messages.error(request, f"No se ha logrado eliminar la unidad de medida.")
+            return redirect(self.success_url + f"?pk={self.kwargs.get('pk')}")
+        
+        except Exception as e:
+
+            messages.error(request, f"Ha ocurrido un error inesperado \n{e}")
     
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 

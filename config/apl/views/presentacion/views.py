@@ -2,7 +2,9 @@ from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from apl.forms import PresentacionForm
-from django.shortcuts import render
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.db.models import ProtectedError
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -18,6 +20,7 @@ class PresentacionListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Presentaciones"
         context['crear_url'] = reverse_lazy('apl:crear_presentacion')
+        context['obj_relacionados'] = ', '.join([i.__str__() for i in Presentacion.objects.get(id = self.request.GET.get('pk')).productos_set.all()]) if self.request.GET.get('pk') else None
         context['entidad'] = "Presentaciones"
         return context
 
@@ -109,3 +112,20 @@ class PresentacionDeleteView(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        
+        try:
+
+            response = super().delete(request, args, kwargs)
+            messages.success(request, "Presentación eliminada con éxito.")
+            return response
+            
+        except ProtectedError:
+
+            messages.error(request, f"No se ha logrado eliminar la Presentación.")
+            return redirect(self.success_url + f"?pk={self.kwargs.get('pk')}")
+        
+        except Exception as e:
+
+            messages.error(request, f"Ha ocurrido un error inesperado \n{e}")

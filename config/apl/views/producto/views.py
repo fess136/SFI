@@ -2,7 +2,9 @@ from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from apl.forms import ProductosForm
 from django.urls import reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.db.models import ProtectedError
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -18,6 +20,8 @@ class ProductoListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Productos"
         context['crear_url'] = reverse_lazy('apl:crear_producto')
+        Producto = Productos.objects.get(id = self.request.GET.get('pk')) if self.request.GET.get('pk') else None
+        context['obj_relacionados'] = ', '.join([i.__str__() for i in Producto.detallecompra_set.all()] + [i.__str__() for i in Producto.detalleventa_set.all()]) if Producto else None
         context['entidad'] = "Productos"
         return context
     
@@ -109,22 +113,24 @@ class ProductoDeleteView(DeleteView):
         context['crear_url'] = reverse_lazy('apl:listar_producto')
         return context
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success'})
-        return response
+    def post(self, request, *args, **kwargs):
+        
+        try:
 
-    def form_invalid(self, form):
-        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            errors = {}
-            for field, error_list in form.errors.items():
-                errors[field] = [str(error) for error in error_list]
-            return JsonResponse({
-                'status': 'error',
-                'errors': errors
-            }, status=400)
+            response = super().delete(request, args, kwargs)
+            messages.success(request, "Producto eliminado con éxito.")
+            return response
+            
+        except ProtectedError:
+
+            messages.error(request, f"No se ha logrado eliminar el producto.")
+            return redirect(self.success_url + f"?pk={self.kwargs.get('pk')}")
+        
+        except Exception as e:
+
+            messages.error(request, f"Ha ocurrido un error inesperado \n{e}")
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
+    

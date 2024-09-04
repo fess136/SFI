@@ -1,7 +1,9 @@
 from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.shortcuts import render
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.db.models import ProtectedError
 from apl.forms import ProveedorForm
 from apl.models import *
 from django.utils.decorators import method_decorator
@@ -19,6 +21,7 @@ class ProveedorListView(ListView):
         context['titulo'] = "Proveedores"
         context['crear_url'] = reverse_lazy('apl:crear_proveedor')
         context['entidad'] = "Proveedores"
+        context['obj_relacionados'] = ', '.join([i.__str__() for i in Proveedores.objects.get(id = self.request.GET.get('pk')).compras_set.all()]) if self.request.GET.get('pk') else None
         return context
 
     @method_decorator(login_required)
@@ -109,3 +112,20 @@ class ProveedorDeleteView(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        
+        try:
+
+            response = super().delete(request, args, kwargs)
+            messages.success(request, "Proveedor eliminado con éxito.")
+            return response
+            
+        except ProtectedError:
+
+            messages.error(request, f"No se ha logrado eliminar el Proveedor.")
+            return redirect(self.success_url + f"?pk={self.kwargs.get('pk')}")
+        
+        except Exception as e:
+
+            messages.error(request, f"Ha ocurrido un error inesperado \n{e}")

@@ -4,7 +4,6 @@ from apl.views.tipo.views import *
 from apl.views.marca.views import *
 from apl.views.presentacion.views import*
 from apl.views.administrador.views import*
-from apl.views.empleado.views import *
 from apl.views.metodo_pago.views import *
 from apl.views.tipo_identificador.views import*
 from apl.views.cliente.views import*
@@ -43,12 +42,6 @@ urlpatterns = [
     path('administradores/crear', AdministradorCreateView.as_view(), name = "crear_administrador"),
     path('administradores/editar/<int:pk>', AdministradorUpdateView.as_view(), name = "editar_administrador"),
     path('administradores/borrar/<int:pk>', AdministradorDeleteView.as_view(), name = 'borrar_administrador'),
-
-    #Modulo Empleados
-    path('empleados/listar', EmpleadoListView.as_view(), name="listar_empleado"),
-    path('empleados/crear', EmpleadoCreateView.as_view(), name = "crear_empleado"),
-    path('empleados/editar/<int:pk>', EmpleadoUpdateView.as_view(), name = "editar_empleado"),
-    path('empleados/borrar/<int:pk>', EmpleadoDeleteView.as_view(), name = "borrar_empleado"),
 
     #Modulo Metodos
     path('metodos/listar', MetodosListView.as_view(), name="listar_metodo"),

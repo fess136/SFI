@@ -6,7 +6,9 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.urls import reverse_lazy
+from django.shortcuts import redirect
 from django.contrib import messages
+from django.db.models import ProtectedError
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect
 from apl.models import *
@@ -85,6 +87,24 @@ class TipoDeleteView(DeleteView):
         context['titulo'] = "Eliminar Tipo"
 
         return context
+    
+    def post(self, request, *args, **kwargs):
+        
+        try:
+
+            response = super().delete(request, args, kwargs)
+            messages.success(request, "Tipo eliminado con éxito.")
+            return response
+            
+        except ProtectedError:
+
+            messages.error(request, f"No se ha logrado eliminar el Tipo.")
+            return redirect(self.success_url + f"?pk={self.kwargs.get('pk')}")
+        
+        except Exception as e:
+
+            messages.error(request, f"Ha ocurrido un error inesperado \n{e}")
+    
 
 @method_decorator(never_cache, name='dispatch')
 class TipoUpdateView(UpdateView):
@@ -144,9 +164,9 @@ class TipoListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Tipo"
         context['crear_url'] = reverse_lazy('apl:crear_tipo')
+        context['obj_relacionados'] = ', '.join([i.__str__() for i in Tipo.objects.get(id = self.request.GET.get('pk')).productos_set.all()]) if self.request.GET.get('pk') else None
         context['entidad'] = 'Tipos'
 
         return context
    
-    
-    
+

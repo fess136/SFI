@@ -1,8 +1,10 @@
 from django.http import JsonResponse
 from django.http.response import HttpResponse as HttpResponse
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.contrib import messages
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.exceptions import ValidationError
 from apl.models import Administradores
@@ -114,3 +116,16 @@ class AdministradorDeleteView(DeleteView):
     
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        
+        try:
+
+            response = super().delete(request, args, kwargs)
+            messages.success(request, "Administrador eliminado con éxito.")
+            return response
+            
+        except Exception as e:
+
+            messages.error(request, f"No se ha logrado eliminado el Administrador\n{e}")
+            return redirect(self.success_url)

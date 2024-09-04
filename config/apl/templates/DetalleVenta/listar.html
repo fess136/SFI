@@ -26,7 +26,7 @@
                                 success: function(response) {
                                     Swal.fire("¡Compra Finalizada!", "", "success").then(() => {
                                         // Redirigir si es necesario
-                                        window.location.href = "{% url 'apl:listar_compra' %}";
+                                        window.location.href = "{% url 'apl:listar_venta' %}";
                                     });
                                 },
                                 error: function(xhr, status, error) {

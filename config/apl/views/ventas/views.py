@@ -1,6 +1,8 @@
 from django.http import JsonResponse
 from django.views.generic import ListView,CreateView,UpdateView,DeleteView
-from django.shortcuts import render
+from django.shortcuts import redirect
+from django.contrib import messages
+from django.db.models import ProtectedError
 from django.urls import reverse_lazy
 from apl.forms import VentaForm
 from apl.models import *
@@ -17,6 +19,7 @@ class VentasListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Ventas"
         context['crear_url'] = reverse_lazy('apl:crear_venta')
+        context['obj_relacionados'] = ', '.join([i.__str__() for i in Ventas.objects.get(id = self.request.GET.get('pk')).detalleventa_set.all()]) if self.request.GET.get('pk') else None
         context['entidad'] = "Ventas"
         context['hay_ventas_pendientes'] = Ventas.objects.filter(finalizado = False)
         return context
@@ -30,10 +33,8 @@ class VentaCreateView(CreateView):
     model = Ventas
     form_class = VentaForm
     template_name = "Ventas/crear.html"
-    
-    def get_success_url(self):
-        return reverse_lazy('apl:crear_detalleventa', args = [Ventas.objects.all().last()])
-    
+    success_url = reverse_lazy('apl:crear_detalleventa', args=[0])
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Venta"
@@ -41,9 +42,10 @@ class VentaCreateView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
-        self.object = form.save() # Guarda el fomulario
+        self.object = form.save()
+        print(self.object.id)
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success', "id": self.object.id, 'es_venta': True})
+            return JsonResponse({'status': 'success', 'id': self.object.id, 'es_venta': True})
         return response
 
     def form_invalid(self, form):
@@ -55,6 +57,8 @@ class VentaCreateView(CreateView):
                 'status': 'error',
                 'errors': errors
             }, status=400)
+        return super().form_invalid(form)
+    
     
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
@@ -76,7 +80,7 @@ class VentaUpdateView(UpdateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success', 'id': self.object.id, 'es_compra': True})
         return response
 
     def form_invalid(self, form):
@@ -88,6 +92,8 @@ class VentaUpdateView(UpdateView):
                 'status': 'error',
                 'errors': errors
             }, status=400)
+        return super().form_invalid(form)
+        
     
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
@@ -109,3 +115,20 @@ class VentaDeleteView(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        
+        try:
+
+            response = super().delete(request, args, kwargs)
+            messages.success(request, "Tipo de identificador eliminado con éxito.")
+            return response
+            
+        except ProtectedError:
+
+            messages.error(request, f"No se ha logrado eliminar el Tipo de identificador.")
+            return redirect(self.success_url + f"?pk={self.kwargs.get('pk')}")
+        
+        except Exception as e:
+
+            messages.error(request, f"Ha ocurrido un error inesperado \n{e}")

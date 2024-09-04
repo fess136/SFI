@@ -31,10 +31,18 @@
 {% block contenido %}
 
 {% block alertas %}
+    {% if messages and obj_relacionados %}
+        <div class="alert alert-danger alert-dismissible">
+            <button type ="button" class ="close" data-dismiss="alert" aria-hidden="true">x</button>
+            <h3><i class = "fas fa-ban"></i>Error</h3>
+            <h5>
+                El registro que se intentó eliminar está relacionado con los siguientes registros: <br>
+                {{obj_relacionados}}
+            </h5>
+        </div>
+    {% endif %}
 {% endblock %}
 
-{% block Detalle %}
-{% endblock %}
 
 <div class="card card-default">
     <div class="card-header">
@@ -49,6 +57,9 @@
         </div>
     </div>
     <div class="card-body">
+        {% block Detalle %}
+        {% endblock %}
+
         <div class="logo-container">
             <img src="{% static 'img/logosfi.png' %}" alt="Logo" class="logo-img">
         </div>
@@ -64,9 +75,11 @@
         </table>
     </div>
     <div class="card-footer">
-        <a href="{{ crear_url }}" class="btn btn-flat" style="background-color: #23853a; border: 1px solid #23853a; color: #fff; margin: 5px; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
-            <i class="fas fa-plus"></i> Agregar
-        </a>
+        {% block botones_opc %}
+            <a href="{{ crear_url }}" class="btn btn-flat" style="background-color: #23853a; border: 1px solid #23853a; color: #fff; margin: 5px; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                <i class="fas fa-plus"></i> Agregar
+            </a>
+        {% endblock %}
     </div>
 </div>
 
@@ -171,5 +184,19 @@
     function applyFilters() {
         document.querySelector('#filtroModal form').submit();
     }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    icon: '{{ message.tags }}',  // Tipo de mensaje: success, error, etc.
+                    title: '{% if message.tags == "success" %}¡Éxito!{% elif message.tags == "error" %}¡Error!{% endif %}',  // Título basado en el tipo de mensaje
+                    text: "{{ message }}",  // Mensaje del contenido
+                    confirmButtonText: 'OK'
+                });
+            {% endfor %}
+        {% endif %}
+    });
 </script>
 {% endblock %}

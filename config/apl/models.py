@@ -20,11 +20,29 @@ def validacion_numeros_negativos(value):
     if value <= 0:
 
         raise ValidationError("no se puede ingresar solo 0 ni numeros negativos")
+    
+
+class ActivoManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(estado='activo')
+    
 
 class Tipo(models.Model):
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    ]
     nombre=models.CharField(max_length=150, verbose_name="Nombre", unique=True, null=True)
-    estado=models.BooleanField(default=True)
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADO_CHOICES,
+        default='Activo',
+        verbose_name="Estado"
+    )
     
+    # Managers
+    objects = models.Manager()  # The default manager
+    activos = ActivoManager()  # Our custom manager    
     def __str__(self):
         return self.nombre
     
@@ -35,6 +53,8 @@ class Tipo(models.Model):
 
 
 class Presentacion(models.Model):
+
+    
     descripcion = models.CharField(max_length=150, verbose_name="Descripcion")
     
     def __str__(self):
@@ -47,8 +67,22 @@ class Presentacion(models.Model):
 
 
 class Marcas(models.Model):
+
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    ]
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
-    estado = models.BooleanField(default = True)
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADO_CHOICES,
+        default='activo',
+        verbose_name="Estado"
+    )
+    
+    # Managers
+    objects = models.Manager()  # The default manager
+    activos = ActivoManager()  # Our custom manager
     
     def __str__(self):
         return self.nombre
@@ -60,8 +94,21 @@ class Marcas(models.Model):
 
 
 class Unidad_Medida(models.Model):
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    ]
     descripcion = models.CharField(max_length=50, verbose_name="Descripcion")
-    estado = models.BooleanField(default = True)
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADO_CHOICES,
+        default='activo',
+        verbose_name="Estado"
+    )
+    
+    # Managers
+    objects = models.Manager()  # The default manager
+    activos = ActivoManager()  # Our custom manager
     
     def __str__(self):
         return self.descripcion
@@ -90,25 +137,40 @@ class Proveedores(models.Model):
         db_table = "Proveedores"
 
     
+
+
 class Tipo_identificador(models.Model):
+
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    ]
     
-    nombre=models.CharField(max_length=150, verbose_name="Nombre")
+    nombre = models.CharField(max_length=150, verbose_name="Nombre")
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADO_CHOICES,
+        default='activo',
+        verbose_name="Estado"
+    )
     
+    # Managers
+    objects = models.Manager()  # The default manager
+    activos = ActivoManager()  # Our custom manager
     
     def __str__(self):
-        return self.nombre
+        return f"{self.nombre}"
     
     class Meta:
         verbose_name = "Tipo Identificador"
         verbose_name_plural = "Tipos Identificadores"
         db_table = "Tipo_identificador"
         
-        
 class Administradores(models.Model):
     class TipoDocumento(models.TextChoices):
         CC = 'CC', 'Cédula de Ciudadanía'
         CE = 'CE', 'Cédula de Extranjería'
-       
+
         
 
     # def validar_numero_documento(value):
@@ -149,7 +211,7 @@ class Clientes(models.Model):
     nit=models.PositiveBigIntegerField(verbose_name="Numero de Identificacion",unique=True, validators=[validacion_telefono])
     correo_electronico=models.EmailField(max_length=150,verbose_name="Correo")
     telefono=models.PositiveIntegerField(verbose_name="Telefono", validators=[validacion_telefono])
-    Tipo_identificador=models.ForeignKey(Tipo_identificador, on_delete=models.CASCADE)
+    Tipo_identificador=models.ForeignKey(Tipo_identificador, on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
     
     def __str__(self):
         return self.nombre
@@ -169,10 +231,10 @@ class Productos(models.Model):
     nombre = models.CharField(max_length=100,verbose_name="Nombre")
     cantidad = models.PositiveIntegerField(verbose_name="Cantidad")
     precio = models.DecimalField(max_digits=10,decimal_places=2,verbose_name="Precio", validators=[validacion_numeros_negativos])
-    marcas = models.ForeignKey(Marcas,on_delete=models.CASCADE)
-    tipo = models.ForeignKey(Tipo,on_delete=models.CASCADE)
+    marcas = models.ForeignKey(Marcas,on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
+    tipo = models.ForeignKey(Tipo,on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
     presentacion= models.ForeignKey(Presentacion,on_delete=models.CASCADE)
-    unidad_medida=models.ForeignKey(Unidad_Medida,on_delete=models.CASCADE)
+    unidad_medida=models.ForeignKey(Unidad_Medida,on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
     
     def __str__(self):
         return self.nombre

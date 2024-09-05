@@ -270,6 +270,15 @@ color: #ECF0F1;
 
 
 
+<<<<<<< HEAD
+.Dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+
+=======
+>>>>>>> 963fbbb03e6c68e8e6f40b4abe535ae2b6d085c7
 /* Diseño boton de accesibilidad */
 
 /* Estilo del cuadro desplegable */
@@ -387,6 +396,11 @@ color: #ECF0F1;
 
 /* Ajustar el ícono para que se alinee verticalmente */
 .main-header .nav-link i {
+<<<<<<< HEAD
+    font-size: 1.5rem; /* Ajusta el tamaño del ícono si es necesario */
+    line-height: 1; /* Asegúrate de que el ícono esté alineado correctamente */
+}
+=======
     font-size: 1.5rem; 
     line-height: 1; 
 }
@@ -550,3 +564,4 @@ color: #ECF0F1;
         padding: 10px 20px;
         font-size: 16px;
     }
+>>>>>>> 963fbbb03e6c68e8e6f40b4abe535ae2b6d085c7

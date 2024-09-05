@@ -29,8 +29,8 @@ class MarcaForm(ModelForm):
         fields = '__all__'
 
 class AdministradorForm(ModelForm):
-    username = forms.CharField(label="Username", max_length=150)
-    email = forms.EmailField(label="Email", max_length=150)
+    username = forms.CharField(label="Usuario", max_length=150)
+    email = forms.EmailField(label="Correo", max_length=150)
     password = forms.CharField(label="Password", widget=PasswordInput)
     conf_password = forms.CharField(label="Confirm Password", widget=PasswordInput)
 
@@ -127,12 +127,21 @@ class ClienteForm(ModelForm):
         model = Clientes
         fields = '__all__'
 
-class IdentificadorForm(ModelForm):
-
+class IdentificadorForm(forms.ModelForm):
     class Meta:
-
         model = Tipo_identificador
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Si este formulario se usa para seleccionar un Tipo_identificador en otro modelo,
+        # asegúrate de que solo se muestren las opciones activas
+        if 'instance' not in kwargs:
+            self.fields['tipo_identificador'] = forms.ModelChoiceField(
+                queryset=Tipo_identificador.activos.all(),
+                empty_label="Seleccione un tipo de identificador",
+                required=False
+            )
 
 class MetodoForm(ModelForm):
 

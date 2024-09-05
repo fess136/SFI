@@ -1,4 +1,4 @@
-/* CAMBIA EL COLOR DEL BODY PARA EL MODO OSCURO */
+/*  MODO OSCURO */
 .Dark-mode .user-panel {
     background-color: #1f1e1e;
 
@@ -6,11 +6,22 @@
 }
 
 .Dark-mode .content-wrapper {
+    background-image: url("/static/img/FONDO.jpg");
     background-color: #1f1e1e;
+    border-color:  #1f1e1e;    
     color: #fff;
 }
-.Dark-mode .content-header {
+
+.Dark-mode .encabezado {
+    
     background-color: #1f1e1e;
+    border-color:  #1f1e1e;    
+    color: #fff;
+}
+.Dark-mode .detalles {
+    
+    background-color: #1f1e1e;
+    border-color:  #1f1e1e;    
     color: #fff;
 }
 
@@ -26,8 +37,8 @@
     color: #fff;
 }
 .Dark-mode .card-header {
-    background-color: #1f1e1e;
-    border-color:  #1f1e1e;
+    background-color:#1f1e1e;
+    border-color:#1f1e1e;
     color: #fff;
 }
 
@@ -82,23 +93,31 @@
     
 }
 
-/* Alto contraste */
+/* Modo Alto contraste */
 .Contraste .user-panel {
     background-color: #1A237E;
 border-color: #FF0000;
 color: #FFFF00;
 }
 .Contraste .content-wrapper {
+    background-image: url("/static/img/FONDO.jpg");
     background-color: #1A237E;
     border-color: #FF0000;
     color: #FFFF00;
 }
-.Contraste .content-header {
-    background-color: #1A237E;
-border-color: #FF0000;
-color: #FFFF00;
-}
 
+.Contraste .encabezado {
+    
+    background-color: #1A237E;
+    border-color: #FF0000;
+    color: #FFFF00;
+}
+.Contraste .detalles {
+    
+    background-color: #1A237E;
+    border-color: #FF0000;
+    color: #FFFF00;
+}
 
 .Contraste .main-header {
     background-color: #1A237E;
@@ -168,16 +187,24 @@ border-color: #34495E;
 color: #ECF0F1;
 }
 .Daltonico .content-wrapper {
+    background-image: url("/static/img/FONDO.jpg");
     background-color: #2C3E50;
-border-color: #34495E;
-color: #ECF0F1;
-}
-.Daltonico .content-header {
-    background-color: #2C3E50;
-border-color: #34495E;
-color: #ECF0F1;
+    border-color: #34495E;
+    color: #ECF0F1;
 }
 
+.Daltonico .encabezado {
+    
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .detalles {
+    
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
 
 .Daltonico .main-header {
     background-color: #2C3E50;
@@ -240,121 +267,301 @@ color: #ECF0F1;
     
 }
 
-.info  {
-    color: white;
-}
 
 
 
+<<<<<<< HEAD
 .Dark-mode {
     background-color: #121212;
     color: #ffffff;
 }
 
 
+=======
+>>>>>>> 963fbbb03e6c68e8e6f40b4abe535ae2b6d085c7
 /* Diseño boton de accesibilidad */
 
 /* Estilo del cuadro desplegable */
 .nav-item .dropdown-menu {
-    background-color: #5d64af; /* Fondo azul oscuro */
-    border-radius: 8px; /* Bordes redondeados */
-    border: 2px solid #000000; /* Borde amarillo */
-    padding: 10px; /* Espaciado interno */
+    background-color: #1f5a96; 
+    border-radius: 8px; 
+    border: 2px solid #000000; 
+    padding: 10px; 
 }
 
 /* Estilo de los elementos dentro del cuadro desplegable */
 .nav-item .dropdown-menu .dropdown-item {
-    color: #ffffff; /* Texto naranja */
-    padding: 8px 16px; /* Espaciado interno en cada opción */
-    transition: background-color 0.3s ease-in-out; /* Transición suave al cambiar el fondo */
+    color: #ffffff; 
+    padding: 8px 16px; 
+    transition: background-color 0.3s ease-in-out;
 }
 
 /* Estilo al pasar el mouse sobre una opción */
 .nav-item .dropdown-menu .dropdown-item:hover {
-    background-color: #000000; /* Fondo amarillo al hacer hover */
-    color: #ffffff; /* Texto azul oscuro al hacer hover */
+    background-color: #000000; 
+    color: #ffffff; 
 }
 
 /* Cambiar la sombra del cuadro desplegable */
 .nav-item .dropdown-menu {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Sombra del cuadro */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); 
 }
 
 
 #help-manual-link i {
-    color: #b49b47; /* Cambia el color del ícono */
-    font-size: 25px; /* Ajusta el tamaño del ícono */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Agrega sombra al ícono */
-    transition: transform 0.3s ease; /* Transición suave en hover */
+    color: #b49b47; 
+    font-size: 25px; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+    transition: transform 0.3s ease; 
 }
 
 
 /* Estilo para el ícono de ayuda */
 .nav-item.dropdown .nav-link i {
-    color: #b49b47; /* Cambia el color del ícono a verde */
-    font-size: 25px; /* Ajusta el tamaño del ícono */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Agrega sombra al ícono */
-    transition: transform 0.3s ease, color 0.3s ease; /* Transición suave en hover */
+    color: #b49b47; 
+    font-size: 25px; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+    transition: transform 0.3s ease, color 0.3s ease; 
 }
 
 
 
 /* Estilo para el ícono de cerrar sesión */
 .nav-item .nav-link i.fas.fa-power-off {
-    color: #ffffff; /* Cambia el color del ícono a rojo */
-    font-size: 25px; /* Ajusta el tamaño del ícono */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Agrega sombra al ícono */
-    transition: transform 0.3s ease, color 0.3s ease; /* Transición suave en hover */
+    color: #ffffff; 
+    font-size: 25px; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+    transition: transform 0.3s ease, color 0.3s ease; 
 }
 
 /* dieño del logo del sidebar */
 .sidebar-logo {
-    position: absolute; /* Posición absoluta para ubicarlo al final */
-    width: 100%; /* Ancho completo del sidebar */
+    position: absolute; 
+    width: 100%; 
 
 }
     
 
 
 .logo-side {
-    max-width: 100%; /* Ancho máximo del logo */
-    height: auto; /* Mantiene la relación de aspecto */
-    vertical-align: middle; /* Alinea verticalmente el logo */
+    max-width: 100%; 
+    height: auto; 
+    vertical-align: middle; 
 }
+
 
 
 /* diseño logo data table */
 .logo-container {
-    text-align: center; /* Centra el contenido horizontalmente */
-    margin-bottom: 00px; /* Espacio debajo del logo para separación */
+    text-align: center; 
+    margin-bottom: 00px; 
 }
 
 /* Estilo para la imagen del logo */
 .logo-img {
-    max-width: 20%; /* Ajusta el tamaño máximo del logo para que no se desborde */
+    max-width: 10%; 
     
+    height: auto;
+     
+}
+@media (max-width: 600px) {
+    .logo-img {
+        max-width: 80%;
+    }
+}
+
+@media (max-width: 400px) {
+    .logo-img {
+        max-width: 60%;
+    }
 }
 
 /* ESTILO DEL FONDO DEL CONTENT */
 .content-wrapper {
-    background-image: url("/static/img/s.jpg");
+    background-image: url("/static/img/llave.jpg");
     background-size: cover;
     background-repeat: no-repeat;
 }
 
 
 .main-header.navbar {
-    height: 80px; /* Cambia este valor según el tamaño deseado */
-    padding: 0 15px; /* Ajusta el espaciado interno según sea necesario */
+    height: 80px; 
+    padding: 0 15px; 
 }
 
 /* Centrar el contenido verticalmente dentro del header */
 .main-header .navbar-nav {
-    align-items: center; /* Centra los elementos verticalmente */
+    align-items: center; 
 }
 
 /* Ajustar el ícono para que se alinee verticalmente */
 .main-header .nav-link i {
+<<<<<<< HEAD
     font-size: 1.5rem; /* Ajusta el tamaño del ícono si es necesario */
     line-height: 1; /* Asegúrate de que el ícono esté alineado correctamente */
 }
+=======
+    font-size: 1.5rem; 
+    line-height: 1; 
+}
+
+/* Estilo barra baja*/
+.main-footer{
+    background-color: #4e4e4e;
+    border-color:#1f1e1e;
+    color: #fff;
+
+}
+
+
+/* Estilo del side bar*/
+
+.request.user.username{
+    color: #ffffff; 
+
+}   
+
+  .sidebar{
+    background-color:#1f5a96;
+}
+.main-sidebar{
+    background-color:#1f5a96;
+}
+
+.info {
+    color: #ffffff; 
+    font-size: 20px; 
+}
+.nav-link:hover p {
+    color: #000000;
+    font-size: 20px; 
+}
+.nav-icon {
+    color: #ffffff; 
+    font-size: 20px; 
+}
+.nav-link p {
+    color: #ffffff; 
+    font-size: 18px; 
+}
+
+/* barra lectora */
+
+.reader-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.4); 
+    z-index: 9999;
+    pointer-events: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reader-bar-content {
+    padding: 10px;
+    font-size: 16px;
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: inline-block;
+}
+
+.page-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 9998;
+    pointer-events: none;
+}
+
+/* <!-- Estilo del Detalle de la Compra --> */
+
+    .encabezado {
+        
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .logo {
+        background-color:#1f5a96;
+        width: 150px;
+        height: 100px;
+        border-radius: 15px;
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+        margin-right: 15px;
+    }
+
+    .detalles {
+        text-align: left;
+        padding: 10px;
+        margin: 5px 0;
+        color: #555;
+    }
+
+    .detalles h4 {
+        margin: 5px 0;
+    }
+
+    .botones {
+
+        display: flex;
+        justify-content: left;
+        gap: 10px;
+    }
+    .btn btn-success, btn btn-primary {
+
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    /* <!-- Estilo del Detalle de la venta --> */
+
+    .encabezado {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .logo {
+        background-color:#1f5a96;
+        width: 150px;
+        width: 150px;
+        height: 100px;
+        border-radius: 15px;
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+        margin-right: 15px;
+    }
+
+    .detalles {
+        text-align: left;
+        padding: 10px;
+        margin: 5px 0;
+        color: #555;
+    }
+
+    .detalles h4 {
+        margin: 5px 0;
+    }
+
+    .botones {
+
+        display: flex;
+        justify-content: left;
+        gap: 10px;
+    }
+    .btn btn-success, btn btn-primary {
+
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+>>>>>>> 963fbbb03e6c68e8e6f40b4abe535ae2b6d085c7

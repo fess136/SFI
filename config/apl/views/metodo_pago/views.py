@@ -128,7 +128,7 @@ class MetodoDeleteView(DeleteView):
         except ProtectedError:
 
             messages.error(request, 'No se ha logrado eliminar la unidad de medida')
-            return redirect(self.success_url + f'?pk={self.kwargs.get('pk')}')
+            return redirect(self.success_url + f'?pk={self.kwargs.get("pk")}')
 
         except Exception as e:
             

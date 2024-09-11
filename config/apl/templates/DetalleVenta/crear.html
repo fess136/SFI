@@ -1,1 +1,32 @@
 {% extends 'form.html' %}
+<!-- este codigo es para colocar el precio unitario en su respectivo campo
+     segun el producto que se este seleccionando -->
+     {% block codigo %}
+
+     <script>
+     $(document).ready(function() {
+         
+         $('#id_producto').on('change', function(){
+             var id = $(this).val();
+             if(id){
+ 
+                 $.ajax({
+                     url: '{% url "apl:obtener_precio" %}',
+                     data: {
+                         id: id,
+                     },
+                     dataType: 'json',
+                     success: function(data){
+                         $('#id_precio_unitario').val(data.precio)
+                     }
+                 })
+             } else {
+ 
+                 $('#id_precio_unitario').val('')
+             }
+         })
+     })
+ 
+ </script>
+
+ {% endblock %}

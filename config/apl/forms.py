@@ -99,7 +99,16 @@ class VentaForm(ModelForm):
 
     class Meta:
         model = Ventas
-        fields = ['cliente', 'metodo_pago', 'usuario']
+        fields = ['usuario', 'cliente', 'metodo_pago']
+
+    def __init__(self, *args, **kwargs):
+
+        self.usuario = kwargs.pop('usuario',None)
+
+        super().__init__(*args, **kwargs)
+        self.fields['usuario'].initial = self.usuario
+        self.fields['usuario'].disabled = True
+        
 
 class ProductosForm(ModelForm):
 
@@ -158,46 +167,44 @@ class ProveedorForm(ModelForm):
         fields = '__all__'    
 
 class CompraForm(ModelForm):
+    
+
 
     class Meta:
 
         model = Compras
-        fields = ['metodo_pago', 'proveedor', 'usuario']
+        fields = ['usuario', 'metodo_pago', 'proveedor']
+    
+    def __init__(self, *args, **kwargs):
+
+        self.usuario = kwargs.pop('usuario',None)
+
+        super().__init__(*args, **kwargs)
+        self.fields['usuario'].initial = self.usuario
+        self.fields['usuario'].disabled = True
+
+
 
 class DetalleCompraForm(ModelForm):
 
     class Meta:
         
         model = DetalleCompra
-        fields = ['compra', 'cantidad', 'producto']
+        fields = ['compra', 'cantidad', 'producto', 'precio_unitario']
 
     def __init__(self, *args, **kwargs):
 
         self.id_compra = kwargs.pop('id_compra', None)
-
-        #Retorna Verdadero si se esta editando un detalle de compra y si se esta agregando un nuevo detalle de compra Retorna Falso
-        self.edicion = kwargs.pop('hay_edicion', None)
         
         super().__init__(*args, **kwargs)
 
         self.fields['compra'].initial = self.id_compra
         self.fields['compra'].disabled = True
+
         
     def clean_fixed_value(self):
         return self.id_compra
     
-    def clean(self):
-
-        campos = super().clean()
-
-        id = campos.get('compra')
-        producto = campos.get('producto')
-
-        if id and producto and not self.edicion:
-            if DetalleCompra.objects.filter(compra = id, producto = Productos.objects.get(nombre = producto).id).exists():
-
-                self.add_error("producto", f"{producto} ya existe en esta compra, ya puede ser editado en la tabla")
-
 class DetalleVentaForm(ModelForm):
 
     class Meta:
@@ -208,8 +215,9 @@ class DetalleVentaForm(ModelForm):
     def __init__(self, *args, **kwargs):
         
         self.id_venta = kwargs.pop("id_venta",  None)
+        self.id_detalle = kwargs.pop('id', None)
 
-        self.edicion = kwargs.pop('hay_edicion', None) if kwargs.pop('hay_edicion', None) else False
+        self.edicion = kwargs.pop('hay_edicion', None)
 
         super().__init__(*args, **kwargs)
 
@@ -227,12 +235,21 @@ class DetalleVentaForm(ModelForm):
         cantidad = campos.get('cantidad')
         producto = campos.get('producto')
 
-        if id and producto and not self.edicion:
+        # si es para agregar un nuevo detalle de venta se hace la validacion para que no se repita el producto
+        if not self.edicion:
             if DetalleVenta.objects.filter(venta = id, producto = Productos.objects.get(nombre = producto).id).exists():
 
                 self.add_error("producto", f"{producto} ya existe en esta compra, ya puede ser editado en la tabla")
+
+        # pero si se esta editando valida que no se ingrese un producto que ya habia sido ingresado a excepcion del que se habia
+        # registrado en ese detalle de venta
+        elif self.edicion and producto != DetalleVenta.objects.get(id = self.id_detalle).producto:
+
+            if DetalleVenta.objects.filter(venta = id, producto = Productos.objects.get(nombre = producto).id).exists():
+
+                self.add_error("producto", f"{producto} ya existe en este detalle de venta")
+
         
-        print(Productos.objects.get(nombre = producto).cantidad)
         if cantidad > Productos.objects.get(nombre = producto).cantidad:
 
             

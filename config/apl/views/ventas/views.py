@@ -19,7 +19,7 @@ class VentasListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Ventas"
         context['crear_url'] = reverse_lazy('apl:crear_venta')
-        context['obj_relacionados'] = ', '.join([i.__str__() for i in Ventas.objects.get(id = self.request.GET.get('pk')).detalleventa_set.all()]) if self.request.GET.get('pk') else None
+        context['obj_relacionados'] = [i.__str__() for i in Ventas.objects.get(id = self.request.GET.get('pk')).detalleventa_set.all()] if self.request.GET.get('pk') else None
         context['entidad'] = "Ventas"
         context['hay_ventas_pendientes'] = Ventas.objects.filter(finalizado = False)
         return context
@@ -39,7 +39,12 @@ class VentaCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Venta"
         return context
-
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['usuario'] = self.request.user
+        return kwargs
+    
     def form_valid(self, form):
         response = super().form_valid(form)
         self.object = form.save()

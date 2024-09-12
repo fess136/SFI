@@ -23,7 +23,7 @@ class LoginFormView(LoginView):
                user = authenticate(request, username=username, password=password)
                if user is not None:
                     login(request, user)
-                    return redirect('apl:listar_tipo')  # Redirige a la página de inicio después del login
+                    return redirect('dashboard')  # Redirige a la página de inicio después del login
                else:
                     form.add_error(None, 'Nombre de usuario o contraseña incorrectos')
           else:

@@ -29,6 +29,7 @@ from django.urls import path ,include
 from login.views import *
 from inicio.views import indexView
 from django.contrib.auth import views as auth_views
+from dashboard.views import *
 
 from apl.views import *
 
@@ -36,6 +37,7 @@ urlpatterns = [
 
     path('', indexView.as_view(), name='index'),
     path('login', include('login.urls')),
+    path('dashboard',dashView.as_view(), name='dashboard'),
     path('admin/', admin.site.urls),
     path("apl/", include("apl.urls")),
     

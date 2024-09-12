@@ -5,12 +5,29 @@
 
     {% if messages and obj_relacionados %}
     <div class="alert alert-danger alert-dismissible">
-        <button type ="button" class ="close" data-dismiss="alert" aria-hidden="true">x</button>
-        <h3><i class = "fas fa-ban"></i>Error</h3>
-        <h5>
-            El registro que se intentó eliminar está relacionado con los siguientes registros: <br>
-            {{obj_relacionados}}
-        </h5>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h3><i class="fas fa-ban"></i> Error</h3>
+        <div class="content-truncate" id="alert-content">
+            <h5>
+                El registro que se intentó eliminar está relacionado con los siguientes registros:
+                <ul>
+                    {% for i in obj_relacionados %}
+
+                        {% if forloop.counter <= 3 %}
+                            <li>{{i}}</li>
+                        {% else %}
+                            <div id='contenedor-error'>
+                                <li>{{i}}</li>
+                            </div>
+                        {% endif %}
+
+                    {% endfor %}
+                </ul>
+                {% if obj_relacionados|length > 3 %}
+                    <button class = "btn btn-danger" id = "opciones">Mas información</button>
+                {% endif %}
+            </h5>
+        </div>
     </div>
     {% endif %}
 
@@ -19,13 +36,26 @@
         <div class="alert alert-info alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
             <h3><i class="fas fa-bullhorn"></i> <strong>¡Alerta!</strong></h3>
-            <h5>Las siguientes compras estan pendientes:    <br>
-            {% for i in hay_compras_pendientes %}
+            <h5>Las siguientes compras estan pendientes:</h5>
+            
+                <h5>
+                    <ul>
+                    {% for i in hay_compras_pendientes %}
 
-                Compra #{{i.id}}<br>
-
-            {% endfor %}
-            </h5>
+                        {% if forloop.counter <= 3 %}
+                            <li>Compra #{{i.id}}</li>
+                        {% else %}
+                        <div id = "contenido">
+                            <li>Compra #{{i.id}}</li>
+                        </div>
+                        {% endif %}
+                        
+                    {% endfor %}
+                    </ul>
+                </h5>
+            {% if hay_compras_pendientes|length > 3 %}
+            <a href="#" onclick="contenido()" class = "opcion">Mas información</a>
+            {% endif %}
         </div>
 
     {% endif %}
@@ -37,6 +67,7 @@
     <th scope="col">#</th>
     <th scope="col">Fecha de compra</th>
     <th scope="col">Metodo de pago</th>
+    <th >Usuario</th>
     <th scope="col">Proveedor</th>
     <th scope="col">Estado</th>
     <th scope="col">Opciones</th>
@@ -51,6 +82,7 @@
     <td>{{c.id}}</td>
     <td>{{c.fecha_compra}}</td>
     <td>{{c.metodo_pago}}</td>
+    <td>{{c.usuario}}</td>
     <td>{{c.proveedor}}</td>
     {% if c.finalizado %}
         <td>Finalizado</td>

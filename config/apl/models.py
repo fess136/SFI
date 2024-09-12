@@ -11,9 +11,9 @@ from django.dispatch import receiver
 
 def validacion_telefono(value):
 
-    if len(str(value)) != 10:
+    if len(str(value)) < 7 or len(str(value)) > 13:
 
-        raise ValidationError("se deben ingresar 10 digitos")
+        raise ValidationError("debes ingresar como minimo 7 digitos y maximo 13")
     
 def validacion_numeros_negativos(value):
 
@@ -122,7 +122,7 @@ class Unidad_Medida(models.Model):
 class Proveedores(models.Model):
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
     apellido = models.CharField(max_length=50, verbose_name="Apellido")
-    nit = models.CharField(max_length = 20, unique = True, verbose_name = "Nit/Cedula")
+    nit = models.CharField(max_length = 20, unique = True, verbose_name = "Nit/Cedula", validators=[validacion_telefono])
     ubicacion = models.CharField(max_length = 255, verbose_name = "Ubicacion")
     telefono = models.PositiveIntegerField( verbose_name = "Telefono")
     correo_electronico = models.EmailField(max_length=100, verbose_name = "Correo Electronico")
@@ -191,7 +191,8 @@ class Administradores(models.Model):
             raise ValidationError({"conf_contrasena": "Las contraseñas no coinciden"})
 
     def __str__(self):
-        return self.nombre
+
+        return str(self.user)
 
     class Meta:
         verbose_name = "Administrador"
@@ -262,11 +263,11 @@ class Compras(models.Model):
     fecha_compra =models.DateField(verbose_name="Fecha De Compra",auto_now=True)
     metodo_pago =models.ForeignKey(Metodo_Pago,on_delete=models.PROTECT)
     proveedor = models.ForeignKey(Proveedores,on_delete=models.PROTECT)
-    usuario = models.ForeignKey(Administradores, on_delete=models.PROTECT, null=True)
+    usuario = models.CharField(max_length=100, verbose_name='Usuario', null = True)
     finalizado = models.BooleanField(default=False, null=True)
 
     def __str__(self):
-        return f"Compra #{self.id}"
+        return str(self.id)
     
     class Meta:
         verbose_name ="Compra"
@@ -277,6 +278,7 @@ class DetalleCompra(models.Model):
 
     compra = models.ForeignKey(Compras, on_delete=models.PROTECT, default=1)
     cantidad = models.PositiveIntegerField(verbose_name="Cantidad", validators=[validacion_numeros_negativos], null=True)
+    precio_unitario = models.PositiveIntegerField(verbose_name='Precio unitario', null=True)
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
 
     def __str__(self):
@@ -284,22 +286,17 @@ class DetalleCompra(models.Model):
         return f"Detalle de Compra: #{self.id}"
     
 
-    def precio(self):
-
-        return Productos.objects.get(id=DetalleCompra.objects.get(id=self.id).producto.id).precio
-    
-
     def Total(self):
 
         if str(Productos.objects.get(id = self.producto.id).tipo) == "Construcción":
 
-            return (self.producto.precio + Decimal((19 * int(self.producto.precio)) / 100)) * self.cantidad
+            return (self.precio_unitario + Decimal((19 * int(self.precio_unitario)) / 100)) * self.cantidad
         
         return self.Subtotal()
     
     def Subtotal(self):
 
-        return self.precio() * self.cantidad
+        return self.precio_unitario * self.cantidad
     
     def Iva(self):
 
@@ -312,13 +309,13 @@ class DetalleCompra(models.Model):
 
 class Ventas(models.Model):
     fecha_venta=models.DateTimeField(verbose_name="Fecha De Venta",auto_now=True)
-    usuario = models.ForeignKey(Administradores, on_delete=models.PROTECT, null=True)
+    usuario = models.CharField(max_length=100, verbose_name='Usuario')
     cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
     metodo_pago = models.ForeignKey(Metodo_Pago, on_delete=models.PROTECT, null=True, verbose_name="Metodo de Pago")
     finalizado = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"Venta: #{self.id}"
+        return str(self.id)
     class Meta:
         verbose_name ="Venta"
         verbose_name_plural ="Ventas"
@@ -326,30 +323,27 @@ class Ventas(models.Model):
 
 class DetalleVenta(models.Model):
 
-    venta = models.ForeignKey(Ventas, on_delete=models.CASCADE)
-    producto = models.ForeignKey(Productos, on_delete=models.CASCADE)
+    venta = models.ForeignKey(Ventas, on_delete=models.PROTECT)
+    producto = models.ForeignKey(Productos, on_delete=models.PROTECT)
+    precio_unitario = models.PositiveIntegerField(verbose_name='Precio unitario', null=True)
     cantidad = models.PositiveIntegerField(validators=[validacion_numeros_negativos], verbose_name="Cantidad")
 
     def __str__(self):
 
         return f'Detalle de venta #{self.id}'
-
-    def precio(self):
-
-        return self.producto.precio
     
 
     def Total(self):
 
         if str(Productos.objects.get(id = self.producto.id).tipo) == "Construcción":
 
-            return (self.producto.precio + Decimal((19 * int(self.producto.precio)) / 100)) * self.cantidad
+            return (self.precio_unitario + Decimal((19 * int(self.precio_unitario)) / 100)) * self.cantidad
         
         return self.Subtotal()
     
     def Subtotal(self):
 
-        return self.precio() * self.cantidad
+        return self.precio_unitario * self.cantidad
     
     def Iva(self):
 

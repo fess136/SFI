@@ -22,7 +22,7 @@ class ComprasListView(ListView):
         context['crear_url'] = reverse_lazy('apl:crear_compra')
         context['entidad'] = "Compras"
         context['hay_compras_pendientes'] = Compras.objects.filter(finalizado = False)
-        context['obj_relacionados'] = ', '.join([i.__str__() for i in Compras.objects.get(id = self.request.GET.get('pk')).detallecompra_set.all()]) if self.request.GET.get('pk') else None
+        context['obj_relacionados'] = [i.__str__() for i in Compras.objects.get(id = self.request.GET.get('pk')).detallecompra_set.all()] if self.request.GET.get('pk') else None
         return context
 
     @method_decorator(login_required)
@@ -45,6 +45,11 @@ class CompraCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Compra"
         return context
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['usuario'] = self.request.user
+        return kwargs
     
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -82,6 +87,7 @@ class CompraUpdateView(UpdateView):
         context['titulo'] = "Actualizar Compra"
         context['crear_url'] = reverse_lazy('apl:listar_compra')
         return context
+    
     def form_valid(self, form):
         response = super().form_valid(form)
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':

@@ -2,26 +2,67 @@
 {% load humanize %}
 
 {% block alertas %}
+    {% if messages and obj_relacionados %}
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h3><i class="fas fa-ban"></i> Error</h3>
+        <div class="content-truncate" id="alert-content">
+            <h5>
+                El registro que se intentó eliminar está relacionado con los siguientes registros:
+                <ul>
+                    {% for i in obj_relacionados %}
 
+                        {% if forloop.counter <= 3 %}
+                            <li>{{i}}</li>
+                        {% else %}
+                            <div id='contenedor-error'>
+                                <li>{{i}}</li>
+                            </div>
+                        {% endif %}
+
+                    {% endfor %}
+                </ul>
+                {% if obj_relacionados|length > 3 %}
+                    <button class = "btn btn-danger" id = "opciones">Mas información</button>
+                {% endif %}
+            </h5>
+        </div>
+    </div>
+    {% endif %}
     {% if hay_ventas_pendientes %}
+
         <div class="alert alert-info alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h5><i class="fas fa-bullhorn"></i> <strong>¡Alerta!</strong></h5>
-            Las siguientes Ventas estan pendientes:    <br>
-            {% for i in hay_ventas_pendientes %}
+            <h3><i class="fas fa-bullhorn"></i> <strong>¡Alerta!</strong></h3>
+            <h5>Las siguientes compras estan pendientes:</h5>
+            
+                <h5>
+                    <ul>
+                    {% for i in hay_ventas_pendientes %}
 
-                Venta #{{i.id}}<br>
-
-            {% endfor %}
+                        {% if forloop.counter <= 3 %}
+                            <li>Venta #{{i.id}}</li>
+                        {% else %}
+                        <div id = "contenido">
+                            <li>Venta #{{i.id}}</li>
+                        </div>
+                        {% endif %}
+                        
+                    {% endfor %}
+                    </ul>
+                </h5>
+            {% if hay_ventas_pendientes|length > 3 %}
+            <a href="#" onclick="contenido()" class = "opcion">Mas información</a>
+            {% endif %}
         </div>
-    
+
     {% endif %}
 {% endblock %}
 {% block columnas %}
 <tr>
     <th scope="col" style="width: 10%;">#</th>
     <th scope="col" style="width: 50%;">Fecha de Venta</th> 
-    <th scope="col" style="width: 60%;">Empleado</th>
+    <th scope="col" style="width: 60%;">Usuario</th>
     <th scope="col" style="width: 60%;">Cliente</th>
     <th scope="col">Estado</th>
     <th scope="col" style="width: 100%;">Opciones</th>
@@ -35,7 +76,7 @@
 <tr>
     <td>{{c.id}}</td>
     <td>{{c.fecha_venta}}</td>
-    <td>{{c.empleado}}</td>
+    <td>{{c.usuario}}</td>
     <td>{{c.cliente}}</td>
     {% if c.finalizado %}
         <td>Finalizado</td>

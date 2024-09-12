@@ -270,6 +270,12 @@ color: #ECF0F1;
 
 
 
+.Dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+
 /* Diseño boton de accesibilidad */
 
 /* Estilo del cuadro desplegable */
@@ -551,3 +557,13 @@ color: #ECF0F1;
         padding: 10px 20px;
         font-size: 16px;
     }
+    #contenido{
+
+        display: none;
+    }
+    #contenedor-error{
+
+        display: none;
+
+    }
+

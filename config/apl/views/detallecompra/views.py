@@ -1,6 +1,7 @@
 from django.db.models.query import QuerySet
 from django.http import JsonResponse
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
+from django.core.serializers.json import DjangoJSONEncoder
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -28,6 +29,17 @@ class DetalleCompraCreateView(CreateView):
         context['titulo'] = "Crear Detalle de Compra"
         context['crear_url'] = self.get_success_url() 
         return context
+    
+    def obtener_precio(request):
+
+        id_producto = request.GET.get('id')
+        try:
+            producto = Productos.objects.get(id = id_producto)
+            data = {'precio': int(producto.precio)}
+            return JsonResponse(data, encoder=DjangoJSONEncoder)
+        except Productos.DoesNotExist:
+
+            return JsonResponse({'error', 'Producto no encontrado'}, status=404)
     
     def form_valid(self, form):
         response = super().form_valid(form)

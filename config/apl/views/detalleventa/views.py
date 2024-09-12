@@ -118,6 +118,12 @@ class DetalleVentaUpdateView(UpdateView):
                 'status': 'error',
                 'errors': errors
             }, status=400)
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['hay_edicion'] = True
+        kwargs['id'] = self.kwargs.get('pk')
+        return kwargs
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
@@ -132,6 +138,10 @@ class DetalleVentaDeleteView(DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Eliminar Detalle de Venta"
+
+    def get_success_url(self):
+        
+        return reverse_lazy('apl:listar_detalleventa', args=[DetalleVenta.objects.get(id = self.kwargs.get('pk')).venta])
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 

@@ -83,6 +83,9 @@
         <div class="logo-container">
             <img src="{% static 'img/logosfi.png' %}" alt="Logo" class="logo-img">
         </div>
+
+        
+
         <table id="tabla" class="table table-bordered table-striped">
             <thead>
                 {% block columnas %}
@@ -117,14 +120,16 @@
                 {% block filtro_form_contenido %}
                 {% endblock %}
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" onclick="applyFilters()">Filtrar</button>
-                <button type="button" class="btn btn-danger" onclick="clearFilters()">Limpiar Filtros</button>
+            <div class="modal-footer justify-content-start"> <!-- Alineación a la izquierda -->
+                <!-- Cambia los estilos de los botones -->
+                <button type="button" class="btn btn-secondary btn-lg rounded-pill" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary btn-lg rounded-pill ml-2" onclick="applyFilters()">Filtrar</button>
+                <button type="button" class="btn btn-danger btn-lg rounded-pill ml-2" onclick="clearFilters()">Limpiar Filtros</button>
             </div>
         </div>
     </div>
 </div>
+
 {% endblock %}
 
 {% block javascript %}

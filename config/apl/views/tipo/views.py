@@ -1,5 +1,3 @@
-from typing import Any
-
 from django.http import JsonResponse
 from apl.forms import TipoForm
 from django.utils.decorators import method_decorator
@@ -12,6 +10,7 @@ from django.db.models import ProtectedError
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect
 from apl.models import *
+from apl.forms import TipoForm
 
 
 
@@ -168,5 +167,21 @@ class TipoListView(ListView):
         context['entidad'] = 'Tipos'
 
         return context
-   
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        # Obtiene los parámetros de consulta de la URL
+        id = self.request.GET.get('id')
+        nombre = self.request.GET.get('nombre')
+        estado = self.request.GET.get('estado')
+
+        # Filtra los resultados según los parámetros proporcionados
+        if id:
+                queryset = queryset.filter(id=id)
+        if nombre:
+                queryset = queryset.filter(nombre__icontains=nombre)  # Filtra por nombre, búsqueda no sensible a mayúsculas/minúsculas
+                print(self.request.GET.get('nombre'))
+        if estado:
+                queryset = queryset.filter(estado__iexact=estado)  # Filtra por estado
+        return queryset
 

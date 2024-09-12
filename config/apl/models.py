@@ -309,7 +309,7 @@ class DetalleCompra(models.Model):
 
 class Ventas(models.Model):
     fecha_venta=models.DateTimeField(verbose_name="Fecha De Venta",auto_now=True)
-    usuario = models.CharField(max_length=100, verbose_name='Usuario', null=True)
+    usuario = models.CharField(max_length=100, verbose_name='Usuario')
     cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
     metodo_pago = models.ForeignKey(Metodo_Pago, on_delete=models.PROTECT, null=True, verbose_name="Metodo de Pago")
     finalizado = models.BooleanField(default=False)

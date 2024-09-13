@@ -85,7 +85,7 @@ class VentaUpdateView(UpdateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success', 'id': self.object.id, 'es_compra': True})
+            return JsonResponse({'status': 'success'})
         return response
 
     def form_invalid(self, form):

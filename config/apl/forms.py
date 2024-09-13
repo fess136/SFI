@@ -237,7 +237,7 @@ class DetalleVentaForm(ModelForm):
 
         # si es para agregar un nuevo detalle de venta se hace la validacion para que no se repita el producto
         if not self.edicion:
-            if DetalleVenta.objects.filter(venta = id, producto = Productos.objects.get(nombre = producto).id).exists():
+            if DetalleVenta.objects.filter(venta = id, producto = Productos.objects.get(id= producto.id).id).exists():
 
                 self.add_error("producto", f"{producto} ya existe en esta compra, ya puede ser editado en la tabla")
 
@@ -245,12 +245,12 @@ class DetalleVentaForm(ModelForm):
         # registrado en ese detalle de venta
         elif self.edicion and producto != DetalleVenta.objects.get(id = self.id_detalle).producto:
 
-            if DetalleVenta.objects.filter(venta = id, producto = Productos.objects.get(nombre = producto).id).exists():
+            if DetalleVenta.objects.filter(venta = id, producto = producto.id).exists():
 
                 self.add_error("producto", f"{producto} ya existe en este detalle de venta")
 
         
-        if cantidad > Productos.objects.get(nombre = producto).cantidad:
+        if cantidad > Productos.objects.get(id = producto.id).cantidad:
 
             
             self.add_error("cantidad", f"Quieres vender {cantidad} productos pero solo hay {Productos.objects.get(nombre = producto).cantidad} productos en stock")

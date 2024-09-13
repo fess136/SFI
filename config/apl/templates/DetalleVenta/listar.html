@@ -2,43 +2,102 @@
 {% load humanize %}
 {% load static %}
 
-<!-- Detalle de la Compra -->
+{% block alertas %}
+<div class="alert alert-danger alert-dismissible" id = "alerta">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <h3><i class="fas fa-ban"></i> Error</h3>
+    <div class="content-truncate" id="alert-content">
+        <h5>
+            Los siguientes productos superaron el limíte de productos que hay en el inventario:
+            <ul id = 'lista_errores'>
+            </ul>
+        </h5>
+    </div>
+</div>
+{% endblock %}
+<!-- Detalle de la Venta -->
 {% block Detalle %}
 <!-- Script del SweetAlert para la confirmacion de la finalizacion de la compra -->
 <script>
-    $(document).ready(function() {
-                $('#finalizar').click(function() {
-                    Swal.fire({
-                        title: "¿Estas Seguro(a) que deseas finalizar la compra?",
-                        text: "Despues de finalizar, no podras realizar mas cambios en la compra",
-                        showDenyButton: true,
-                        confirmButtonText: "Si, Finalizar",
-                        denyButtonText: `Cancelar`
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Enviar una solicitud POST
-                            $.ajax({
-                                type: 'POST',
-                                data: {
-                                    'csrfmiddlewaretoken': '{{ csrf_token }}', 
-                                    'accion': 'finalizar' 
-                                },
-                                success: function(response) {
-                                    Swal.fire("¡Compra Finalizada!", "", "success").then(() => {
-                                        // Redirigir si es necesario
-                                        window.location.href = "{% url 'apl:listar_venta' %}";
-                                    });
-                                },
-                                error: function(xhr, status, error) {
-                                    Swal.fire("Error", `No se pudo registrar la Compra ${error}`, "error");
-                                }
+$(document).ready(function() {
+    $('#finalizar').click(function() {
+        Swal.fire({
+            title: "¿Estás seguro(a) que deseas finalizar la compra?",
+            text: "Después de finalizar, no podrás realizar más cambios en la compra",
+            showDenyButton: true,
+            confirmButtonText: "Sí, Finalizar",
+            denyButtonText: `Cancelar`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar una solicitud POST
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}', 
+                        'accion': 'finalizar' 
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            Swal.fire("¡Venta Finalizada!", "", "success").then(() => {
+                                // Redirigir si es necesario
+                                window.location.href = "{% url 'apl:listar_venta' %}";
                             });
+                        } else {
+                            // Manejar otros tipos de respuestas si es necesario
+                            Swal.fire("Error", "Ocurrió un error inesperado", "error");
                         }
-                    });
+                    },
+                    error: function(xhr, status, error) {
+                        if (xhr.status === 400 && xhr.responseJSON) {
+                            $('#alerta').css('display', 'block')
+                            // Manejar ValidationError
+                            Swal.fire("Error de Validación", 'No se logro finalizar la venta', "error");
+
+                            let listaErrores = $('#lista_errores');
+                            listaErrores.empty();
+                            listaErrores.append('<div id = "visible"></div>')
+
+                            if (xhr.responseJSON.message.split(',').length > 3){
+                                $('#alert-content').append('<button class = "btn btn-danger" id = "info">Mas información</button>')
+                                $('#lista_errores').append('<div id = "contenedor-oculto"></div>')
+                            }
+                            xhr.responseJSON.message.split(',').forEach((e, i) => {
+                                if(i < 3){
+
+                                    $('#visible').append(`<li>${e}</li>`);
+
+                                } else {
+
+                                    $('#contenedor-oculto').append(`<li>${e}</li>`);
+
+                                }
+                                
+                            });
+                                $(document).ready(function(){
+                                    $('#info').click(function(){
+                                        if($(this).text() == "Mas información"){
+                                            $('#contenedor-oculto').css('display', 'block')
+                                            $(this).text('Menos información')
+                                        } else if ($(this).text() == "Menos información"){
+                                            $('#contenedor-oculto').css('display', 'none')
+                                            $(this).text('Mas información')
+                                        }
+                                    })
+                                })
+                        } else {
+                            // Manejar otros errores
+                            Swal.fire("Error", `No se pudo registrar la Compra: ${error}`, "error");
+                        }
+                    }
                 });
-            });
-        
+            }
+        });
+    });
+
+});
     </script>
+
+
 <div class="encabezado">
     <div class="detalles">
         

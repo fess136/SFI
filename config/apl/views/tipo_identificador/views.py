@@ -27,7 +27,7 @@ class IdentificadorListView(ListView):
         context['titulo'] = "Tipos de Identificadores"
         context['crear_url'] = reverse_lazy('apl:crear_identificador')
         context['entidad'] = "Tipo de identificador"
-        context['obj_relacionados'] = ', '.join([i.__str__() for i in Tipo_identificador.objects.get(id = self.request.GET.get('pk')).clientes_set.all()]) if self.request.GET.get('pk') else None
+        context['obj_relacionados'] = [i.__str__() for i in Tipo_identificador.objects.get(id = self.request.GET.get('pk')).clientes_set.all()] if self.request.GET.get('pk') else None
         
         return context
 

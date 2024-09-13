@@ -27,8 +27,7 @@ class MetodosListView(ListView):
         #metodo de pago con otros registros
 
         MetodoPago = Metodo_Pago.objects.get(id = self.request.GET.get('pk')) if self.request.GET.get('pk') else None
-        context['obj_relacionados'] = ', '.join([i.__str__() for i in MetodoPago.compras_set.all()] + [i.__str__() for i in MetodoPago.ventas_set.all()]) if MetodoPago else None 
-        
+        context['obj_relacionados'] = [f"Compra #{i.__str__()}" for i in MetodoPago.compras_set.all()] + [f"Venta: {i.__str__()}"for i in MetodoPago.ventas_set.all()] if MetodoPago else None 
         context['entidad'] = "Metodos de pago"
         return context
 

@@ -29,22 +29,43 @@ class DetalleVentaDetailView(DetailView):
 
         return context
     
-    def post(self,  request, *args, **kwargs):
-
+    def post(self, request, *args, **kwargs):
         if request.POST.get('accion') == "finalizar":
+            try:
+                errores = []
+                for i in DetalleVenta.objects.filter(venta=self.kwargs.get('pk')):
+                    producto = Productos.objects.get(id=i.producto.id)
+                    
+                    if i.cantidad > producto.cantidad:
+                        errores.append(f"id: {producto.id} - Producto: {producto.nombre}")
+                        
+                if errores:
 
-            #Se queda la venta finalizada
-            Ventas.objects.filter(id = self.kwargs.get('pk')).update(finalizado = True)
+                    raise ValidationError(errores)
 
-            #se actualiza los productos en stock
+                # Se queda la venta finalizada
+                Ventas.objects.filter(id=self.kwargs.get('pk')).update(finalizado=True)
 
-            for i in DetalleVenta.objects.filter(venta = self.kwargs.get('pk')):
+                # se actualiza los productos en stock
+                for i in DetalleVenta.objects.filter(venta=self.kwargs.get('pk')):
+                    Productos.objects.filter(id=i.producto.id).update(
+                        cantidad=i.producto.cantidad - i.cantidad
+                    )
 
-                Productos.objects.filter(id = i.producto.id).update(cantidad = i.producto.cantidad - i.cantidad)
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({'status': 'success'})
+                else:
+                    return redirect('apl:listar_venta')
 
-            return redirect('apl:listar_venta')
-        
-        return redirect('apl:listar_detalleventa', args = [self.kwargs.get('pk')])
+            except ValidationError as e:
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({'status': 'error', 'message': ', '.join(e)}, status=400)
+                
+            return redirect('apl:listar_detalleventa', args=[self.kwargs.get('pk')])
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
 @method_decorator(never_cache, name='dispatch')
 class DetalleVentaCreateView(CreateView):

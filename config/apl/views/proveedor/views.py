@@ -25,7 +25,7 @@ class ProveedorListView(ListView):
         context['titulo'] = "Proveedores"
         context['crear_url'] = reverse_lazy('apl:crear_proveedor')
         context['entidad'] = "Proveedores"
-        context['obj_relacionados'] = ', '.join([i.__str__() for i in Proveedores.objects.get(id = self.request.GET.get('pk')).compras_set.all()]) if self.request.GET.get('pk') else None
+        context['obj_relacionados'] = [i.__str__() for i in Proveedores.objects.get(id = self.request.GET.get('pk')).compras_set.all()] if self.request.GET.get('pk') else None
         return context
 
     @method_decorator(login_required)

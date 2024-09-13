@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from apl.forms import ProductosForm
+from apl.forms import ProductosForm, TipoForm
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -24,7 +24,7 @@ class ProductoListView(ListView):
         context['titulo'] = "Productos"
         context['crear_url'] = reverse_lazy('apl:crear_producto')
         Producto = Productos.objects.get(id = self.request.GET.get('pk')) if self.request.GET.get('pk') else None
-        context['obj_relacionados'] = ', '.join([i.__str__() for i in Producto.detallecompra_set.all()] + [i.__str__() for i in Producto.detalleventa_set.all()]) if Producto else None
+        context['obj_relacionados'] = [i.__str__() for i in Producto.detallecompra_set.all()] + [i.__str__() for i in Producto.detalleventa_set.all()] if Producto else None
         context['entidad'] = "Productos"
         return context
     
@@ -88,6 +88,7 @@ class ProductoCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Producto"
         context['crear_url'] = self.success_url
+        context['Tipo'] = TipoForm()
         return context
 
     def form_valid(self, form):

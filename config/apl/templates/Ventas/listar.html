@@ -14,13 +14,16 @@
 
                         {% if forloop.counter <= 3 %}
                             <li>{{i}}</li>
-                        {% else %}
-                            <div id='contenedor-error'>
-                                <li>{{i}}</li>
-                            </div>
                         {% endif %}
 
                     {% endfor %}
+                    <div id='contenedor-error'>
+                        {% for i in obj_relacionados %}
+                            {% if forloop.counter > 3 %}
+                            <li>{{i}}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </ul>
                 {% if obj_relacionados|length > 3 %}
                     <button class = "btn btn-danger" id = "opciones">Mas información</button>
@@ -34,7 +37,7 @@
         <div class="alert alert-info alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
             <h3><i class="fas fa-bullhorn"></i> <strong>¡Alerta!</strong></h3>
-            <h5>Las siguientes compras estan pendientes:</h5>
+            <h5>Las siguientes ventas estan pendientes:</h5>
             
                 <h5>
                     <ul>
@@ -42,13 +45,16 @@
 
                         {% if forloop.counter <= 3 %}
                             <li>Venta #{{i.id}}</li>
-                        {% else %}
-                        <div id = "contenido">
-                            <li>Venta #{{i.id}}</li>
-                        </div>
                         {% endif %}
                         
                     {% endfor %}
+                    <div id = "contenido">
+                        {% for i in hay_ventas_pendientes %}
+                            {% if forloop.counter > 3 %}
+                                <li>Venta #{{i.id}}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                     </ul>
                 </h5>
             {% if hay_ventas_pendientes|length > 3 %}

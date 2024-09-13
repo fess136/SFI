@@ -566,3 +566,13 @@ color: #ECF0F1;
 
     }
 
+    #contenedor-oculto{
+
+        display: none; 
+
+    }
+
+    #alerta{
+        display: none;
+    }
+

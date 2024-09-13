@@ -28,7 +28,7 @@ class MedidasListView(ListView):
         context['titulo'] = "Unidades de Medida"
         context['crear_url'] = reverse_lazy('apl:crear_medida')
         context['entidad'] = "Medidas"
-        context['obj_relacionados'] = ', '.join([i.__str__() for i in Unidad_Medida.objects.get(id = self.request.GET.get('pk')).productos_set.all()]) if self.request.GET.get('pk') else None
+        context['obj_relacionados'] = [i.__str__() for i in Unidad_Medida.objects.get(id = self.request.GET.get('pk')).productos_set.all()] if self.request.GET.get('pk') else None
         return context
 
 @method_decorator(never_cache, name='dispatch')

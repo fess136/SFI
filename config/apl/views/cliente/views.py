@@ -21,7 +21,7 @@ class ClienteListView(ListView):
         context['titulo'] = "Clientes"
         context['crear_url'] = reverse_lazy('apl:crear_cliente')
         context['entidad'] = "Clientes"
-        context['obj_relacionados'] =', '.join([i.__str__() for i in Clientes.objects.get(id = self.request.GET.get('pk')).ventas_set.all()]) if self.request.GET.get('pk') else None
+        context['obj_relacionados'] =[i.__str__() for i in Clientes.objects.get(id = self.request.GET.get('pk')).ventas_set.all()] if self.request.GET.get('pk') else None
         return context
 
     @method_decorator(login_required)

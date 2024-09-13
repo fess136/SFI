@@ -164,7 +164,7 @@ class TipoListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Tipo"
         context['crear_url'] = reverse_lazy('apl:crear_tipo')
-        context['obj_relacionados'] = ', '.join([i.__str__() for i in Tipo.objects.get(id = self.request.GET.get('pk')).productos_set.all()]) if self.request.GET.get('pk') else None
+        context['obj_relacionados'] = [i.__str__() for i in Tipo.objects.get(id = self.request.GET.get('pk')).productos_set.all()] if self.request.GET.get('pk') else None
         context['entidad'] = 'Tipos'
 
         return context

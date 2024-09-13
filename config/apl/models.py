@@ -122,7 +122,7 @@ class Unidad_Medida(models.Model):
 class Proveedores(models.Model):
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
     apellido = models.CharField(max_length=50, verbose_name="Apellido")
-    nit = models.CharField(max_length = 20, unique = True, verbose_name = "Nit/Cedula", validators=[validacion_telefono])
+    nit = models.CharField(max_length = 20, unique = True, verbose_name = "Numero de identificación", validators=[validacion_telefono])
     ubicacion = models.CharField(max_length = 255, verbose_name = "Ubicacion")
     telefono = models.PositiveIntegerField( verbose_name = "Telefono")
     correo_electronico = models.EmailField(max_length=100, verbose_name = "Correo Electronico")
@@ -246,7 +246,7 @@ class Productos(models.Model):
         db_table = "Producto"
         
 class Metodo_Pago(models.Model):
-    nombre = models.CharField(max_length=150, verbose_name="Nombre")
+    nombre = models.CharField(max_length=150, verbose_name="Nombre", unique=True)
     
     def __str__(self):
         return self.nombre

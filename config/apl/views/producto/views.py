@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 
 import logging
+import re
 
 
 @method_decorator(never_cache, name='dispatch')
@@ -41,11 +42,17 @@ class ProductoListView(ListView):
         unidad_medida = self.request.GET.get('unidad_medida')
 
         if id:
-            queryset = queryset.filter(id=id)
+            if int(id) >= 1:  # Verifica que el número sea positivo
+                    queryset = queryset.filter(id=id)
+            else:
+                messages.error(self.request, "El ID debe ser un número positivo.")
 
         # Filtra por nombre del producto
         if nombre:
-            queryset = queryset.filter(nombre__icontains=nombre)
+            if re.match("^[A-Za-z0-9\s]+$", nombre):  # Solo letras, números y espacios
+                queryset = queryset.filter(nombre__icontains=nombre)
+            else:
+                messages.error(self.request, "El nombre no puede contener caracteres especiales")
 
         # Filtra por nombre de la marca (relación ForeignKey)
         if marcas:

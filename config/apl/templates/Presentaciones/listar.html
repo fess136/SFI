@@ -2,6 +2,21 @@
 {%block titulo%}
 listar presentaciones
 {%endblock%}
+
+{% block filtro_form_contenido %} 
+    <form method="GET" action="">
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input type="number" class="form-control" id="id" name="id" value="{{ request.GET.id }}">
+            <!--Campo para filtrar por ID -->
+        </div>
+        <div class="form-group">
+            <label for="descripcion">Nombre:</label>
+            <input type="text" name="descripcion" id="descripcion" class="form-control" value="{{ request.GET.descripcion }}">
+        </div>
+    </form>
+{%endblock%}
+
 {% block columnas %}
 <tr>
     <th scope="col" style="width: 10%;">#</th>

@@ -17,20 +17,45 @@ Listar Productos
     </div>
     <div class="form-group">
         <label for="marcas">Marcas:</label>
-        <input type="text" name="marcas" id="marcas" class="form-control" value="{{ request.GET.marcas }}">
+        <select name="marcas" id="marcas" class="form-control">
+            <option value="">Seleccione una marca</option>
+            {% for marca in marca %}
+                <option value="{{ marca.id }}" {% if request.GET.marca == marca.id|stringformat:"s" %}selected{% endif %}>{{ marca.nombre }}</option>
+            {% endfor %}
+        </select>
     </div>
+    
     <div class="form-group">
         <label for="tipo">Tipo:</label>
-        <input type="text" name="tipo" id="tipo" class="form-control" value="{{ request.GET.tipo }}">
+        <select name="tipo" id="tipo" class="form-control">
+            <option value="">Seleccione un tipo</option>
+            {% for tipo in tipo %}
+                <option value="{{ tipo.id }}" {% if request.GET.tipo == tipo.nombre|stringformat:"s" %}selected{% endif %}>{{ tipo.nombre }}</option>
+            {% endfor %}
+        </select>
     </div>
+    
     <div class="form-group">
-        <label for="presentacion">Presentacion:</label>
-        <input type="text" name="presentacion" id="presentacion" class="form-control" value="{{ request.GET.presentacion }}">
+        <label for="presentacion">Presentación:</label>
+        <select name="presentacion" id="presentacion" class="form-control">
+            <option value="">Seleccione una presentación</option>
+            {% for presentacion in presentaciones %}
+                <option value="{{ presentacion.id }}" {% if request.GET.presentacion == presentacion.id|stringformat:"s" %}selected{% endif %}>{{ presentacion.nombre }}</option>
+            {% endfor %}
+        </select>
     </div>
+    
     <div class="form-group">
         <label for="unidad_medida">Unidad de Medida:</label>
-        <input type="text" name="unidad_medida" id="unidad_medida" class="form-control" value="{{ request.GET.unidad_medida }}">
+        <select name="unidad_medida" id="unidad_medida" class="form-control">
+            <option value="">Seleccione una unidad de medida</option>
+            {% for unidad in unidad_medida %}
+                <option value="{{ unidad_medida.descripcion }}" {% if request.GET.unidad_medida == unidad_medida.descripcion|stringformat:"s" %}selected{% endif %}>{{ unidad_medida.descripcion }}</option>
+            {% endfor %}
+        </select>
     </div>
+    
+    
 </form>
 
 

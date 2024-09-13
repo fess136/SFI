@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 
+import re
 
 @method_decorator(never_cache, name='dispatch')
 class PresentacionListView(ListView):
@@ -27,6 +28,27 @@ class PresentacionListView(ListView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # Captura los parámetros de la URL
+        id = self.request.GET.get('id')
+        descripcion = self.request.GET.get('descripcion')
+
+        if id:
+            if int(id) >= 1:  # Verifica que el número sea positivo
+                    queryset = queryset.filter(id=id)
+            else:
+                messages.error(self.request, "El ID debe ser un número positivo.")
+
+        # Filtra por nombre del cliente
+        if descripcion:
+            if re.match("^[A-Za-z0-9\s]+$", descripcion):  # Solo letras, números y espacios
+                queryset = queryset.filter(descripcion__icontains=descripcion)
+            else:
+                messages.error(self.request, "El nombre no puede contener caracteres especiales")
+        return queryset
 
 @method_decorator(never_cache, name='dispatch')
 class PresentacionCreateView(CreateView):

@@ -12,7 +12,7 @@ from django.shortcuts import render, redirect
 from apl.models import *
 from apl.forms import TipoForm
 
-
+import re
 
 @method_decorator(never_cache, name='dispatch')
 class TipoCreateView(CreateView):
@@ -177,10 +177,17 @@ class TipoListView(ListView):
 
         # Filtra los resultados según los parámetros proporcionados
         if id:
-                queryset = queryset.filter(id=id)
+            if int(id) >= 1:  # Verifica que el número sea positivo
+                    queryset = queryset.filter(id=id)
+            else:
+                messages.error(self.request, "El ID debe ser un número positivo.")
+                
         if nombre:
-                queryset = queryset.filter(nombre__icontains=nombre)  # Filtra por nombre, búsqueda no sensible a mayúsculas/minúsculas
-                print(self.request.GET.get('nombre'))
+            if re.match("^[A-Za-z0-9\s]+$", nombre):  # Solo letras, números y espacios
+                queryset = queryset.filter(nombre__icontains=nombre)
+            else:
+                messages.error(self.request, "El nombre no puede contener caracteres especiales.")
+                
         if estado:
                 queryset = queryset.filter(estado__iexact=estado)  # Filtra por estado
         return queryset

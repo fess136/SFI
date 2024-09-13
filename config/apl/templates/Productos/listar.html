@@ -3,6 +3,40 @@
 {%block titulo%}
 Listar Productos
 {%endblock%}
+
+{% block filtro_form_contenido %} 
+<form method="GET" action="">
+    <div class="form-group">
+        <label for="id">ID</label>
+        <input type="int" class="form-control" id="id" name="id" value="{{ request.GET.id }}">
+        <!--Campo para filtrar por ID -->
+    </div>
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" id="nombre" class="form-control" value="{{ request.GET.nombre }}">
+    </div>
+    <div class="form-group">
+        <label for="marcas">Marcas:</label>
+        <input type="text" name="marcas" id="marcas" class="form-control" value="{{ request.GET.marcas }}">
+    </div>
+    <div class="form-group">
+        <label for="tipo">Tipo:</label>
+        <input type="text" name="tipo" id="tipo" class="form-control" value="{{ request.GET.tipo }}">
+    </div>
+    <div class="form-group">
+        <label for="presentacion">Presentacion:</label>
+        <input type="text" name="presentacion" id="presentacion" class="form-control" value="{{ request.GET.presentacion }}">
+    </div>
+    <div class="form-group">
+        <label for="unidad_medida">Unidad de Medida:</label>
+        <input type="text" name="unidad_medida" id="unidad_medida" class="form-control" value="{{ request.GET.unidad_medida }}">
+    </div>
+</form>
+
+
+
+{%endblock%}
+
 {% block columnas %}
 <tr>
     <th scope="col" style="width: 10%;">#</th>

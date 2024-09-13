@@ -4,11 +4,13 @@ from apl.forms import ProductosForm, TipoForm
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
-from django.db.models import ProtectedError
+from django.db.models import ProtectedError, Q
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
+
+import logging
 
 
 @method_decorator(never_cache, name='dispatch')
@@ -25,11 +27,47 @@ class ProductoListView(ListView):
         context['entidad'] = "Productos"
         return context
     
+    
+    logger = logging.getLogger(__name__)
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # Captura los parámetros de la URL
+        id = self.request.GET.get('id')
+        nombre = self.request.GET.get('nombre')
+        marcas = self.request.GET.get('marcas')
+        tipo = self.request.GET.get('tipo')
+        presentacion = self.request.GET.get('presentacion')
+        unidad_medida = self.request.GET.get('unidad_medida')
+
+        if id:
+            queryset = queryset.filter(id=id)
+
+        # Filtra por nombre del producto
+        if nombre:
+            queryset = queryset.filter(nombre__icontains=nombre)
+
+        # Filtra por nombre de la marca (relación ForeignKey)
+        if marcas:
+            queryset = queryset.filter(marcas__nombre__icontains=marcas)
+
+        # Filtra por tipo (ForeignKey)
+        if tipo:
+            queryset = queryset.filter(tipo__nombre__icontains=tipo)
+
+        # Filtra por presentación (ForeignKey)
+        if presentacion:
+            queryset = queryset.filter(presentacion__descripcion__icontains=presentacion)
+
+        # Filtra por unidad de medida (ForeignKey)
+        if unidad_medida:
+            queryset = queryset.filter(unidad_medida__descripcion__icontains=unidad_medida)
+            
+        return queryset
+
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
-
-
 
 @method_decorator(never_cache, name='dispatch')
 class ProductoCreateView(CreateView):

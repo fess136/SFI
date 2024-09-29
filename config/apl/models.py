@@ -54,9 +54,23 @@ class Tipo(models.Model):
 
 class Presentacion(models.Model):
 
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    ]
     
     descripcion = models.CharField(max_length=150, verbose_name="Descripcion")
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADO_CHOICES,
+        default='Activo',
+        verbose_name="Estado"
+    )
     
+    # Managers
+    objects = models.Manager()  # The default manager
+    activos = ActivoManager()  # Our custom manager
+
     def __str__(self):
         return self.descripcion
     
@@ -234,7 +248,7 @@ class Productos(models.Model):
     precio = models.DecimalField(max_digits=10,decimal_places=2,verbose_name="Precio", validators=[validacion_numeros_negativos])
     marcas = models.ForeignKey(Marcas,on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
     tipo = models.ForeignKey(Tipo,on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
-    presentacion= models.ForeignKey(Presentacion,on_delete=models.CASCADE)
+    presentacion= models.ForeignKey(Presentacion,on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
     unidad_medida=models.ForeignKey(Unidad_Medida,on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
     
     def __str__(self):
@@ -246,8 +260,23 @@ class Productos(models.Model):
         db_table = "Producto"
         
 class Metodo_Pago(models.Model):
+
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    ]
     nombre = models.CharField(max_length=150, verbose_name="Nombre", unique=True)
-    
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADO_CHOICES,
+        default='activo',
+        verbose_name="Estado"
+    )
+
+    # Managers
+    objects = models.Manager()  # The default manager
+    activos = ActivoManager()  # Our custom manager
+
     def __str__(self):
         return self.nombre
     
@@ -261,7 +290,7 @@ class Metodo_Pago(models.Model):
 
 class Compras(models.Model):
     fecha_compra =models.DateField(verbose_name="Fecha De Compra",auto_now=True)
-    metodo_pago =models.ForeignKey(Metodo_Pago,on_delete=models.PROTECT)
+    metodo_pago =models.ForeignKey(Metodo_Pago,on_delete=models.PROTECT,limit_choices_to={'estado': 'activo'})
     proveedor = models.ForeignKey(Proveedores,on_delete=models.PROTECT)
     usuario = models.CharField(max_length=100, verbose_name='Usuario', null = True)
     finalizado = models.BooleanField(default=False, null=True)
@@ -311,7 +340,7 @@ class Ventas(models.Model):
     fecha_venta=models.DateTimeField(verbose_name="Fecha De Venta",auto_now=True)
     usuario = models.CharField(max_length=100, verbose_name='Usuario', null=True)
     cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
-    metodo_pago = models.ForeignKey(Metodo_Pago, on_delete=models.PROTECT, null=True, verbose_name="Metodo de Pago")
+    metodo_pago = models.ForeignKey(Metodo_Pago, on_delete=models.PROTECT, null=True, verbose_name="Metodo de Pago",limit_choices_to={'estado': 'activo'})
     finalizado = models.BooleanField(default=False)
     
     def __str__(self):

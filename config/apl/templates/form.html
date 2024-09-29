@@ -63,33 +63,33 @@
         </div>
     </form>
     <!-- modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="formulario-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Crear nuevo registro</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              ...
+                <form id = "formulario-adicional">
+                    {% csrf_token %}
+
+                    <div id = "formulario">
+
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id = "guardar-tipo" type="submit" class="btn btn-primary">Save changes</button>
+                </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+
             </div>
           </div>
         </div>
       </div>
 
-    <script type = "text/javascript">
-        function abrir_modal(){
-            $('#edicion').load(function(){
-                this.modal('show');
-            })
-        }
-    </script>
     <!-- Implementacion de la alerta sweetalert -->
     <script>
 document.getElementById('formulario-registro').addEventListener('submit', function(e) {
@@ -160,6 +160,78 @@ document.getElementById('formulario-registro').addEventListener('submit', functi
         
         </script>
 
+<script>
+
+    var url = ''
+    var atributo = ''
+    document.getElementById('formulario-adicional').addEventListener('submit', function(e) {
+        e.preventDefault()
+        var form = document.getElementById('formulario-adicional');
+        var formData = new FormData(form);
+        
+        fetch(`/apl/${url}/crear`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                let select = document.getElementById(`id_${atributo}`);
+                let option = new Option(data.nombre, data.id);
+                select.add(option);
+                select.value = data.id;
+                $('#formulario-modal').modal('hide');
+            } else {
+                // Manejar errores
+                let errores = "<ul>"
+                    for (i in data.errors) {
+                        errores += `<li><strong>Campo ${i}:</strong> ${data.errors[i].join(', ')}</li>`;
+                    }
+                errores += "</ul>"
+                
+                Swal.fire({
+                    title: 'Error',
+                    html: errores,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+            }
+        })
+        .catch(error => {
+                            Swal.fire({
+                    title: 'Error',
+                    text:  error,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+        });
+    });
+
+
+
+    let mostrarFormulario = (formulario, direccion, ...id) => {
+        
+        var configuracion = document.getElementById(formulario).dataset.value.split('\n')
+        id.forEach(campo => {
+            configuracion = configuracion.map(elemento =>{
+                if (elemento.includes(`"${campo}"`) && elemento.includes('input') || elemento.includes('select')){
+                    return elemento.replace(`"${campo}"`, `"${campo}" class = "form-control"`)
+                } else {
+                    return elemento = elemento
+                }
+            })
+        })
+        document.getElementById('formulario').innerHTML = configuracion.join('')
+
+        url = direccion
+        atributo = formulario
+    }
+    </script>
+<!-- este bloque es para que se coloque el precio automaticamente en el input segun que producto se selccione -->
 {% block codigo %}
 {% endblock %}
 

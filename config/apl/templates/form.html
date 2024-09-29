@@ -160,6 +160,7 @@ document.getElementById('formulario-registro').addEventListener('submit', functi
         
         </script>
 
+<!-- script para mostrar un formulario en el modal -->
 <script>
 
     var url = ''
@@ -226,10 +227,12 @@ document.getElementById('formulario-registro').addEventListener('submit', functi
     });
 
 
-
+    //este metodo verifica que formulario se debe mostrar en el modal
     let mostrarFormulario = (formulario, direccion, ...id) => {
         
         var configuracion = document.getElementById(formulario).dataset.value.split('\n')
+
+        //aqui se asegura que los campos tengan la clase form-control para dar diseño a los campos
         id.forEach(campo => {
             configuracion = configuracion.map(elemento =>{
                 if (elemento.includes(`"${campo}"`) && elemento.includes('input') || elemento.includes('select')){
@@ -239,9 +242,12 @@ document.getElementById('formulario-registro').addEventListener('submit', functi
                 }
             })
         })
+        //se añade todo el formulario con diseño al modal
         document.getElementById('formulario').innerHTML = configuracion.join('')
 
+        //la url es para que el metodo fetch siempre sepa a que modulo debe ir
         url = direccion
+        //el atributo es para que la pagina coloque el registro creado en el select especificado
         atributo = formulario
     }
     </script>

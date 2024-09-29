@@ -9,11 +9,17 @@ from django.core.validators import MinLengthValidator
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
-def validacion_telefono(value):
+def validacion_identificacion(value):
 
     if len(str(value)) < 7 or len(str(value)) > 13:
 
         raise ValidationError("debes ingresar como minimo 7 digitos y maximo 13")
+    
+def validacion_telefono(value):
+
+    if len(str(value)) != 10:
+
+        raise ValidationError('debes ingresar 10 digitos')
     
 def validacion_numeros_negativos(value):
 
@@ -25,7 +31,33 @@ def validacion_numeros_negativos(value):
 class ActivoManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(estado='activo')
+
+class Tipo_identificador(models.Model):
+
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    ]
     
+    nombre = models.CharField(max_length=150, verbose_name="Nombre")
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADO_CHOICES,
+        default='activo',
+        verbose_name="Estado"
+    )
+    
+    # Managers
+    objects = models.Manager()  # The default manager
+    activos = ActivoManager()  # Our custom manager
+    
+    def __str__(self):
+        return f"{self.nombre}"
+    
+    class Meta:
+        verbose_name = "Tipo Identificador"
+        verbose_name_plural = "Tipos Identificadores"
+        db_table = "Tipo_identificador"
 
 class Tipo(models.Model):
     ESTADO_CHOICES = [
@@ -136,9 +168,10 @@ class Unidad_Medida(models.Model):
 class Proveedores(models.Model):
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
     apellido = models.CharField(max_length=50, verbose_name="Apellido")
-    nit = models.CharField(max_length = 20, unique = True, verbose_name = "Numero de identificación", validators=[validacion_telefono])
+    tipo_identicador = models.ForeignKey(Tipo_identificador, on_delete=models.PROTECT, null=True, verbose_name = "Tipo de Identificación")
+    nit = models.CharField(max_length = 20, unique = True, verbose_name = "Numero de identificación", validators=[validacion_identificacion])
     ubicacion = models.CharField(max_length = 255, verbose_name = "Ubicacion")
-    telefono = models.PositiveIntegerField( verbose_name = "Telefono")
+    telefono = models.PositiveIntegerField( verbose_name = "Telefono", validators=[validacion_telefono])
     correo_electronico = models.EmailField(max_length=100, verbose_name = "Correo Electronico")
     
     
@@ -153,37 +186,9 @@ class Proveedores(models.Model):
     
 
 
-class Tipo_identificador(models.Model):
 
-    ESTADO_CHOICES = [
-        ('Activo', 'Activo'),
-        ('Inactivo', 'Inactivo'),
-    ]
-    
-    nombre = models.CharField(max_length=150, verbose_name="Nombre")
-    estado = models.CharField(
-        max_length=10,
-        choices=ESTADO_CHOICES,
-        default='activo',
-        verbose_name="Estado"
-    )
-    
-    # Managers
-    objects = models.Manager()  # The default manager
-    activos = ActivoManager()  # Our custom manager
-    
-    def __str__(self):
-        return f"{self.nombre}"
-    
-    class Meta:
-        verbose_name = "Tipo Identificador"
-        verbose_name_plural = "Tipos Identificadores"
-        db_table = "Tipo_identificador"
         
 class Administradores(models.Model):
-    class TipoDocumento(models.TextChoices):
-        CC = 'CC', 'Cédula de Ciudadanía'
-        CE = 'CE', 'Cédula de Extranjería'
 
         
 
@@ -193,8 +198,8 @@ class Administradores(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='administrador')
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
-    tipo_documento = models.CharField(max_length=3, choices=TipoDocumento.choices, default=TipoDocumento.CC, verbose_name="Tipo de documento")
-    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True, validators=[validacion_telefono])
+    tipo_documento = models.ForeignKey(Tipo_identificador,on_delete=models.PROTECT, verbose_name="Tipo de identificación")
+    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True, validators=[validacion_identificacion])
     telefono = models.PositiveIntegerField(verbose_name="Teléfono", validators=[validacion_telefono])
     contrasena = models.CharField(max_length=128, validators=[MinLengthValidator(8)], verbose_name="Contraseña")
     conf_contrasena = models.CharField(max_length=128, verbose_name="Confirmación de contraseña", default="")
@@ -223,7 +228,7 @@ def eliminar_usuario_relacionado(sender, instance, **kwargs):
 class Clientes(models.Model):
     nombre=models.CharField(max_length=150, verbose_name="Nombre")
     apellido=models.CharField(max_length=150, verbose_name="Apellido")
-    nit=models.PositiveBigIntegerField(verbose_name="Numero de Identificacion",unique=True, validators=[validacion_telefono])
+    nit=models.PositiveBigIntegerField(verbose_name="Numero de Identificacion",unique=True, validators=[validacion_identificacion])
     correo_electronico=models.EmailField(max_length=150,verbose_name="Correo")
     telefono=models.PositiveIntegerField(verbose_name="Telefono", validators=[validacion_telefono])
     Tipo_identificador=models.ForeignKey(Tipo_identificador, on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})

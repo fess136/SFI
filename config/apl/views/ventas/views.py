@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import ProtectedError
 from django.urls import reverse_lazy
-from apl.forms import VentaForm
+from apl.forms import VentaForm, ClienteForm, MetodoForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -38,6 +38,10 @@ class VentaCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Venta"
+        context['formulario'] = {
+            'cliente': ClienteForm(),
+            'metodo': MetodoForm()
+        }
         return context
     
     def get_form_kwargs(self):
@@ -80,6 +84,10 @@ class VentaUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Venta"
         context['crear_url'] = self.success_url
+        context['formulario'] = {
+            'cliente': ClienteForm(),
+            'metodo': MetodoForm()
+        }
         return context
 
     def form_valid(self, form):
@@ -126,12 +134,12 @@ class VentaDeleteView(DeleteView):
         try:
 
             response = super().delete(request, args, kwargs)
-            messages.success(request, "Tipo de identificador eliminado con éxito.")
+            messages.success(request, "venta eliminada con éxito.")
             return response
             
         except ProtectedError:
 
-            messages.error(request, f"No se ha logrado eliminar el Tipo de identificador.")
+            messages.error(request, f"No se ha logrado eliminar la venta.")
             return redirect(self.success_url + f"?pk={self.kwargs.get('pk')}")
         
         except Exception as e:

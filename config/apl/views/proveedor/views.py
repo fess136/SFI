@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import ProtectedError
-from apl.forms import ProveedorForm
+from apl.forms import ProveedorForm, TipoForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -112,12 +112,16 @@ class ProveedorCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Proveedor"
         context['crear_url'] = self.success_url
+        context['formulario'] = TipoForm()
         return context
 
     def form_valid(self, form):
         response = super().form_valid(form)
+        proveedor = form.save()
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success',
+                                 'id': proveedor.id,
+                                 'nombre': proveedor.__str__()})
         return response
 
     def form_invalid(self, form):
@@ -146,6 +150,7 @@ class ProveedorUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Proveedor"
         context['crear_url'] = self.success_url
+        context['formulario'] = TipoForm()
         return context
 
     def form_valid(self, form):

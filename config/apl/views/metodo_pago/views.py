@@ -74,8 +74,11 @@ class MetodoCreateView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
+        metodo = form.save()
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success',
+                                 'id': metodo.id,
+                                 'nombre': metodo.__str__()})
         return response
 
     def form_invalid(self, form):

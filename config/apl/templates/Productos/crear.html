@@ -5,19 +5,19 @@
 
 {% if field.label == "Marcas" %}
 
-<a href="{% url 'apl:crear_marca' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+<button id = "marcas" type="button" class="btn btn-primary btn btn-xs" data-value = '{{formulario.marca}}' onclick ="mostrarFormulario('marcas', 'marcas', 'id_nombre', 'id_estado')" data-toggle="modal" data-target="#formulario-modal"><i class = "fas fa-plus "></i></button>
 
 {% elif field.label == "Tipo" %}
 
-<button type="button" class="btn btn-primary btn btn-xs" data-toggle="modal" data-target="#exampleModalCenter"><i class = "fas fa-plus "></i></button>
+<button id = "tipo" type="button" class="btn btn-primary btn btn-xs" data-value = '{{formulario.tipo}}' onclick ="mostrarFormulario('tipo','tipos', 'id_nombre', 'id_estado')" data-toggle="modal" data-target="#formulario-modal"><i class = "fas fa-plus "></i></button>
 
 {% elif field.label == "Presentacion" %}
 
-<a href="{% url 'apl:crear_presentacion' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+<button id = "presentacion" type="button" class="btn btn-primary btn btn-xs" data-value = '{{formulario.presentacion}}' onclick ="mostrarFormulario('presentacion','presentaciones', 'id_descripcion', 'id_estado')" data-toggle="modal" data-target="#formulario-modal"><i class = "fas fa-plus "></i></button>
 
 {% elif field.label == "Unidad medida" %}
 
-<a href="{% url 'apl:crear_medida' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+<button id = "unidad_medida" type="button" class="btn btn-primary btn btn-xs" data-value = '{{formulario.unidad_medida}}' onclick ="mostrarFormulario('unidad_medida','medidas', 'id_descripcion', 'id_estado')" data-toggle="modal" data-target="#formulario-modal"><i class = "fas fa-plus "></i></button>
 
 {% endif %}
 

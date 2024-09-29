@@ -89,7 +89,7 @@ class AdministradorForm(ModelForm):
         fields = ["username", "email", "nombre", "tipo_documento", "numero_documento", "telefono", "password", "conf_password"]
         widgets = {
             "nombre": TextInput(attrs={"placeholder": "Nombre del administrador"}),
-            "tipo_documento": Select(attrs={"placeholder": "Tipo de documento"}),
+            "tipo_documento": Select(attrs={"placeholder": "Tipo de identificación"}),
             "numero_documento": NumberInput(attrs={"min": 8, "placeholder": "Número de documento"}),
             "telefono": NumberInput(attrs={"min": 1, "placeholder": "Teléfono"}),
             "password": PasswordInput(attrs={"min": 1, "placeholder": "Contraseña"}),

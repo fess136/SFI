@@ -47,8 +47,11 @@ class MedidaCreateView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
+        medida = form.save()
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success',
+                                 'nombre': medida.__str__(),
+                                 'id': medida.id})
         return response
 
     def form_invalid(self, form):

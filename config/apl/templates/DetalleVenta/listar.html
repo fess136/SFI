@@ -117,13 +117,13 @@ $(document).ready(function() {
 
         <div class ="botones">
             {% if not finalizo %}
-            <a href="{% url 'apl:crear_detalleventa' venta.id %}" class = "btn btn-primary btn btn-xs"><i class ="fas fa-plus"></i> Agregar</a>
+            <a href="{% url 'apl:crear_detalleventa' venta.id %}" class = "btn btn-primary"><i class ="fas fa-plus"></i> Agregar</a>
 
             {% endif %}
 
             {% if not finalizo and hay_productos %}
 
-                    <button id ="finalizar" class = "btn btn-success btn btn-xs"><i class = "fas fa-check"></i>Finalizar Compra</button>
+                    <button id ="finalizar" class = "btn btn-success"><i class = "fas fa-check"></i>Finalizar Compra</button>
 
             {% endif %}
 

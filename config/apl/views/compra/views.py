@@ -2,10 +2,10 @@ from django.http import JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from apl.forms import CompraForm
+from apl.forms import CompraForm, MetodoForm, ProveedorForm
 from django.contrib import messages
 from django.db.models import ProtectedError
-from apl.models import *
+from apl.models import Compras
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
@@ -44,6 +44,10 @@ class CompraCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Compra"
+        context['formulario'] = {
+            'metodo': MetodoForm(),
+            'proveedor': ProveedorForm()
+        }
         return context
     
     def get_form_kwargs(self):
@@ -86,6 +90,10 @@ class CompraUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Compra"
         context['crear_url'] = reverse_lazy('apl:listar_compra')
+        context['formulario'] = {
+            'metodo': MetodoForm(),
+            'proveedor': ProveedorForm()
+        }
         return context
     
     def form_valid(self, form):

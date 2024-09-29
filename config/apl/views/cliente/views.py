@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.db.models import ProtectedError
 from django.contrib import messages
-from apl.forms import ClienteForm
+from apl.forms import ClienteForm, TipoForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -105,12 +105,16 @@ class ClienteCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Cliente"
         context['crear_url'] = reverse_lazy('apl:listar_cliente')
+        context['formulario'] = TipoForm()
         return context
     
     def form_valid(self, form):
         response = super().form_valid(form)
+        cliente = form.save()
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success',
+                                 'nombre': cliente.__str__(),
+                                 'id': cliente.id})
         return response
 
     def form_invalid(self, form):
@@ -140,6 +144,7 @@ class ClienteUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Cliente"
         context['crear_url'] = reverse_lazy('apl:listar_cliente')
+        context['formulario'] = TipoForm()
         return context
     
     def form_valid(self, form):

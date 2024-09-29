@@ -1,1 +1,7 @@
 {% extends 'form.html' %}
+
+{% block boton_crear %}
+    {% if field.label == 'Tipo de Identificación' %}
+    <button id = "tipo_identicador" type="button" class="btn btn-primary btn btn-xs" data-value = '{{formulario}}' onclick ="mostrarFormulario('tipo_identicador','identificadores', 'id_nombre', 'id_estado')" data-toggle="modal" data-target="#formulario-modal"><i class = "fas fa-plus "></i></button>
+    {% endif %}
+{% endblock %}

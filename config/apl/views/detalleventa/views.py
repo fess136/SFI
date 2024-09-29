@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from apl.forms import DetalleVentaForm
+from apl.forms import DetalleVentaForm, ProductosForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -81,6 +81,8 @@ class DetalleVentaCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Detalle de Venta"
         context['crear_url'] = self.get_success_url()
+        context['formulario'] = ProductosForm()
+
         return context
     
     def form_valid(self, form):
@@ -121,6 +123,7 @@ class DetalleVentaUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Editar Detalle de Venta"
+        context['formulario'] = ProductosForm()
         context['crear_url'] = reverse_lazy('apl:listar_detalleventa', args = [DetalleVenta.objects.get(id = self.kwargs.get('pk')).venta])
         return context
 

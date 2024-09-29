@@ -79,8 +79,8 @@
                     <div id = "formulario">
 
                     </div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button id = "guardar-tipo" type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button id = "guardar-tipo" type="submit" class="btn btn-success">Agregar</button>
                 </form>
             </div>
             <div class="modal-footer">
@@ -185,6 +185,27 @@ document.getElementById('formulario-registro').addEventListener('submit', functi
                 select.add(option);
                 select.value = data.id;
                 $('#formulario-modal').modal('hide');
+
+                // esta condicion es para que coloque automaticamente el precio unitario de un producto 
+                // recien creado desde el formulario modal|
+                if(atributo == 'producto'){
+                    $.ajax({
+                     url: '{% url "apl:obtener_precio" %}',
+                     data: {
+                         id: $('#id_producto').val(),
+                     },
+                     dataType: 'json',
+                     success: function(data){
+                         $('#id_precio_unitario').val(data.precio)
+                     }
+                 })
+                }
+                Swal.fire({
+                title: '¡Éxito!',
+                text: 'El registro se ha agregado correctamente.',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            })
             } else {
                 // Manejar errores
                 let errores = "<ul>"
@@ -201,14 +222,7 @@ document.getElementById('formulario-registro').addEventListener('submit', functi
                 });
             }
         })
-        .catch(error => {
-                            Swal.fire({
-                    title: 'Error',
-                    text:  error,
-                    icon: 'error',
-                    confirmButtonText: 'Ok'
-                });
-        });
+
     });
 
 

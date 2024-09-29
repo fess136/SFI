@@ -11,7 +11,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 
-from apl.forms import DetalleCompraForm
+from apl.forms import DetalleCompraForm, ProductosForm
 
 @method_decorator(never_cache, name='dispatch')
 class DetalleCompraCreateView(CreateView):
@@ -28,6 +28,7 @@ class DetalleCompraCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Detalle de Compra"
         context['crear_url'] = self.get_success_url() 
+        context['formulario'] = ProductosForm()
         return context
     
     def obtener_precio(request):
@@ -114,6 +115,7 @@ class DetalleCompraUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Editar Detalle de Compra"
+        context['formulario'] = ProductosForm()
         context['crear_url'] = reverse_lazy('apl:detallar_detallecompra', args=[DetalleCompra.objects.get(id = self.kwargs.get('pk')).compra.id])
         return context
     

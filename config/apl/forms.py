@@ -1,8 +1,9 @@
 from dataclasses import fields
 from django.forms import *
+from django.contrib import admin
 from django import forms
 from apl.models import *
-
+from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm, TextInput, Select, NumberInput, EmailInput, PasswordInput

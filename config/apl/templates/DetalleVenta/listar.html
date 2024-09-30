@@ -3,17 +3,33 @@
 {% load static %}
 
 {% block alertas %}
-<div class="alert alert-danger alert-dismissible" id = "alerta">
+<div class="alert alert-danger alert-dismissible" id="alerta">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
     <h3><i class="fas fa-ban"></i> Error</h3>
     <div class="content-truncate" id="alert-content">
         <h5>
-            Los siguientes productos superaron el limíte de productos que hay en el inventario:
-            <ul id = 'lista_errores'>
-            </ul>
+            Los siguientes productos superaron el límite de productos que hay en el inventario:
         </h5>
+        <div class="scrollable-list">
+            <ul id="lista_errores">
+                <!-- Aquí irían los elementos de la lista -->
+            </ul>
+        </div>
     </div>
 </div>
+<style>
+    .scrollable-list {
+        max-height: 200px; /* Ajusta esta altura según tus necesidades */
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    #lista_errores {
+        margin: 0;
+        padding: 0 0 0 20px;
+    }
+</style>
 {% endblock %}
 <!-- Detalle de la Venta -->
 {% block Detalle %}

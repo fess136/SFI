@@ -561,19 +561,26 @@ color: #ECF0F1;
 
         display: none;
     }
-    #contenedor-error{
 
-        display: none;
 
+    .select2-container .select2-selection--single {
+        height: 38px !important; /* Ajusta este valor según sea necesario */
+      }
+
+    .scrollable-list {
+        max-height: 150px; /* Ajusta esta altura según tus necesidades */
+        background: #c92f2f;
+        overflow-y: auto;
+        scrollbar-color: #9f9f9f #c92f2f;
+        border-radius: 10px;
+        padding: 10px;
     }
 
-    #contenedor-oculto{
-
-        display: none; 
-
+    .lista-scrolleable{
+        max-height: 150px; /* Ajusta esta altura según tus necesidades */
+        background: #1393a7;
+        overflow-y: auto;
+        scrollbar-color: #9f9f9f #1393a7;
+        border-radius: 10px;
+        padding: 10px;
     }
-
-    #alerta{
-        display: none;
-    }
-

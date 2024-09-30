@@ -41,25 +41,14 @@
         <div class="content-truncate" id="alert-content">
             <h5>
                 El registro que se intentó eliminar está relacionado con los siguientes registros:
-                <ul>
-                    {% for i in obj_relacionados %}
-
-                        {% if forloop.counter <= 3 %}
-                            <li>{{i}}</li>
-                        {% endif %}
-
-                    {% endfor %}
-                    <div id='contenedor-error'>
+                <br>
+                <div class="scrollable-list">
+                    <ul id = 'lista_errores'>
                         {% for i in obj_relacionados %}
-                            {% if forloop.counter > 3 %}
                                 <li>{{i}}</li>
-                            {% endif %}
                         {% endfor %}
-                    </div>
-                </ul>
-                {% if obj_relacionados|length > 3 %}
-                    <button class = "btn btn-danger" id = "opciones">Mas información</button>
-                {% endif %}
+                    </ul>
+                </div>
             </h5>
         </div>
     </div>
@@ -226,42 +215,6 @@
             {% endfor %}
         {% endif %}
     });
-</script>
-
-<!-- Este script es para dar la opcion de leer mas o mostrar menos en una alerta -->
-<script>
-    function contenido(){
-        contenedor = document.getElementById('contenido')
-        opcion = document.querySelector('.opcion')
-        if(opcion.textContent == "Mas información"){
-
-            contenedor.style.display = 'block'
-            opcion.textContent = 'Menos información'
-
-        } else {
-
-            contenedor.style.display = 'none'
-            opcion.textContent = "Mas información"           
-        
-        }
-    }
-</script>
-<script>
-    contenedor = document.getElementById('contenedor-error')
-        $(document).ready(function() {
-        $("#opciones").click(function() {
-            if($(this).text() == "Mas información"){
-
-                contenedor.style.display = 'block';
-                $(this).text('Menos información')
-            } else {
-
-                contenedor.style.display = 'none';
-                $(this).text('Mas información')
-            }
-        });
-    });
-
 </script>
 
 

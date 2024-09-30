@@ -45,7 +45,7 @@ class ProductoListView(ListView):
             if int(id) >= 1:  # Verifica que el número sea positivo
                     queryset = queryset.filter(id=id)
             else:
-                messages.error(self.request, "El ID debe ser un número positivo.")
+                messages.error(self.request, "El ID debe ser un número válido.")
 
         # Filtra por nombre del producto
         if nombre:

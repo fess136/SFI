@@ -136,10 +136,6 @@ class DetalleCompraUpdateView(UpdateView):
             }, status=400)
         return super().form_invalid(form)
     
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['hay_edicion'] = True
-        return kwargs
 
     def get_success_url(self):
         

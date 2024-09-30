@@ -10,25 +10,13 @@
         <div class="content-truncate" id="alert-content">
             <h5>
                 El registro que se intentó eliminar está relacionado con los siguientes registros:
-                <ul>
-                    {% for i in obj_relacionados %}
-
-                        {% if forloop.counter <= 3 %}
-                            <li>{{i}}</li>
-                        {% endif %}
-
-                    {% endfor %}
-                    <div id='contenedor-error'></div>
+                <div class = "scrollable-list">
+                    <ul>
                         {% for i in obj_relacionados %}
-                            {% if forloop.counter > 3 %}
                             <li>{{i}}</li>
-                            {% endif %}
                         {% endfor %}
-                    </div>
-                </ul>
-                {% if obj_relacionados|length > 3 %}
-                    <button class = "btn btn-danger" id = "opciones">Mas información</button>
-                {% endif %}
+                    </ul>
+                </div>
             </h5>
         </div>
     </div>
@@ -42,26 +30,14 @@
         <h5>Las siguientes compras estan pendientes:</h5>
         
             <h5>
-                <ul>
-                {% for i in hay_compras_pendientes %}
-
-                    {% if forloop.counter <= 3 %}
-                        <li>Compra #{{i.id}}</li>
-                    {% endif %}
-                    
-                {% endfor %}
-                <div id = "contenido">
-                    {% for i in hay_compras_pendientes %}
-                        {% if forloop.counter > 3 %}
-                            <li>Compra #{{i.id}}</li>
-                        {% endif %}
-                    {% endfor %}
+                <div class = "lista-scrolleable">
+                    <ul>
+                        {% for i in hay_compras_pendientes %}
+                            <li>Venta #{{i.id}}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
-                </ul>
             </h5>
-        {% if hay_compras_pendientes|length > 3 %}
-        <a href="#" onclick="contenido()" class = "opcion">Mas información</a>
-        {% endif %}
     </div>
 
     {% endif %}

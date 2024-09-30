@@ -79,6 +79,8 @@
                     <div id = "formulario">
 
                     </div>
+
+                    <br>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
                     <button id = "guardar-tipo" type="submit" class="btn btn-success">Agregar</button>
                 </form>
@@ -245,12 +247,30 @@ document.getElementById('formulario-registro').addEventListener('submit', functi
         //se añade todo el formulario con diseño al modal
         document.getElementById('formulario').innerHTML = configuracion.join('')
 
+        id.forEach(campo => {
+
+            configuracion.forEach(elemento =>{
+
+                if (elemento.includes(`"${campo}"`) && elemento.includes('select')){
+
+                    $(`#${campo}`).select2({
+                        width: '100%'
+                    })
+
+                } 
+            })
+        })
+
         //la url es para que el metodo fetch siempre sepa a que modulo debe ir
         url = direccion
         //el atributo es para que la pagina coloque el registro creado en el select especificado
         atributo = formulario
     }
     </script>
+        <script>
+            $('#nombre').select2()
+        </script>
+
 <!-- este bloque es para que se coloque el precio automaticamente en el input segun que producto se selccione -->
 {% block codigo %}
 {% endblock %}

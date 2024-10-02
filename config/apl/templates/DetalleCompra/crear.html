@@ -29,4 +29,19 @@
 
 </script>
 
+<script>
+    $("#id_producto").select2({
+            width: '100%',
+            dropdownAutoWidth : true
+        });
+</script>
+
+{% endblock %}
+
+{% block boton_crear %}
+
+    {% if field.label == 'Producto' %}
+    <button id = "producto" type="button" class="btn btn-primary btn btn-xs" data-value = '{{formulario}}' onclick ="mostrarFormulario('producto','productos', 'id_nombre', 'id_cantidad', 'id_precio', 'id_marcas', 'id_tipo', 'id_presentacion', 'id_unidad_medida')" data-toggle="modal" data-target="#formulario-modal"><i class = "fas fa-plus "></i></button>
+    {% endif %}
+
 {% endblock %}

@@ -63,33 +63,35 @@
         </div>
     </form>
     <!-- modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="formulario-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Crear nuevo registro</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              ...
+                <form id = "formulario-adicional">
+                    {% csrf_token %}
+
+                    <div id = "formulario">
+
+                    </div>
+
+                    <br>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button id = "guardar-tipo" type="submit" class="btn btn-success">Agregar</button>
+                </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+
             </div>
           </div>
         </div>
       </div>
 
-    <script type = "text/javascript">
-        function abrir_modal(){
-            $('#edicion').load(function(){
-                this.modal('show');
-            })
-        }
-    </script>
     <!-- Implementacion de la alerta sweetalert -->
     <script>
 document.getElementById('formulario-registro').addEventListener('submit', function(e) {
@@ -160,6 +162,116 @@ document.getElementById('formulario-registro').addEventListener('submit', functi
         
         </script>
 
+<!-- script para mostrar un formulario en el modal -->
+<script>
+
+    var url = ''
+    var atributo = ''
+    document.getElementById('formulario-adicional').addEventListener('submit', function(e) {
+        e.preventDefault()
+        var form = document.getElementById('formulario-adicional');
+        var formData = new FormData(form);
+        
+        fetch(`/apl/${url}/crear`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                let select = document.getElementById(`id_${atributo}`);
+                let option = new Option(data.nombre, data.id);
+                select.add(option);
+                select.value = data.id;
+                $('#formulario-modal').modal('hide');
+
+                // esta condicion es para que coloque automaticamente el precio unitario de un producto 
+                // recien creado desde el formulario modal|
+                if(atributo == 'producto'){
+                    $.ajax({
+                     url: '{% url "apl:obtener_precio" %}',
+                     data: {
+                         id: $('#id_producto').val(),
+                     },
+                     dataType: 'json',
+                     success: function(data){
+                         $('#id_precio_unitario').val(data.precio)
+                     }
+                 })
+                }
+                Swal.fire({
+                title: '¡Éxito!',
+                text: 'El registro se ha agregado correctamente.',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            })
+            } else {
+                // Manejar errores
+                let errores = "<ul>"
+                    for (i in data.errors) {
+                        errores += `<li><strong>Campo ${i}:</strong> ${data.errors[i].join(', ')}</li>`;
+                    }
+                errores += "</ul>"
+                
+                Swal.fire({
+                    title: 'Error',
+                    html: errores,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+            }
+        })
+
+    });
+
+
+    //este metodo verifica que formulario se debe mostrar en el modal
+    let mostrarFormulario = (formulario, direccion, ...id) => {
+        
+        var configuracion = document.getElementById(formulario).dataset.value.split('\n')
+
+        //aqui se asegura que los campos tengan la clase form-control para dar diseño a los campos
+        id.forEach(campo => {
+            configuracion = configuracion.map(elemento =>{
+                if (elemento.includes(`"${campo}"`) && elemento.includes('input') || elemento.includes('select')){
+                    return elemento.replace(`"${campo}"`, `"${campo}" class = "form-control"`)
+                } else {
+                    return elemento = elemento
+                }
+            })
+        })
+        //se añade todo el formulario con diseño al modal
+        document.getElementById('formulario').innerHTML = configuracion.join('')
+
+        id.forEach(campo => {
+
+            configuracion.forEach(elemento =>{
+
+                if (elemento.includes(`"${campo}"`) && elemento.includes('select')){
+
+                    $(`#${campo}`).select2({
+                        width: '100%'
+                    })
+
+                } 
+            })
+        })
+
+        //la url es para que el metodo fetch siempre sepa a que modulo debe ir
+        url = direccion
+        //el atributo es para que la pagina coloque el registro creado en el select especificado
+        atributo = formulario
+    }
+    </script>
+        <script>
+            $('#nombre').select2()
+        </script>
+
+<!-- este bloque es para que se coloque el precio automaticamente en el input segun que producto se selccione -->
 {% block codigo %}
 {% endblock %}
 

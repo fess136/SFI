@@ -66,8 +66,12 @@ class PresentacionCreateView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
+        presentacion = form.save()
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success',
+                                 'nombre': presentacion.__str__(),
+                                 'id': presentacion.id
+                                 })
         return response
 
     def form_invalid(self, form):

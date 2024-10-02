@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.db.models import ProtectedError, Q
 from django.urls import reverse_lazy
-from apl.forms import VentaForm
+from apl.forms import VentaForm, ClienteForm, MetodoForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -41,7 +41,7 @@ class VentasListView(ListView):
         fecha_hasta = self.request.GET.get('fecha_hasta')
         usuario = self.request.GET.get('usuario')
         cliente_nombre_o_apellido = self.request.GET.get('cliente')
-        metodo_pago = self.request.GET.get('metodo_pago')
+        metodo_pago_nombre = self.request.GET.get('metodo_pago')
         finalizado = self.request.GET.get('finalizado')
 
         # Filtrar por ID
@@ -72,16 +72,16 @@ class VentasListView(ListView):
             except ValueError:
                 messages.error(self.request, "El formato de la fecha 'hasta' no es válido.")
         
-        if metodo_pago:
-            if re.match("^[A-Za-z0-9\s]+$", metodo_pago):  # Solo letras, números y espacios
-                queryset = queryset.filter(metodo_pago__nombre=metodo_pago)
+        if metodo_pago_nombre:
+            if re.match("^[A-Za-z0-9\s]+$", metodo_pago_nombre):  # Solo letras, números y espacios
+                queryset = queryset.filter(metodo_pago__nombre__icontains = metodo_pago_nombre)
             else:
                 messages.error(self.request, "El metodo de pago no puede contener caracteres especiales")
 
         # Filtrar por usuario
         if usuario:
             if re.match("^[A-Za-z0-9\s]+$", usuario):  # Solo letras, números y espacios
-                queryset = queryset.filter(nombre__icontains=usuario)
+                queryset = queryset.filter(usuario=usuario)
             else:
                 messages.error(self.request, "El usuario no puede contener caracteres especiales")
 
@@ -95,9 +95,6 @@ class VentasListView(ListView):
             else:
                 messages.error(self.request, "El nombre del cliente solo debe contener letras")
 
-        # Filtrar por método de pago (ForeignKey)
-        if metodo_pago:
-            queryset = queryset.filter(metodo_pago_id=metodo_pago)
 
         # Filtrar por estado (finalizado)
         if finalizado:
@@ -117,6 +114,10 @@ class VentaCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Venta"
+        context['formulario'] = {
+            'cliente': ClienteForm(),
+            'metodo': MetodoForm()
+        }
         return context
     
     def get_form_kwargs(self):
@@ -159,6 +160,10 @@ class VentaUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Venta"
         context['crear_url'] = self.success_url
+        context['formulario'] = {
+            'cliente': ClienteForm(),
+            'metodo': MetodoForm()
+        }
         return context
 
     def form_valid(self, form):
@@ -205,12 +210,12 @@ class VentaDeleteView(DeleteView):
         try:
 
             response = super().delete(request, args, kwargs)
-            messages.success(request, "Tipo de identificador eliminado con éxito.")
+            messages.success(request, "venta eliminada con éxito.")
             return response
             
         except ProtectedError:
 
-            messages.error(request, f"No se ha logrado eliminar el Tipo de identificador.")
+            messages.error(request, f"No se ha logrado eliminar la venta.")
             return redirect(self.success_url + f"?pk={self.kwargs.get('pk')}")
         
         except Exception as e:

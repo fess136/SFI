@@ -41,25 +41,14 @@
         <div class="content-truncate" id="alert-content">
             <h5>
                 El registro que se intentó eliminar está relacionado con los siguientes registros:
-                <ul>
-                    {% for i in obj_relacionados %}
-
-                        {% if forloop.counter <= 3 %}
-                            <li>{{i}}</li>
-                        {% endif %}
-
-                    {% endfor %}
-                    <div id='contenedor-error'>
+                <br>
+                <div class="scrollable-list">
+                    <ul id = 'lista_errores'>
                         {% for i in obj_relacionados %}
-                            {% if forloop.counter > 3 %}
                                 <li>{{i}}</li>
-                            {% endif %}
                         {% endfor %}
-                    </div>
-                </ul>
-                {% if obj_relacionados|length > 3 %}
-                    <button class = "btn btn-danger" id = "opciones">Mas información</button>
-                {% endif %}
+                    </ul>
+                </div>
             </h5>
         </div>
     </div>
@@ -74,7 +63,7 @@
             {{ titulo }}
         </h3>
         <div class="card-tools">
-            <button type="button" class="btn btn-secondary btn-sm custom-button" data-toggle="modal" data-target="#filtroModal">
+            <button id = 'btn-filtro' type="button" class="btn btn-secondary btn-sm custom-button" data-toggle="modal" data-target="#filtroModal" >
                 <i class="fas fa-filter"></i> Filtrar
             </button>
         </div>
@@ -119,15 +108,16 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div id = 'filtro-contenido' class="modal-body">
                 {% block filtro_form_contenido %}
                 {% endblock %}
             </div>
-            <div class="modal-footer justify-content-start"> <!-- Alineación a la izquierda -->
+            <div class="modal-footer justify-content-center"> <!-- Alineación a la izquierda -->
                 <!-- Cambia los estilos de los botones -->
-                <button type="button" class="btn btn-secondary btn-lg rounded-pill" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary btn-lg rounded-pill ml-2" onclick="applyFilters()">Filtrar</button>
-                <button type="button" class="btn btn-danger btn-lg rounded-pill ml-2" onclick="clearFilters()">Limpiar Filtros</button>
+                <button type="button" class="btn btn-flat custom-button" data-dismiss="modal" style="background-color: #6c757d; color: white;">Cerrar</button>
+                <button type="button" class="btn btn-flat custom-button ml-4" onclick="applyFilters()" style="background-color: #23853a; color: white;">Filtrar</button>
+                <button type="button" class="btn btn-flat custom-button ml-4" onclick="clearFilters()" style="background-color: #007bff; color: white;">Limpiar</button>
+
             </div>
         </div>
     </div>
@@ -227,42 +217,5 @@
         {% endif %}
     });
 </script>
-
-<!-- Este script es para dar la opcion de leer mas o mostrar menos en una alerta -->
-<script>
-    function contenido(){
-        contenedor = document.getElementById('contenido')
-        opcion = document.querySelector('.opcion')
-        if(opcion.textContent == "Mas información"){
-
-            contenedor.style.display = 'block'
-            opcion.textContent = 'Menos información'
-
-        } else {
-
-            contenedor.style.display = 'none'
-            opcion.textContent = "Mas información"           
-        
-        }
-    }
-</script>
-<script>
-    contenedor = document.getElementById('contenedor-error')
-        $(document).ready(function() {
-        $("#opciones").click(function() {
-            if($(this).text() == "Mas información"){
-
-                contenedor.style.display = 'block';
-                $(this).text('Menos información')
-            } else {
-
-                contenedor.style.display = 'none';
-                $(this).text('Mas información')
-            }
-        });
-    });
-
-</script>
-
 
 {% endblock %}

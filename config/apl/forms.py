@@ -1,8 +1,9 @@
 from dataclasses import fields
 from django.forms import *
+from django.contrib import admin
 from django import forms
 from apl.models import *
-
+from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm, TextInput, Select, NumberInput, EmailInput, PasswordInput
@@ -89,7 +90,7 @@ class AdministradorForm(ModelForm):
         fields = ["username", "email", "nombre", "tipo_documento", "numero_documento", "telefono", "password", "conf_password"]
         widgets = {
             "nombre": TextInput(attrs={"placeholder": "Nombre del administrador"}),
-            "tipo_documento": Select(attrs={"placeholder": "Tipo de documento"}),
+            "tipo_documento": Select(attrs={"placeholder": "Tipo de identificación"}),
             "numero_documento": NumberInput(attrs={"min": 8, "placeholder": "Número de documento"}),
             "telefono": NumberInput(attrs={"min": 1, "placeholder": "Teléfono"}),
             "password": PasswordInput(attrs={"min": 1, "placeholder": "Contraseña"}),
@@ -115,6 +116,14 @@ class ProductosForm(ModelForm):
     class Meta:
         model = Productos
         fields = '__all__'
+        widgets = {
+            'id' : NumberInput(attrs={'class': 'form-control'}),
+            'nombre': TextInput(attrs={'class': 'form-control'}),
+            'marcas': Select(attrs={'class': 'form-control'}),
+            'tipo': Select(attrs={'class': 'form-control'}),
+            'presentacion': Select(attrs={'class': 'form-control'}),
+            'unidad_medida': Select(attrs={'class': 'form-control'})
+        }
 
 class PresentacionForm(ModelForm):
 

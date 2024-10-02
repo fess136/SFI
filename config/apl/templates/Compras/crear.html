@@ -4,17 +4,20 @@
 
     {% if field.label == "Metodo pago" %}
 
-        <a href="{% url 'apl:crear_metodo' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
-
-    {% elif field.label == "Producto" %}
-
-        <a href="{% url 'apl:crear_producto' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+    <button id = "metodo_pago" type="button" class="btn btn-primary btn btn-xs" data-value = '{{formulario.metodo}}' onclick ="mostrarFormulario('metodo_pago','metodos', 'id_nombre', 'id_estado')" data-toggle="modal" data-target="#formulario-modal"><i class = "fas fa-plus "></i></button>
 
 
     {% elif field.label == "Proveedor" %}
 
-        <a href="{% url 'apl:crear_proveedor' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
+    <button id = "proveedor" type="button" class="btn btn-primary btn btn-xs" data-value = '{{formulario.proveedor}}' onclick ="mostrarFormulario('proveedor','proveedores', 'id_nombre', 'id_apellido', 'id_ubicacion','id_tipo_identicador', 'id_nit', 'id_correo_electronico', 'id_telefono')" data-toggle="modal" data-target="#formulario-modal"><i class = "fas fa-plus "></i></button>
 
     {% endif %}
 
+{% endblock %}
+
+{% block codigo %}
+<script>
+    $('#id_metodo_pago').select2({width: '100%'})
+    $('#id_proveedor').select2({width: '100%'})
+</script>
 {% endblock %}

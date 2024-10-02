@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.exceptions import ValidationError
 from apl.models import Administradores
-from apl.forms import AdministradorForm
+from apl.forms import AdministradorForm, TipoForm
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.models import User
 from django.core.validators import validate_email
@@ -100,6 +100,7 @@ class AdministradorCreateView(CreateView):
         context['entidad'] = 'Registrar administrador'
         context['listar_url'] = reverse_lazy('apl:listar_administrador')
         context['crear_url'] = reverse_lazy('apl:listar_administrador')
+        context['formulario'] = TipoForm()
         return context
 
     def form_valid(self, form):
@@ -138,6 +139,7 @@ class AdministradorUpdateView(UpdateView):
         context['entidad'] = 'Editar administrador'
         context['listar_url'] = reverse_lazy('apl:listar_administrador')
         context['crear_url'] = reverse_lazy('apl:listar_administrador')
+        context['formulario'] = TipoForm()
         return context
 
     def form_valid(self, form):

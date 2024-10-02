@@ -76,8 +76,14 @@ class MarcaCreateView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
+
+        marca = form.save()
+
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success',
+                                 'id': marca.id,
+                                 'nombre': marca.nombre
+                                 })
         return response
 
     def form_invalid(self, form):

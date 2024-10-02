@@ -2,38 +2,28 @@
 
 {% block boton_crear %}
 
-    {% if field.label == "Producto" %}
+    {% if field.label == "Cliente" %}
 
-        <a href="{% url 'apl:crear_producto' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
-    {% elif field.label == "Unidad de medida" %}
+    <button id = "cliente" type="button" class="btn btn-primary btn btn-xs" data-value = '{{formulario.cliente}}' onclick ="mostrarFormulario(
+                                                                                                                                                        'cliente',
+                                                                                                                                                        'clientes', 
+                                                                                                                                                        'id_nombre', 
+                                                                                                                                                        'id_apellido',
+                                                                                                                                                        'id_nit',
+                                                                                                                                                        'id_correo_electronico',
+                                                                                                                                                        'id_telefono',
+                                                                                                                                                        'id_Tipo_identificador')" data-toggle="modal" data-target="#formulario-modal"><i class = "fas fa-plus "></i></button>
 
-        <a href="{% url 'apl:crear_medida' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
-    
-    {% elif field.label == "cantidad" %}
-
-        <a href="{% url 'apl:crear_cantidad' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
-    
-    {% elif field.label == "precio" %}
-
-        <a href="{% url 'apl:crear_precio' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
-        
-    {% elif field.label == "Totales" %}
-
-        <a href="{% url 'apl:crear_total' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
-    
-    {% elif field.label == "Empleado" %}
-
-        <a href="{% url 'apl:crear_empleado' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
-    
-
-    {% elif field.label == "Cliente" %}
-
-        <a href="{% url 'apl:crear_cliente' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
-
-    {% elif field.label == "Administrador" %}
-
-        <a href="{% url 'apl:crear_administrador' %}" class = "btn btn-primary btn btn-xs"><i class = "fas fa-plus"></i></a>
-
+    {% elif field.label == "Metodo de Pago" %}
+    <button id = "metodo_pago" type="button" class="btn btn-primary btn btn-xs" data-value = '{{formulario.metodo}}' onclick ="mostrarFormulario('metodo_pago','metodos', 'id_nombre', 'id_estado')" data-toggle="modal" data-target="#formulario-modal"><i class = "fas fa-plus "></i></button>
     {% endif %}
+
+{% endblock %}
+
+{% block codigo %}
+    <script>
+        $('#id_cliente').select2({width: '100%'})
+        $('#id_metodo_pago').select2({width: '100%'})
+    </script>
 
 {% endblock %}

@@ -16,29 +16,20 @@ import re
 
 @method_decorator(never_cache, name='dispatch')
 class TipoCreateView(CreateView):
-
     model = Tipo
     form_class = TipoForm
     template_name = 'tipo/crear.html'
     success_url = reverse_lazy('apl:listar_tipo')
 
-    # #valida que no se repitan los datos
-    # def form_valid(self, form):
-    #     # Obtener el nombre de la categoría del formulario
-    #     nombre = form.cleaned_data.get('nombre').lower()
-
-    #     if Tipo.objects.filter(nombre__iexact=nombre).exists():
-    #         form.add_error(
-    #             'nombre', 'Ya existe una categoría con este nombre.')
-    #         return self.form_invalid(form)
-
-    #     return super().form_valid(form)
-
     def form_valid(self, form):
-        response = super().form_valid(form)
+        tipo = form.save()
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success'})
-        return response
+            return JsonResponse({
+                'status': 'success',
+                'id': tipo.id,
+                'nombre': tipo.nombre
+            })
+        return super().form_valid(form)
 
     def form_invalid(self, form):
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -180,7 +171,7 @@ class TipoListView(ListView):
             if int(id) >= 1:  # Verifica que el número sea positivo
                     queryset = queryset.filter(id=id)
             else:
-                messages.error(self.request, "El ID debe ser un número positivo.")
+                messages.error(self.request, "El ID debe ser un número válido.")
                 
         if nombre:
             if re.match("^[A-Za-z0-9\s]+$", nombre):  # Solo letras, números y espacios

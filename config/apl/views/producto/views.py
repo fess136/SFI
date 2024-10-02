@@ -1,6 +1,6 @@
-from django.http import JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from apl.forms import ProductosForm, TipoForm
+from apl.forms import ProductosForm, TipoForm, MarcaForm, PresentacionForm, MedidaForm
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
@@ -9,6 +9,7 @@ from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
+import json
 
 import logging
 import re
@@ -26,6 +27,7 @@ class ProductoListView(ListView):
         Producto = Productos.objects.get(id = self.request.GET.get('pk')) if self.request.GET.get('pk') else None
         context['obj_relacionados'] = [i.__str__() for i in Producto.detallecompra_set.all()] + [i.__str__() for i in Producto.detalleventa_set.all()] if Producto else None
         context['entidad'] = "Productos"
+        context ['Producto'] = ProductosForm()
         return context
     
     
@@ -45,7 +47,7 @@ class ProductoListView(ListView):
             if int(id) >= 1:  # Verifica que el número sea positivo
                     queryset = queryset.filter(id=id)
             else:
-                messages.error(self.request, "El ID debe ser un número positivo.")
+                messages.error(self.request, "El ID debe ser un número válido.")
 
         # Filtra por nombre del producto
         if nombre:
@@ -88,13 +90,21 @@ class ProductoCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Producto"
         context['crear_url'] = self.success_url
-        context['Tipo'] = TipoForm()
+        context['formulario'] = {
+            'tipo': TipoForm(),
+            'unidad_medida': MedidaForm(),
+            'marca': MarcaForm(),
+            'presentacion': PresentacionForm()
+        }
         return context
 
     def form_valid(self, form):
         response = super().form_valid(form)
+        producto = form.save()
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success',
+                                 'id': producto.id,
+                                 'nombre': producto.__str__()})
         return response
 
     def form_invalid(self, form):
@@ -124,6 +134,12 @@ class ProductoUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Producto"
         context['crear_url'] = self.success_url
+        context['formulario'] = {
+            'tipo': TipoForm(),
+            'unidad_medida': MedidaForm(),
+            'marca': MarcaForm(),
+            'presentacion': PresentacionForm()
+        }
         return context
 
     def form_valid(self, form):

@@ -10,6 +10,14 @@ from django.core.exceptions import ValidationError
 from apl.models import Administradores
 from apl.forms import AdministradorForm, TipoForm
 from django.views.decorators.cache import never_cache
+from django.contrib.auth.models import User
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+from django.contrib import messages
+import re
+from apl.models import Administradores
+
+
 @method_decorator(never_cache , name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class AdministradorListView(ListView):
@@ -25,6 +33,54 @@ class AdministradorListView(ListView):
         return context
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = Administradores.objects.all()
+
+        # Captura los parámetros de la URL
+        id = self.request.GET.get('id')
+        user = self.request.GET.get('user')
+        nombre = self.request.GET.get('nombre')
+        numero_documento = self.request.GET.get('numero_documento')
+        correo_electronico = self.request.GET.get('correo_electronico')
+        telefono = self.request.GET.get('telefono')
+        tipo_documento = self.request.GET.get('tipo_documento')
+
+        if id:
+            if int(id) >= 1:  # Verifica que el número sea positivo
+                    queryset = queryset.filter(id=id)
+            else:
+                messages.error(self.request, "El ID no es válido.")
+
+        # Filtra por nombre del cliente
+        if user:
+            if re.match("^[A-Za-zÀ-ÿ\s]+$", user):  # Verifica que solo tenga letras (incluye acentos)
+                queryset = queryset.filter(user__username__icontains=user)
+            else:
+                messages.error(self.request, "El nombre solo debe contener letras")
+        
+        # Validación para apellido (solo letras)
+        if nombre:
+            if re.match("^[A-Za-zÀ-ÿ\s]+$", nombre):  # Verifica que solo tenga letras (incluye acentos)
+                queryset = queryset.filter(nombre__icontains=nombre)
+            else:
+                messages.error(self.request, "El nombre solo debe contener letras")
+                
+        # Filtra por tipo de identificacion (ForeignKey)
+        if tipo_documento:
+            queryset = queryset.filter(tipo_documento__icontains=tipo_documento)
+            
+        # Filtra por Numero de identificacion del administrador
+        if numero_documento:
+            queryset = queryset.filter(numero_documento__icontains=numero_documento)
+                
+        # Filtra por telefono del administrador
+        if telefono:
+            queryset = queryset.filter(telefono__icontains=telefono)
+
+        return queryset
     
 
 @method_decorator(never_cache , name='dispatch')

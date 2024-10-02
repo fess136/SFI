@@ -27,6 +27,7 @@ class ProductoListView(ListView):
         Producto = Productos.objects.get(id = self.request.GET.get('pk')) if self.request.GET.get('pk') else None
         context['obj_relacionados'] = [i.__str__() for i in Producto.detallecompra_set.all()] + [i.__str__() for i in Producto.detalleventa_set.all()] if Producto else None
         context['entidad'] = "Productos"
+        context ['Producto'] = ProductosForm()
         return context
     
     
@@ -46,7 +47,7 @@ class ProductoListView(ListView):
             if int(id) >= 1:  # Verifica que el número sea positivo
                     queryset = queryset.filter(id=id)
             else:
-                messages.error(self.request, "El ID debe ser un número positivo.")
+                messages.error(self.request, "El ID debe ser un número válido.")
 
         # Filtra por nombre del producto
         if nombre:

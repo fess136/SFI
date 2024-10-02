@@ -171,7 +171,7 @@ class TipoListView(ListView):
             if int(id) >= 1:  # Verifica que el número sea positivo
                     queryset = queryset.filter(id=id)
             else:
-                messages.error(self.request, "El ID debe ser un número positivo.")
+                messages.error(self.request, "El ID debe ser un número válido.")
                 
         if nombre:
             if re.match("^[A-Za-z0-9\s]+$", nombre):  # Solo letras, números y espacios

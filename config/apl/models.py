@@ -176,7 +176,7 @@ class Proveedores(models.Model):
     
     
     def __str__(self):
-        return self.apellido
+        return f"{self.nombre} {self.apellido}"
     
     class Meta:
         verbose_name = "Proveedor"
@@ -234,7 +234,7 @@ class Clientes(models.Model):
     Tipo_identificador=models.ForeignKey(Tipo_identificador, on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
     
     def __str__(self):
-        return self.nombre
+        return f"{self.nombre} {self.apellido}"
     
     class Meta:
         verbose_name = "Cliente"

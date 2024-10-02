@@ -68,20 +68,18 @@ class ClienteListView(ListView):
         # Filtra por Numero de identificacion del cliente
         if nit:
             queryset = queryset.filter(nit__icontains=nit)
-
-        # Filtra por correo electronico
+        
+        # Validación y filtrado para el correo electrónico
         if correo_electronico:
-            try:
-                validate_email(correo_electronico)  # Usa la validación de Django para formato general
-                # Verificar el dominio del correo
-                domain = correo_electronico.split('@')[-1]
-                valid_domains = ['gmail.com', 'hotmail.com']  # Ajusta los dominios permitidos
-                if domain not in valid_domains:
-                    messages.error(self.request, f"El dominio {domain} no es válido. Use un dominio permitido.")
-                else:
+            # Si solo se ingresa un dominio, ej: 'gmail.com'
+            if re.match(r'^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', correo_electronico):
+                queryset = queryset.filter(correo_electronico__icontains=f'@{correo_electronico}')
+            else:
+                try:
+                    validate_email(correo_electronico)  # Valida si es un correo completo
                     queryset = queryset.filter(correo_electronico__icontains=correo_electronico)
-            except ValidationError:
-                messages.error(self.request, "El correo electrónico no es válido.")
+                except ValidationError:
+                    messages.error(self.request, "El correo electrónico no es válido.")
                 
         # Filtra por telefono del cliente
         if telefono:

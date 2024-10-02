@@ -42,6 +42,7 @@ class MetodosListView(ListView):
         # Captura los parámetros de la URL
         id = self.request.GET.get('id')
         nombre = self.request.GET.get('nombre')
+        estado = self.request.GET.get('estado')
 
         if id:
             if int(id) >= 1:  # Verifica que el número sea positivo
@@ -55,6 +56,9 @@ class MetodosListView(ListView):
                 queryset = queryset.filter(nombre__icontains=nombre)
             else:
                 messages.error(self.request, "El nombre no puede contener caracteres especiales")
+        
+        if estado:
+                queryset = queryset.filter(estado__iexact=estado)  # Filtra por estado
         return queryset
 
 

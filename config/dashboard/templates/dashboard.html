@@ -1,1 +1,53 @@
 {% extends 'layout.html' %}
+
+{% block Bienvenidos %}
+<html lang="es">
+<head>
+<h1 style="color: #ffffff;"><small style="color: #ffffff;">Inicio</small></h1>
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 40vh; text-align: center; position: relative; top: -50px; left: 350px;">
+    <!DOCTYPE html>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #ffffff;
+            font-size: 80px;
+            margin-bottom: 20px;
+            font-family: 'Roboto', sans-serif;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        img {
+            max-width: 400px;
+            animation: fadeIn 2s ease-in-out;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: #333;">
+    <h2>
+        Bienvenidos
+    </h2>
+    <img src="static/img/logosfi.png" alt="LogoO" style="max-width: 400px;">
+</div>
+</body>
+</html>
+
+    
+
+
+
+    
+{% endblock %}

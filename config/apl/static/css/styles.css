@@ -6,7 +6,11 @@
 }
 
 .Dark-mode .content-wrapper {
-    background-image: url("/static/img/FONDO.jpg");
+       /* imagen obtenida desde: https://www.istockphoto.com/es/foto/fondo-de-la-variedad-de-herramientas-gm1370598531-440117158 */
+    background-image: url("/static/img/Herramientaoscura.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+   
     background-color: #1f1e1e;
     border-color:  #1f1e1e;    
     color: #fff;
@@ -100,7 +104,11 @@ border-color: #FF0000;
 color: #FFFF00;
 }
 .Contraste .content-wrapper {
-    background-image: url("/static/img/FONDO.jpg");
+   /* imagen obtenida desde: https://www.istockphoto.com/es/foto/fondo-de-la-variedad-de-herramientas-gm1370598531-440117158 */
+   background-image: url("/static/img/Herraaltocontraste.jpg");
+   background-size: cover;
+   background-repeat: no-repeat;
+  
     background-color: #1A237E;
     border-color: #FF0000;
     color: #FFFF00;
@@ -187,7 +195,10 @@ border-color: #34495E;
 color: #ECF0F1;
 }
 .Daltonico .content-wrapper {
-    background-image: url("/static/img/FONDO.jpg");
+   /* imagen obtenida desde: https://www.istockphoto.com/es/foto/fondo-de-la-variedad-de-herramientas-gm1370598531-440117158 */
+   background-image: url("/static/img/Herramientadaltonica.jpg");
+   background-size: cover;
+   background-repeat: no-repeat;
     background-color: #2C3E50;
     border-color: #34495E;
     color: #ECF0F1;

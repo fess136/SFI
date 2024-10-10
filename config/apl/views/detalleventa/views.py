@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from apl.forms import DetalleVentaForm
+from apl.forms import DetalleVentaForm, ProductosForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -29,22 +29,43 @@ class DetalleVentaDetailView(DetailView):
 
         return context
     
-    def post(self,  request, *args, **kwargs):
-
+    def post(self, request, *args, **kwargs):
         if request.POST.get('accion') == "finalizar":
+            try:
+                errores = []
+                for i in DetalleVenta.objects.filter(venta=self.kwargs.get('pk')):
+                    producto = Productos.objects.get(id=i.producto.id)
+                    
+                    if i.cantidad > producto.cantidad:
+                        errores.append(f"id: {producto.id} - Producto: {producto.nombre}")
+                        
+                if errores:
 
-            #Se queda la venta finalizada
-            Ventas.objects.filter(id = self.kwargs.get('pk')).update(finalizado = True)
+                    raise ValidationError(errores)
 
-            #se actualiza los productos en stock
+                # Se queda la venta finalizada
+                Ventas.objects.filter(id=self.kwargs.get('pk')).update(finalizado=True)
 
-            for i in DetalleVenta.objects.filter(venta = self.kwargs.get('pk')):
+                # se actualiza los productos en stock
+                for i in DetalleVenta.objects.filter(venta=self.kwargs.get('pk')):
+                    Productos.objects.filter(id=i.producto.id).update(
+                        cantidad=i.producto.cantidad - i.cantidad
+                    )
 
-                Productos.objects.filter(id = i.producto.id).update(cantidad = i.producto.cantidad - i.cantidad)
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({'status': 'success'})
+                else:
+                    return redirect('apl:listar_venta')
 
-            return redirect('apl:listar_venta')
-        
-        return redirect('apl:listar_detalleventa', args = [self.kwargs.get('pk')])
+            except ValidationError as e:
+                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                    return JsonResponse({'status': 'error', 'message': ', '.join(e)}, status=400)
+                
+            return redirect('apl:listar_detalleventa', args=[self.kwargs.get('pk')])
+    
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs): 
+        return super().dispatch(request, *args, **kwargs)
 
 @method_decorator(never_cache, name='dispatch')
 class DetalleVentaCreateView(CreateView):
@@ -60,6 +81,8 @@ class DetalleVentaCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Crear Detalle de Venta"
         context['crear_url'] = self.get_success_url()
+        context['formulario'] = ProductosForm()
+
         return context
     
     def form_valid(self, form):
@@ -100,6 +123,7 @@ class DetalleVentaUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Editar Detalle de Venta"
+        context['formulario'] = ProductosForm()
         context['crear_url'] = reverse_lazy('apl:listar_detalleventa', args = [DetalleVenta.objects.get(id = self.kwargs.get('pk')).venta])
         return context
 

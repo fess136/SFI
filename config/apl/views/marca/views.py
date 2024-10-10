@@ -11,6 +11,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 
+import re
 
 @method_decorator(never_cache, name='dispatch')
 class MarcaListView(ListView):
@@ -26,9 +27,33 @@ class MarcaListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Marcas"
         context['crear_url'] = reverse_lazy('apl:crear_marca')
-        context['obj_relacionados'] = ', '.join([i.__str__() for i in Marcas.objects.get(id = self.request.GET.get('pk')).productos_set.all()]) if self.request.GET.get('pk') else None
+        context['obj_relacionados'] = [i.__str__() for i in Marcas.objects.get(id = self.request.GET.get('pk')).productos_set.all()] if self.request.GET.get('pk') else None
         context['entidad'] = "Marcas"
         return context
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        # Obtiene los parámetros de consulta de la URL
+        id = self.request.GET.get('id')
+        nombre = self.request.GET.get('nombre')
+        estado = self.request.GET.get('estado')
+
+        # Filtra los resultados según los parámetros proporcionados
+        if id:
+            if int(id) >= 1:  # Verifica que el número sea positivo
+                    queryset = queryset.filter(id=id)
+            else:
+                messages.error(self.request, "El ID debe ser un número positivo.")
+                
+        if nombre:
+            if re.match("^[A-Za-z0-9\s]+$", nombre):  # Solo letras, números y espacios
+                queryset = queryset.filter(nombre__icontains=nombre)
+            else:
+                messages.error(self.request, "El nombre no puede contener caracteres especiales.")
+            
+        if estado:
+                queryset = queryset.filter(estado__iexact=estado)  # Filtra por estado
+        return queryset
 
 @method_decorator(never_cache, name='dispatch')
 class MarcaCreateView(CreateView):
@@ -51,8 +76,14 @@ class MarcaCreateView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
+
+        marca = form.save()
+
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success',
+                                 'id': marca.id,
+                                 'nombre': marca.nombre
+                                 })
         return response
 
     def form_invalid(self, form):

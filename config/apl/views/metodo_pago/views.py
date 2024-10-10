@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 
+import re
 
 @method_decorator(never_cache, name='dispatch')
 class MetodosListView(ListView):
@@ -26,14 +27,39 @@ class MetodosListView(ListView):
         #metodo de pago con otros registros
 
         MetodoPago = Metodo_Pago.objects.get(id = self.request.GET.get('pk')) if self.request.GET.get('pk') else None
-        context['obj_relacionados'] = ', '.join([i.__str__() for i in MetodoPago.compras_set.all()] + [i.__str__() for i in MetodoPago.ventas_set.all()]) if MetodoPago else None 
-        
+        context['obj_relacionados'] = [f"Compra #{i.__str__()}" for i in MetodoPago.compras_set.all()] + [f"Venta: {i.__str__()}"for i in MetodoPago.ventas_set.all()] if MetodoPago else None 
         context['entidad'] = "Metodos de pago"
         return context
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)
+    
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # Captura los parámetros de la URL
+        id = self.request.GET.get('id')
+        nombre = self.request.GET.get('nombre')
+        estado = self.request.GET.get('estado')
+
+        if id:
+            if int(id) >= 1:  # Verifica que el número sea positivo
+                    queryset = queryset.filter(id=id)
+            else:
+                messages.error(self.request, "El ID debe ser un número positivo.")
+
+        # Filtra por nombre del cliente
+        if nombre:
+            if re.match("^[A-Za-z0-9\s]+$", nombre):  # Solo letras, números y espacios
+                queryset = queryset.filter(nombre__icontains=nombre)
+            else:
+                messages.error(self.request, "El nombre no puede contener caracteres especiales")
+        
+        if estado:
+                queryset = queryset.filter(estado__iexact=estado)  # Filtra por estado
+        return queryset
 
 
 @method_decorator(never_cache, name='dispatch')
@@ -52,8 +78,11 @@ class MetodoCreateView(CreateView):
 
     def form_valid(self, form):
         response = super().form_valid(form)
+        metodo = form.save()
         if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({'status': 'success'})
+            return JsonResponse({'status': 'success',
+                                 'id': metodo.id,
+                                 'nombre': metodo.__str__()})
         return response
 
     def form_invalid(self, form):

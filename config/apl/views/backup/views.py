@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 @login_required
 @never_cache
 def backup_restore_view(request):
-    directorio_copias = os.path.join(settings.BASE_DIR, 'database')
+    directorio_copias = os.path.join(settings.BASE_DIR, 'database/database')
     archivos_zip = [f for f in os.listdir(directorio_copias) if f.endswith('.zip')]
 
     return render(request, 'backup/copia.html', {
@@ -50,7 +50,7 @@ def restaurar_copia_de_seguridad(request):
             except FileNotFoundError as e:
                 messages.error(request, str(e))
             except Exception as e:
-                messages.success(request,  f'La copia de seguridad {nombre_copia} ha sido restaurada con éxito.')
+                messages.success(request,  f'La copia de seguridad {nombre_copia} ha sido restaurada .')
         else:
             messages.error(request, 'No se seleccionó ninguna copia de seguridad.')
     return redirect('apl:backup_restore_view')

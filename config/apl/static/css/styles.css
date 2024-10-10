@@ -386,10 +386,18 @@ color: #ECF0F1;
 
 /* ESTILO DEL FONDO DEL CONTENT */
 .content-wrapper {
-    /* imagen obtenida desde: https://www.istockphoto.com/es/foto/fondo-de-la-variedad-de-herramientas-gm1370598531-440117158 */
-    background-image: url("/static/img/Herramientas.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
+   /* Imagen de fondo  */
+background-image: url("/static/img/Herramientas.jpg");
+background-size: cover; 
+background-position: center; 
+background-repeat: no-repeat; 
+
+
+@media (max-width: 768px) {
+    background-size: contain; 
+    background-position: top;
+}
+
 }
 
 

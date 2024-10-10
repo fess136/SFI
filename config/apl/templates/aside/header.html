@@ -4,11 +4,32 @@
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="{%url 'dashboard'%}" class="nav-link">Inicio</a>
+        <li class="nav-item">
+            <a href="{% url 'dashboard' %}" class="nav-link btn-responsive">Inicio</a>
         </li>
     </ul>
+    <style>
+        /* Agregar algo de estilo básico para hacer el botón visualmente atractivo */
+        .btn-responsive {
+            display: inline-block;
+            padding: 10px 5vw; /* Ancho del botón basado en el tamaño de la pantalla (vw: Viewport Width) */
+            font-size: 1vw; /* Tamaño de fuente proporcional al ancho de la pantalla */
+            color: #fffff;
+            background-color: #1f5a96;
+            border-radius: 50px;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+        }
 
+        /* Hacer el botón más pequeño en pantallas pequeñas */
+        @media (max-width: 768px) {
+            .btn-responsive {
+                padding: 8px 4vw; /* Cambia el padding en pantallas pequeñas */
+                font-size: 3vw; /* Ajusta el tamaño de la fuente en pantallas más pequeñas */
+            }
+        }
+    </style>
     <ul class="navbar-nav ml-auto">
         <!-- Botón de ayuda -->
         <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="Manual de Ayuda">

@@ -4,7 +4,6 @@ from apl.views.tipo.views import *
 from apl.views.marca.views import *
 from apl.views.presentacion.views import*
 from apl.views.administrador.views import*
-from apl.views.empleado.views import *
 from apl.views.metodo_pago.views import *
 from apl.views.tipo_identificador.views import*
 from apl.views.cliente.views import*
@@ -14,6 +13,8 @@ from apl.views.proveedor.views import *
 from apl.views.medidas.views import*
 from apl.views.ventas.views import*
 from apl.views.detallecompra.views import *
+from apl.views.backup.views import *
+from apl.views.detalleventa.views import *
 
 app_name = 'apl'
 urlpatterns = [
@@ -42,12 +43,6 @@ urlpatterns = [
     path('administradores/editar/<int:pk>', AdministradorUpdateView.as_view(), name = "editar_administrador"),
     path('administradores/borrar/<int:pk>', AdministradorDeleteView.as_view(), name = 'borrar_administrador'),
 
-    #Modulo Empleados
-    path('empleados/listar', EmpleadoListView.as_view(), name="listar_empleado"),
-    path('empleados/crear', EmpleadoCreateView.as_view(), name = "crear_empleado"),
-    path('empleados/editar/<int:pk>', EmpleadoUpdateView.as_view(), name = "editar_empleado"),
-    path('empleados/borrar/<int:pk>', EmpleadoDeleteView.as_view(), name = "borrar_empleado"),
-
     #Modulo Metodos
     path('metodos/listar', MetodosListView.as_view(), name="listar_metodo"),
     path('metodos/crear', MetodoCreateView.as_view(), name = "crear_metodo"),
@@ -71,7 +66,8 @@ urlpatterns = [
     path('detallecompras/detallar/<int:pk>', DetalleCompraDetailView.as_view(), name = "detallar_detallecompra"),
     path('detallecompras/editar/<int:pk>', DetalleCompraUpdateView.as_view(), name = "editar_detallecompra" ),
     path('detallarcompras/borrar/<int:pk>', DetalleCompraDeleteView.as_view(), name = "borrar_detallecompra"),
-    path('detallecompras/crear', DetalleCompraCreateView.as_view(), name = "crear_detallecompra"),
+    path('detallecompras/crear/<int:pk>', DetalleCompraCreateView.as_view(), name = "crear_detallecompra"),
+    path('detallecompras/obtener_precio',  DetalleCompraCreateView.obtener_precio, name = 'obtener_precio'),
 
     #Modulo Productos
     path('productos/listar', ProductoListView.as_view(), name = "listar_producto"),
@@ -101,6 +97,17 @@ urlpatterns = [
     path('ventas/listar',VentasListView.as_view(),name = "listar_venta"),
     path('ventas/crear', VentaCreateView.as_view(), name = 'crear_venta'),
     path('ventas/editar/<int:pk>', VentaUpdateView.as_view(), name = 'editar_venta'),
-    path('ventas/borrar/<int:pk>', VentaDeleteView.as_view(), name = 'borrar_venta')
+    path('ventas/borrar/<int:pk>', VentaDeleteView.as_view(), name = 'borrar_venta'),
+
+    #Detalle de Ventas
+
+    path('detalleventa/listar/<int:pk>', DetalleVentaDetailView.as_view(), name = "listar_detalleventa"),
+    path('detalleventa/crear/<int:pk>', DetalleVentaCreateView.as_view(), name = "crear_detalleventa"),
+    path('detalleventa/editar/<int:pk>', DetalleVentaUpdateView.as_view(), name = "editar_detalleventa"),
+    path('detalleventa/borrar/<int:pk>', DetalleVentaDeleteView.as_view(), name = "borrar_detalleventa"),
     
+    #modulo de copia de seguridad
+    path('backup/copia', backup_restore_view, name='backup_restore_view'),
+    path('hacer-copia/', hacer_copia_de_seguridad, name='hacer_copia_de_seguridad'),
+    path('restaurar-copia/', restaurar_copia_de_seguridad, name='restaurar_copia_de_seguridad'),
 ]

@@ -1,0 +1,104 @@
+{% extends 'layout.html' %}
+
+{% block Bienvenidos %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Estilo del texto "Bienvenidos" */
+        h2 {
+            color: #ffffff;
+            font-size: 70px; /* Tamaño original en pantallas grandes */
+            margin-bottom: 20px;
+            font-family: 'Roboto', sans-serif;
+            animation: fadeIn 2s ease-in-out;
+            position: relative;
+            top: 50px; /* Mantener la posición en pantallas grandes */
+            left: -25px;
+            righ: 50;
+        }
+
+        /* Estilo para la imagen del logo */
+        img {
+            max-width: 350px; /* Tamaño original del logo en pantallas grandes */
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* Contenedor para centrar los elementos */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 40vh;
+            text-align: center;
+            position: relative;
+            top: -50px;
+            left: 370px;
+        }
+
+        /* Ajustes para pantallas más pequeñas */
+        @media (max-width: 768px) {
+            h2 {
+                font-size: 8vw; /* Ajustar tamaño del texto proporcionalmente */
+                left: 0; /* Reajustar la posición horizontal en pantallas pequeñas */
+                top: 0;  /* Reajustar la posición vertical */
+            }
+
+            img {
+                max-width: 60%; /* Reducir el tamaño del logo proporcionalmente */
+            }
+
+            .container {
+                left: 0;  /* Centrar el contenedor en pantallas pequeñas */
+                top: 0;   /* Eliminar el desplazamiento hacia arriba */
+            }
+        }
+
+        /* Ajustes para pantallas aún más pequeñas */
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 10vw; /* Aún más pequeño para pantallas móviles */
+                left: 0;
+                top: 0;
+            }
+
+            img {
+                max-width: 50%; /* Reducir más el tamaño de la imagen */
+            }
+
+            .container {
+                left: 0;
+                top: 0;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: #333;">
+    <div class="container">
+        <h2>Bienvenidos</h2>
+        <img src="static/img/logosfi.png" alt="LogoO">
+    </div>
+</body>
+</html>
+
+    
+
+
+
+    
+{% endblock %}

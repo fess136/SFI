@@ -1,8 +1,9 @@
 from dataclasses import fields
 from django.forms import *
+from django.contrib import admin
 from django import forms
 from apl.models import *
-
+from django.contrib.admin.widgets import AutocompleteSelect
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm, TextInput, Select, NumberInput, EmailInput, PasswordInput
@@ -29,8 +30,8 @@ class MarcaForm(ModelForm):
         fields = '__all__'
 
 class AdministradorForm(ModelForm):
-    username = forms.CharField(label="Username", max_length=150)
-    email = forms.EmailField(label="Email", max_length=150)
+    username = forms.CharField(label="Usuario", max_length=150)
+    email = forms.EmailField(label="Correo", max_length=150)
     password = forms.CharField(label="Password", widget=PasswordInput)
     conf_password = forms.CharField(label="Confirm Password", widget=PasswordInput)
 
@@ -89,24 +90,40 @@ class AdministradorForm(ModelForm):
         fields = ["username", "email", "nombre", "tipo_documento", "numero_documento", "telefono", "password", "conf_password"]
         widgets = {
             "nombre": TextInput(attrs={"placeholder": "Nombre del administrador"}),
-            "tipo_documento": Select(attrs={"placeholder": "Tipo de documento"}),
+            "tipo_documento": Select(attrs={"placeholder": "Tipo de identificación"}),
             "numero_documento": NumberInput(attrs={"min": 8, "placeholder": "Número de documento"}),
             "telefono": NumberInput(attrs={"min": 1, "placeholder": "Teléfono"}),
             "password": PasswordInput(attrs={"min": 1, "placeholder": "Contraseña"}),
             "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
         }
-
 class VentaForm(ModelForm):
 
     class Meta:
         model = Ventas
-        fields = '__all__'
+        fields = ['usuario', 'cliente', 'metodo_pago']
+
+    def __init__(self, *args, **kwargs):
+
+        self.usuario = kwargs.pop('usuario',None)
+
+        super().__init__(*args, **kwargs)
+        self.fields['usuario'].initial = self.usuario
+        self.fields['usuario'].disabled = True
+        
 
 class ProductosForm(ModelForm):
 
     class Meta:
         model = Productos
         fields = '__all__'
+        widgets = {
+            'id' : NumberInput(attrs={'class': 'form-control'}),
+            'nombre': TextInput(attrs={'class': 'form-control'}),
+            'marcas': Select(attrs={'class': 'form-control'}),
+            'tipo': Select(attrs={'class': 'form-control'}),
+            'presentacion': Select(attrs={'class': 'form-control'}),
+            'unidad_medida': Select(attrs={'class': 'form-control'})
+        }
 
 class PresentacionForm(ModelForm):
 
@@ -120,12 +137,6 @@ class MedidaForm(ModelForm):
         model = Unidad_Medida
         fields = '__all__'
 
-class EmpleadoForm(ModelForm):
-
-    class Meta:
-
-        model = Empleados
-        fields = '__all__'
 
 class ClienteForm(ModelForm):
 
@@ -134,12 +145,21 @@ class ClienteForm(ModelForm):
         model = Clientes
         fields = '__all__'
 
-class IdentificadorForm(ModelForm):
-
+class IdentificadorForm(forms.ModelForm):
     class Meta:
-
         model = Tipo_identificador
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Si este formulario se usa para seleccionar un Tipo_identificador en otro modelo,
+        # asegúrate de que solo se muestren las opciones activas
+        if 'instance' not in kwargs:
+            self.fields['tipo_identificador'] = forms.ModelChoiceField(
+                queryset=Tipo_identificador.activos.all(),
+                empty_label="Seleccione un tipo de identificador",
+                required=False
+            )
 
 class MetodoForm(ModelForm):
 
@@ -156,24 +176,90 @@ class ProveedorForm(ModelForm):
         fields = '__all__'    
 
 class CompraForm(ModelForm):
+    
+
 
     class Meta:
 
         model = Compras
-        fields = '__all__' 
+        fields = ['usuario', 'metodo_pago', 'proveedor']
+    
+    def __init__(self, *args, **kwargs):
+
+        self.usuario = kwargs.pop('usuario',None)
+
+        super().__init__(*args, **kwargs)
+        self.fields['usuario'].initial = self.usuario
+        self.fields['usuario'].disabled = True
+
+
 
 class DetalleCompraForm(ModelForm):
 
     class Meta:
         
         model = DetalleCompra
-        fields = ['compra', 'cantidad', 'producto']
+        fields = ['compra', 'cantidad', 'producto', 'precio_unitario']
 
     def __init__(self, *args, **kwargs):
 
+        self.id_compra = kwargs.pop('id_compra', None)
+        
         super().__init__(*args, **kwargs)
-        self.fields['compra'].initial = Compras.objects.all()[len(Compras.objects.all())-1]
+
+        self.fields['compra'].initial = self.id_compra
         self.fields['compra'].disabled = True
+
         
     def clean_fixed_value(self):
-        return Compras.objects.all()[len(Compras.objects.all())-1]
+        return self.id_compra
+    
+class DetalleVentaForm(ModelForm):
+
+    class Meta:
+
+        model =  DetalleVenta
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        
+        self.id_venta = kwargs.pop("id_venta",  None)
+        self.id_detalle = kwargs.pop('id', None)
+
+        self.edicion = kwargs.pop('hay_edicion', None)
+
+        super().__init__(*args, **kwargs)
+
+        self.fields['venta'].initial = self.id_venta
+        self.fields['venta'].disabled = True
+        
+    def clean_fixed_value(self):
+        return self.id_venta
+    
+    def clean(self):
+
+        campos = super().clean()
+
+        id = campos.get('venta')
+        cantidad = campos.get('cantidad')
+        producto = campos.get('producto')
+
+        # si es para agregar un nuevo detalle de venta se hace la validacion para que no se repita el producto
+        if not self.edicion:
+            if DetalleVenta.objects.filter(venta = id, producto = Productos.objects.get(id= producto.id).id).exists():
+
+                self.add_error("producto", f"{producto} ya existe en esta compra, ya puede ser editado en la tabla")
+
+        # pero si se esta editando valida que no se ingrese un producto que ya habia sido ingresado a excepcion del que se habia
+        # registrado en ese detalle de venta
+        elif self.edicion and producto != DetalleVenta.objects.get(id = self.id_detalle).producto:
+
+            if DetalleVenta.objects.filter(venta = id, producto = producto.id).exists():
+
+                self.add_error("producto", f"{producto} ya existe en este detalle de venta")
+
+        
+        if cantidad > Productos.objects.get(id = producto.id).cantidad:
+
+            
+            self.add_error("cantidad", f"Quieres vender {cantidad} productos pero solo hay {Productos.objects.get(nombre = producto).cantidad} productos en stock")

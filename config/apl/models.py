@@ -1,4 +1,5 @@
 
+from decimal import Decimal
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import*
@@ -8,22 +9,72 @@ from django.core.validators import MinLengthValidator
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 
+def validacion_identificacion(value):
+
+    if len(str(value)) < 7 or len(str(value)) > 13:
+
+        raise ValidationError("debes ingresar como minimo 7 digitos y maximo 13")
+    
 def validacion_telefono(value):
 
     if len(str(value)) != 10:
 
-        raise ValidationError("se deben ingresar 10 digitos")
+        raise ValidationError('debes ingresar 10 digitos')
     
 def validacion_numeros_negativos(value):
 
     if value <= 0:
 
         raise ValidationError("no se puede ingresar solo 0 ni numeros negativos")
+    
+
+class ActivoManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(estado='activo')
+
+class Tipo_identificador(models.Model):
+
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    ]
+    
+    nombre = models.CharField(max_length=150, verbose_name="Nombre")
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADO_CHOICES,
+        default='activo',
+        verbose_name="Estado"
+    )
+    
+    # Managers
+    objects = models.Manager()  # The default manager
+    activos = ActivoManager()  # Our custom manager
+    
+    def __str__(self):
+        return f"{self.nombre}"
+    
+    class Meta:
+        verbose_name = "Tipo Identificador"
+        verbose_name_plural = "Tipos Identificadores"
+        db_table = "Tipo_identificador"
 
 class Tipo(models.Model):
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    ]
     nombre=models.CharField(max_length=150, verbose_name="Nombre", unique=True, null=True)
-    estado=models.BooleanField(default=True)
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADO_CHOICES,
+        default='Activo',
+        verbose_name="Estado"
+    )
     
+    # Managers
+    objects = models.Manager()  # The default manager
+    activos = ActivoManager()  # Our custom manager    
     def __str__(self):
         return self.nombre
     
@@ -34,8 +85,24 @@ class Tipo(models.Model):
 
 
 class Presentacion(models.Model):
-    descripcion = models.CharField(max_length=150, verbose_name="Descripcion")
+
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    ]
     
+    descripcion = models.CharField(max_length=150, verbose_name="Descripcion")
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADO_CHOICES,
+        default='Activo',
+        verbose_name="Estado"
+    )
+    
+    # Managers
+    objects = models.Manager()  # The default manager
+    activos = ActivoManager()  # Our custom manager
+
     def __str__(self):
         return self.descripcion
     
@@ -46,8 +113,22 @@ class Presentacion(models.Model):
 
 
 class Marcas(models.Model):
+
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    ]
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
-    estado = models.BooleanField(default = True)
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADO_CHOICES,
+        default='activo',
+        verbose_name="Estado"
+    )
+    
+    # Managers
+    objects = models.Manager()  # The default manager
+    activos = ActivoManager()  # Our custom manager
     
     def __str__(self):
         return self.nombre
@@ -59,8 +140,21 @@ class Marcas(models.Model):
 
 
 class Unidad_Medida(models.Model):
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    ]
     descripcion = models.CharField(max_length=50, verbose_name="Descripcion")
-    estado = models.BooleanField(default = True)
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADO_CHOICES,
+        default='activo',
+        verbose_name="Estado"
+    )
+    
+    # Managers
+    objects = models.Manager()  # The default manager
+    activos = ActivoManager()  # Our custom manager
     
     def __str__(self):
         return self.descripcion
@@ -74,14 +168,15 @@ class Unidad_Medida(models.Model):
 class Proveedores(models.Model):
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
     apellido = models.CharField(max_length=50, verbose_name="Apellido")
-    nit = models.CharField(max_length = 20, unique = True, verbose_name = "Nit/Cedula")
+    tipo_identicador = models.ForeignKey(Tipo_identificador, on_delete=models.PROTECT, null=True, verbose_name = "Tipo de Identificación")
+    nit = models.CharField(max_length = 20, unique = True, verbose_name = "Numero de identificación", validators=[validacion_identificacion])
     ubicacion = models.CharField(max_length = 255, verbose_name = "Ubicacion")
-    telefono = models.PositiveIntegerField( verbose_name = "Telefono")
+    telefono = models.PositiveIntegerField( verbose_name = "Telefono", validators=[validacion_telefono])
     correo_electronico = models.EmailField(max_length=100, verbose_name = "Correo Electronico")
     
     
     def __str__(self):
-        return self.apellido
+        return f"{self.nombre} {self.apellido}"
     
     class Meta:
         verbose_name = "Proveedor"
@@ -89,25 +184,12 @@ class Proveedores(models.Model):
         db_table = "Proveedores"
 
     
-class Tipo_identificador(models.Model):
-    
-    nombre=models.CharField(max_length=150, verbose_name="Nombre")
-    
-    
-    def __str__(self):
-        return self.nombre
-    
-    class Meta:
-        verbose_name = "Tipo Identificador"
-        verbose_name_plural = "Tipos Identificadores"
-        db_table = "Tipo_identificador"
-        
+
+
+
         
 class Administradores(models.Model):
-    class TipoDocumento(models.TextChoices):
-        CC = 'CC', 'Cédula de Ciudadanía'
-        CE = 'CE', 'Cédula de Extranjería'
-       
+
         
 
     # def validar_numero_documento(value):
@@ -116,9 +198,9 @@ class Administradores(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='administrador')
     nombre = models.CharField(max_length=50, verbose_name="Nombre")
-    tipo_documento = models.CharField(max_length=3, choices=TipoDocumento.choices, default=TipoDocumento.CC, verbose_name="Tipo de documento")
-    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True)
-    telefono = models.PositiveIntegerField(verbose_name="Teléfono")
+    tipo_documento = models.ForeignKey(Tipo_identificador,on_delete=models.PROTECT, verbose_name="Tipo de identificación")
+    numero_documento = models.PositiveIntegerField(verbose_name="Número de documento", unique=True, validators=[validacion_identificacion])
+    telefono = models.PositiveIntegerField(verbose_name="Teléfono", validators=[validacion_telefono])
     contrasena = models.CharField(max_length=128, validators=[MinLengthValidator(8)], verbose_name="Contraseña")
     conf_contrasena = models.CharField(max_length=128, verbose_name="Confirmación de contraseña", default="")
 
@@ -127,8 +209,9 @@ class Administradores(models.Model):
         if self.contrasena != self.conf_contrasena:
             raise ValidationError({"conf_contrasena": "Las contraseñas no coinciden"})
 
-    def _str_(self):
-        return self.nombre
+    def __str__(self):
+
+        return str(self.user)
 
     class Meta:
         verbose_name = "Administrador"
@@ -145,13 +228,13 @@ def eliminar_usuario_relacionado(sender, instance, **kwargs):
 class Clientes(models.Model):
     nombre=models.CharField(max_length=150, verbose_name="Nombre")
     apellido=models.CharField(max_length=150, verbose_name="Apellido")
-    nit=models.PositiveBigIntegerField(verbose_name="Numero de Identificacion",unique=True, validators=[validacion_telefono])
-    correo_electronico=models.EmailField(max_length=150,verbose_name="Email")
+    nit=models.PositiveBigIntegerField(verbose_name="Numero de Identificacion",unique=True, validators=[validacion_identificacion])
+    correo_electronico=models.EmailField(max_length=150,verbose_name="Correo")
     telefono=models.PositiveIntegerField(verbose_name="Telefono", validators=[validacion_telefono])
-    Tipo_identificador=models.ForeignKey(Tipo_identificador, on_delete=models.CASCADE)
+    Tipo_identificador=models.ForeignKey(Tipo_identificador, on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
     
     def __str__(self):
-        return self.nombre
+        return f"{self.nombre} {self.apellido}"
     
     class Meta:
         verbose_name = "Cliente"
@@ -160,23 +243,6 @@ class Clientes(models.Model):
 
 
 
-class Empleados(models.Model):
-
-    nombre=models.CharField(max_length=100, verbose_name="Nombre")
-    apellido=models.CharField(max_length=100, verbose_name="Apellido")
-    edad=models.PositiveIntegerField(verbose_name="Edad")
-    cedula=models.PositiveBigIntegerField(verbose_name="Cedula",unique=True)
-    correo_electronico=models.CharField(max_length=100,verbose_name="Email")
-
-    def __str__(self):
-        return self.nombre
-    
-    
-    class Meta:
-        
-        verbose_name = "Empleados"
-        verbose_name_plural = "Empleados"
-        db_table="Empleados"
 
 
 # SE MODIFICO EL TIPO DE DATO DE PRECIO PARA QUE SE LE PUDIERA DAR FORMATO      
@@ -185,10 +251,10 @@ class Productos(models.Model):
     nombre = models.CharField(max_length=100,verbose_name="Nombre")
     cantidad = models.PositiveIntegerField(verbose_name="Cantidad")
     precio = models.DecimalField(max_digits=10,decimal_places=2,verbose_name="Precio", validators=[validacion_numeros_negativos])
-    marcas = models.ForeignKey(Marcas,on_delete=models.CASCADE)
-    tipo = models.ForeignKey(Tipo,on_delete=models.CASCADE)
-    presentacion= models.ForeignKey(Presentacion,on_delete=models.CASCADE)
-    unidad_medida=models.ForeignKey(Unidad_Medida,on_delete=models.CASCADE)
+    marcas = models.ForeignKey(Marcas,on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
+    tipo = models.ForeignKey(Tipo,on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
+    presentacion= models.ForeignKey(Presentacion,on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
+    unidad_medida=models.ForeignKey(Unidad_Medida,on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
     
     def __str__(self):
         return self.nombre
@@ -199,8 +265,23 @@ class Productos(models.Model):
         db_table = "Producto"
         
 class Metodo_Pago(models.Model):
-    nombre = models.CharField(max_length=150, verbose_name="Nombre")
-    
+
+    ESTADO_CHOICES = [
+        ('Activo', 'Activo'),
+        ('Inactivo', 'Inactivo'),
+    ]
+    nombre = models.CharField(max_length=150, verbose_name="Nombre", unique=True)
+    estado = models.CharField(
+        max_length=10,
+        choices=ESTADO_CHOICES,
+        default='activo',
+        verbose_name="Estado"
+    )
+
+    # Managers
+    objects = models.Manager()  # The default manager
+    activos = ActivoManager()  # Our custom manager
+
     def __str__(self):
         return self.nombre
     
@@ -214,11 +295,13 @@ class Metodo_Pago(models.Model):
 
 class Compras(models.Model):
     fecha_compra =models.DateField(verbose_name="Fecha De Compra",auto_now=True)
-    metodo_pago =models.ForeignKey(Metodo_Pago,on_delete=models.PROTECT)
+    metodo_pago =models.ForeignKey(Metodo_Pago,on_delete=models.PROTECT,limit_choices_to={'estado': 'activo'})
     proveedor = models.ForeignKey(Proveedores,on_delete=models.PROTECT)
-    
+    usuario = models.CharField(max_length=100, verbose_name='Usuario', null = True)
+    finalizado = models.BooleanField(default=False, null=True)
+
     def __str__(self):
-        return f"{self.id}"
+        return str(self.id)
     
     class Meta:
         verbose_name ="Compra"
@@ -228,43 +311,79 @@ class Compras(models.Model):
 class DetalleCompra(models.Model):
 
     compra = models.ForeignKey(Compras, on_delete=models.PROTECT, default=1)
-    cantidad = models.PositiveIntegerField(verbose_name="Cantidad", null=True)
+    cantidad = models.PositiveIntegerField(verbose_name="Cantidad", validators=[validacion_numeros_negativos], null=True)
+    precio_unitario = models.PositiveIntegerField(verbose_name='Precio unitario', null=True)
     producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
-    finalizado = models.BooleanField(default=False, null=True)
 
-    def precio(self):
+    def __str__(self):
 
-        return Productos.objects.get(id=DetalleCompra.objects.get(id=self.id).producto.id).precio
+        return f"Detalle de Compra: #{self.id}"
     
 
-    def precio_total_por_registro(self):
+    def Total(self):
 
-        return self.precio() * self.cantidad
+        if str(Productos.objects.get(id = self.producto.id).tipo) == "Construcción":
+
+            return (self.precio_unitario + Decimal((19 * int(self.precio_unitario)) / 100)) * self.cantidad
+        
+        return self.Subtotal()
     
-    def save(self, *args, **kwargs):
+    def Subtotal(self):
 
-        #cada vez que se compre un nuevo producto se actualizara la cantidad de la tabla productos
-        if Productos.objects.get(id = self.producto.id).cantidad >= self.cantidad:
+        return self.precio_unitario * self.cantidad
+    
+    def Iva(self):
 
-            Productos.objects.filter(id = self.producto.id).update(cantidad = Productos.objects.get(id = self.producto.id).cantidad + self.cantidad)
+        if str(Productos.objects.get(id = self.producto.id).tipo) == "Construcción":
 
-        super(DetalleCompra, self).save(args, kwargs)
-
+            return Decimal((19 * self.Subtotal()) / 100)
+        
+        
+        return 0
 
 class Ventas(models.Model):
     fecha_venta=models.DateTimeField(verbose_name="Fecha De Venta",auto_now=True)
-    producto = models.ForeignKey(Productos,on_delete=models.PROTECT)
-    ventas_cantidad= models.PositiveSmallIntegerField(verbose_name="Cantidad")
-    empleado= models.ForeignKey(Empleados,on_delete=models.PROTECT,null=True)
+    usuario = models.CharField(max_length=100, verbose_name='Usuario', null=True)
     cliente = models.ForeignKey(Clientes,on_delete=models.PROTECT)
+    metodo_pago = models.ForeignKey(Metodo_Pago, on_delete=models.PROTECT, null=True, verbose_name="Metodo de Pago",limit_choices_to={'estado': 'activo'})
+    finalizado = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"{self.fecha_venta}"
-    #EN ESTA FUNCION SE HACE LA OPERACION PARA EL TOTAL 
-    def calcular_total(self):
-        return self.ventas_cantidad * self.producto.precio
+        return str(self.id)
     class Meta:
         verbose_name ="Venta"
         verbose_name_plural ="Ventas"
         db_table ="Venta"
 
+class DetalleVenta(models.Model):
+
+    venta = models.ForeignKey(Ventas, on_delete=models.PROTECT)
+    producto = models.ForeignKey(Productos, on_delete=models.PROTECT)
+    precio_unitario = models.PositiveIntegerField(verbose_name='Precio unitario', null=True)
+    cantidad = models.PositiveIntegerField(validators=[validacion_numeros_negativos], verbose_name="Cantidad")
+
+    def __str__(self):
+
+        return f'Detalle de venta #{self.id}'
+    
+
+    def Total(self):
+
+        if str(Productos.objects.get(id = self.producto.id).tipo) == "Construcción":
+
+            return (self.precio_unitario + Decimal((19 * int(self.precio_unitario)) / 100)) * self.cantidad
+        
+        return self.Subtotal()
+    
+    def Subtotal(self):
+
+        return self.precio_unitario * self.cantidad
+    
+    def Iva(self):
+
+        if str(Productos.objects.get(id = self.producto.id).tipo) == "Construcción":
+
+            return Decimal((19 * self.Subtotal()) / 100)
+        
+        
+        return 0

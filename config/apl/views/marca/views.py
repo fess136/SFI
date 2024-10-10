@@ -1,12 +1,17 @@
 from typing import Any
+from django.http import JsonResponse
+from django.shortcuts import redirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib import messages
+from django.db.models import ProtectedError
 from apl.forms import MarcaForm
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 
+import re
 
 @method_decorator(never_cache, name='dispatch')
 class MarcaListView(ListView):
@@ -22,8 +27,33 @@ class MarcaListView(ListView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Marcas"
         context['crear_url'] = reverse_lazy('apl:crear_marca')
+        context['obj_relacionados'] = [i.__str__() for i in Marcas.objects.get(id = self.request.GET.get('pk')).productos_set.all()] if self.request.GET.get('pk') else None
         context['entidad'] = "Marcas"
         return context
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        # Obtiene los parámetros de consulta de la URL
+        id = self.request.GET.get('id')
+        nombre = self.request.GET.get('nombre')
+        estado = self.request.GET.get('estado')
+
+        # Filtra los resultados según los parámetros proporcionados
+        if id:
+            if int(id) >= 1:  # Verifica que el número sea positivo
+                    queryset = queryset.filter(id=id)
+            else:
+                messages.error(self.request, "El ID debe ser un número positivo.")
+                
+        if nombre:
+            if re.match("^[A-Za-z0-9\s]+$", nombre):  # Solo letras, números y espacios
+                queryset = queryset.filter(nombre__icontains=nombre)
+            else:
+                messages.error(self.request, "El nombre no puede contener caracteres especiales.")
+            
+        if estado:
+                queryset = queryset.filter(estado__iexact=estado)  # Filtra por estado
+        return queryset
 
 @method_decorator(never_cache, name='dispatch')
 class MarcaCreateView(CreateView):
@@ -41,20 +71,31 @@ class MarcaCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context=super().get_context_data(**kwargs)
         context['titulo'] = "Crear Marca"
-
+        context['crear_url'] = self.success_url
         return context
 
-        #valida que no se repitan los datos
     def form_valid(self, form):
-        # Obtener el nombre de la categoría del formulario
-        nombre = form.cleaned_data.get('nombre').lower()
+        response = super().form_valid(form)
 
-        if Marcas.objects.filter(nombre__iexact=nombre).exists():
-            form.add_error(
-                'nombre', 'Ya existe una marca con este nombre.')
-            return self.form_invalid(form)
+        marca = form.save()
 
-        return super().form_valid(form)
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'status': 'success',
+                                 'id': marca.id,
+                                 'nombre': marca.nombre
+                                 })
+        return response
+
+    def form_invalid(self, form):
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            errors = {}
+            for field, error_list in form.errors.items():
+                errors[field] = [str(error) for error in error_list]
+            return JsonResponse({
+                'status': 'error',
+                'errors': errors
+            }, status=400)
+    
 
 @method_decorator(never_cache, name='dispatch')
 class MarcaUpdateView(UpdateView):
@@ -72,7 +113,24 @@ class MarcaUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Actualizar Marca"
+        context['crear_url'] = self.success_url
         return context
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'status': 'success'})
+        return response
+
+    def form_invalid(self, form):
+        if self.request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            errors = {}
+            for field, error_list in form.errors.items():
+                errors[field] = [str(error) for error in error_list]
+            return JsonResponse({
+                'status': 'error',
+                'errors': errors
+            }, status=400)
     
 @method_decorator(never_cache, name='dispatch')
 class MarcaDeleteView(DeleteView):
@@ -92,3 +150,20 @@ class MarcaDeleteView(DeleteView):
         context['titulo'] = 'Eliminar Marca'
         context["crear_url"] = reverse_lazy("apl:listar_marca")
         return context
+
+    def post(self, request, *args, **kwargs):
+        
+        try:
+
+            response = super().delete(request, args, kwargs)
+            messages.success(request, "Marca eliminada con éxito.")
+            return response
+            
+        except ProtectedError:
+
+            messages.error(request, f"No se ha logrado eliminar la Marca.")
+            return redirect(self.success_url + f"?pk={self.kwargs.get('pk')}")
+        
+        except Exception as e:
+
+            messages.error(request, f"Ha ocurrido un error inesperado \n{e}")

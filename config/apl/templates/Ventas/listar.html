@@ -1,20 +1,105 @@
 {% extends "listar.html" %}
 {% load humanize %}
-{%block Titulo%}
-listar Ventas
-{%endblock%}
+
+{% block alertas %}
+    {% if messages and obj_relacionados %}
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h3><i class="fas fa-ban"></i> Error</h3>
+        <div class="content-truncate" id="alert-content">
+            <h5>
+                El registro que se intentó eliminar está relacionado con los siguientes registros:
+                <div class = 'scrollable-list'>
+                    {% for i in obj_relacionados %}
+                        <ul>
+                            <li>{{i}}</li>
+                        </ul>
+                    {% endfor %}
+                </div>
+            </h5>
+        </div>
+    </div>
+    {% endif %}
+    {% if hay_ventas_pendientes %}
+
+        <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h3><i class="fas fa-bullhorn"></i> <strong>¡Alerta!</strong></h3>
+            <h5>Las siguientes ventas estan pendientes:</h5>
+            
+            <h5>
+                <div class = "lista-scrolleable">
+                    <ul>
+                        {% for i in hay_ventas_pendientes %}
+                            <li>Venta #{{i.id}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </h5>
+        </div>
+
+    {% endif %}
+{% endblock %}
+
+{% block filtro_form_contenido %} 
+<form method="GET" action="">
+    <div class="form-group">
+        <label for="id">ID:</label>
+        <input type="number" class="form-control" id="id" name="id" value="{{ request.GET.id }}">
+    </div>
+    <div class="form-group">
+        <label for="fecha_desde">Fecha de venta (desde):</label>
+        <input type="date" class="form-control datepicker" id="fecha_desde" name="fecha_desde" value="{{ request.GET.fecha_venta }}">
+    </div>
+    <div class="form-group">
+        <label for="fecha_hasta">Fecha de venta (hasta):</label>
+        <input type="date" class="form-control datepicker" id="fecha_hasta" name="fecha_hasta" value="{{ request.GET.fecha_venta }}">
+    </div>
+    <div class="form-group">
+        <label for="metodo_pago">Metodo de Pago:</label>
+        <input type="text" class="form-control" id="metodo_pago" name="metodo_pago" value="{{ request.GET.metodo_pago }}">
+    </div>
+    <div class="form-group">
+        <label for="usuario">Usuario:</label>
+        <input type="text" class="form-control" id="usuario" name="usuario" value="{{ request.GET.usuario }}">
+    </div>
+    <div class="form-group">
+        <label for="cliente">Cliente:</label>
+        <input type="text" class="form-control" id="cliente" name="cliente" value="{{ request.GET.cliente }}">
+    </div>
+    <div class="form-group">
+        <label for="finalizado">Estado:</label>
+        <select class="form-control" id="finalizado" name="finalizado">
+            <option value="">Todos</option>
+            <option value="True" {% if request.GET.finalizado == 'True' %}selected{% endif %}>Finalizado</option>
+            <option value="False" {% if request.GET.finalizado == 'False' %}selected{% endif %}>Pendiente</option>
+        </select>
+    </div>
+</form>
+
+
+
+<script>
+$(document).ready(function() {
+    $(".datepicker").datepicker({
+        dateFormat: 'yy-mm-dd',
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-100:+0"
+    });
+});
+</script>
+{% endblock %}
+
 {% block columnas %}
 <tr>
     <th scope="col" style="width: 10%;">#</th>
-    <th scope="col" style="width: 50%;">Fecha de Venta</th>
-    <th scope="col" style="width: 60%;">Producto</th>
-    <th scope="col" style="width: 60%;">Unidades de medida</th>
-    <th scope="col" style="width: 60%;">Cantidad</th>
-    <th scope="col" style="width: 60%;">Precio</th>
-    <th scope="col" style="width: 60%;">Total</th>    
-    <th scope="col" style="width: 60%;">Empleado</th>
-    <th scope="col" style="width: 60%;">Cliente</th>
-    <th scope="col" style="width: 100%;">Opciones</th>
+    <th scope="col" style="width: 30%;">Fecha de Venta</th> 
+    <th scope="col" style="width: 20%;">Metodo de Pago</th> 
+    <th scope="col" style="width: 20%;">Usuario</th>
+    <th scope="col" style="width: 20%;">Cliente</th>
+    <th scope="col">Estado</th>
+    <th scope="col" style="width: 10%;">Opciones</th>
 
 </tr>
 
@@ -25,19 +110,23 @@ listar Ventas
 <tr>
     <td>{{c.id}}</td>
     <td>{{c.fecha_venta}}</td>
-    <td>{{ c.producto.nombre}}</td>
-    <td>{{c.producto.unidad_medida}}</td>
-    <td>{{c.ventas_cantidad}}</td>
-    <td>${{c.producto.precio|floatformat:0|intcomma}}</td>
-    <td>${{c.calcular_total|floatformat:0|intcomma}}</td>
-    <td>{{c.empleado}}</td>
+    <td>{{c.metodo_pago}}</td>
+    <td>{{c.usuario}}</td>
     <td>{{c.cliente}}</td>
+    {% if c.finalizado %}
+        <td>Finalizado</td>
+    {% else %}
+        <td>Pendiente</td>
+    {% endif %}
     <td>
-        <a href="{% url 'apl:editar_venta' c.id %}" class = "btn btn-primary btn btn-xs" data-toggle="tooltip" data-placement="top" title="Editar">
-            <i class = "fas fa-edit"></i></a>
-        <a href="{% url 'apl:borrar_venta' c.id %}" class = "btn btn-danger btn btn-xs" data-toggle="tooltip" data-placement="top" title="Eliminar">
-            <i class = "fas fa-trash"></i></a>
-        <a href="" class = "btn btn-primary btn btn-xs" data-toggle="tooltip" data-placement="top" title="Visualizar"><i class="fas fa-eye"></i></a>
+        {% if not c.finalizado %}
+            <a href="{% url 'apl:editar_venta' c.id %}" class = "btn btn-primary btn btn-xs" data-toggle="tooltip" data-placement="top" title="Editar">
+                <i class = "fas fa-edit"></i></a>
+            <a href="{% url 'apl:borrar_venta' c.id %}" class = "btn btn-danger btn btn-xs" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                <i class = "fas fa-trash"></i></a>
+        {% endif %}
+
+        <a href="{% url 'apl:listar_detalleventa' c.id %}" class = "btn btn-primary btn btn-xs" data-toggle="tooltip" data-placement="top" title="Visualizar"><i class="fas fa-eye"></i></a>
     </td>
 </tr>
 {% endfor %}

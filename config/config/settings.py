@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.humanize',
     'django.contrib.staticfiles',
+    'dashboard',
     'apl',
     'inicio',
     'login',
@@ -78,13 +79,22 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+import os
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db',
+        'USER': 'root',
+        'PASSWORD': '123456',
+        'HOST': 'localhost',  # O la dirección de tu servidor de MySQL
+        'PORT': '3306',  # O el puerto de MySQL que estás usando
     }
 }
+
 
 
 # Password validation
@@ -121,15 +131,22 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 STATIC_URL = 'static/'
-os.path.join(BASE_DIR / 'static'),
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static' ),
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = '/apl/tipos/listar/'
+LOGIN_REDIRECT_URL = '/dashboard'
 LOGOUT_REDIRECT_URL = '/login/'
 
 

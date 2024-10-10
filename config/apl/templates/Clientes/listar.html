@@ -3,13 +3,49 @@
 listar clientes
 
 {%endblock%}
+
+{% block filtro_form_contenido %} 
+<form method="GET" action="">
+    <div class="form-group">
+        <label for="id">ID</label>
+        <input type="number" class="form-control" id="id" name="id" value="{{ request.GET.id }}">
+        <!--Campo para filtrar por ID -->
+    </div>
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" id="nombre" class="form-control" value="{{ request.GET.nombre }}">
+    </div>
+    <div class="form-group">
+        <label for="marcas">Apellido:</label>
+        <input type="text" name="apellido" id="apellido" class="form-control" value="{{ request.GET.apellido }}">
+    </div>
+    <div class="form-group">
+        <label for="nit">Numero de Identificacion:</label>
+        <input type="number" name="nit" id="nit" class="form-control" value="{{ request.GET.nit }}">
+    </div>
+    <div class="form-group">
+        <label for="correo_electronico">Correo Electronico:</label>
+        <input type="text" name="correo_electronico" id="correo_electronico" class="form-control" value="{{ request.GET.correo_electronico }}">
+    </div>
+    <div class="form-group">
+        <label for="telefono">Telefono:</label>
+        <input type="number" name="telefono" id="telefono" class="form-control" value="{{ request.GET.telefono }}">
+    </div>
+    <div class="form-group">
+        <label for="Tipo_identificador">Tipo de Identificacion:</label>
+        <input type="text" name="Tipo_identificador" id="Tipo_identificador" class="form-control" value="{{ request.GET.Tipo_identificador }}">
+    </div>
+</form>
+{%endblock%}
+
+
 {% block columnas %}
 <tr>
     <th scope="col" style="width: 10%;">#</th>
     <th scope="col" style="width: 20%;">Nombre</th>
     <th scope="col" style="width: 20%;">Apellido</th>
     <th scope="col" style="width: 20%;">Nit</th>
-    <th scope="col" style="width: 60%;">Email</th>
+    <th scope="col" style="width: 60%;">Correo</th>
     <th scope="col" style="width: 60%;">Telefono</th>
     <th scope="col" style="width: 60%;">Tipo de identificacion</th>
     <th scope="col" style="width: 20%;">Opciones</th>

@@ -10,7 +10,9 @@ from apl.models import*
 # Create your tests here.
 # a = 
 # print(Productos.objects.filter(id=DetalleCompra.objects.filter(id=1).producto.id).precio)
-print(sum([j.precio_total_por_registro() for j in [i for i in DetalleCompra.objects.filter(compra = 8)]]))
+print(Tipo.objects.get(id = 1))
+
+
 try:
 
         p = Productos.objects.get(id=4)

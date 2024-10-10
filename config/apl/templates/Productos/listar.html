@@ -3,6 +3,50 @@
 {%block titulo%}
 Listar Productos
 {%endblock%}
+
+{% block filtro_form_contenido %} 
+<form method="GET" action="">
+    <div class="form-group">
+        <label for="id">ID:</label>
+        <input type="number" class="form-control" id="id" name="id" value="{{ request.GET.id }}">
+    </div>
+
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" id="nombre" class="form-control" value="{{ request.GET.nombre }}">
+    </div>
+
+    <div class="form-group">
+        <label for="marcas">Marcas:</label>
+        {{ Producto.marcas }}
+    </div>
+
+    <div class="form-group">
+        <label for="tipo">Tipo:</label>
+        {{ Producto.tipo }}
+    </div>
+
+    <div class="form-group">
+        <label for="presentacion">Presentación:</label>
+        {{ Producto.presentacion }}
+    </div>
+
+    <div class="form-group">
+        <label for="unidad_medida">Unidad de Medida:</label>
+        {{ Producto.unidad_medida }}
+    </div>
+</form>
+
+
+<script>
+    $('#id_marcas').select2({width: '100%'});
+    $('#id_tipo').select2({width: '100%'});
+    $('#id_presentacion').select2({width: '100%'});
+    $('#id_unidad_medida').select2({width: '100%'});
+</script>
+
+{%endblock%}
+
 {% block columnas %}
 <tr>
     <th scope="col" style="width: 10%;">#</th>

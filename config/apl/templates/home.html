@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,8 +18,13 @@
     <script src="{% static 'lib/adminlte-3.0.4/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <!-- AdminLTE App -->
     <script src="{% static 'lib/adminlte-3.0.4/js/adminlte.min.js' %}"></script>
+
+    <script src="{% static 'lib/select2-4.1.0-rc.0/select2.min.js' %}"></script>
     <!-- Sweet Alert -->
      <script src="{%static 'lib/sweetalert2/sweetalert2.all.min.js' %}"> </script>
+    <!-- estilos css -->
+     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+     <link href="{% static 'lib/select2-4.1.0-rc.0/select2.min.css' %}" rel="stylesheet" />
     <!-- bloque head -->
     {% block head %}
     

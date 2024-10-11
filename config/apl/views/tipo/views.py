@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from apl.forms import TipoForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -77,6 +77,13 @@ class TipoDeleteView(DeleteView):
         context['titulo'] = "Eliminar Tipo"
 
         return context
+
+    def get(self, request, *args, **kwargs):
+        try:
+            return super().get(request, *args, **kwargs)
+        except Http404:
+            messages.error(request, 'El tipo no existe o ya ha sido eliminado.')
+            return redirect(self.success_url)
     
     def post(self, request, *args, **kwargs):
         

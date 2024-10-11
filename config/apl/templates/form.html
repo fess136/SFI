@@ -112,7 +112,7 @@ document.getElementById('formulario-registro').addEventListener('submit', functi
                 title: '¡Éxito!',
                 text: 'El registro se ha completado correctamente.',
                 icon: 'success',
-                confirmButtonText: 'Ok'
+                confirmButtonText: 'Ok',
             }).then((result) => {
                 if (result.isConfirmed) {
                     
@@ -132,6 +132,21 @@ document.getElementById('formulario-registro').addEventListener('submit', functi
                     }
                     
                     
+                } else {
+
+                    if (body.es_compra){
+
+window.location.href = "{% url 'apl:crear_detallecompra' 0 %}".replace('0', body.id);
+
+} else if (body.es_venta){ //aqui es lo mismo que lo anterior pero con venta
+
+window.location.href = "{% url 'apl:crear_detalleventa' 0 %}".replace('0', body.id);
+} else {
+
+window.location.href = "{{crear_url}}"
+
+} 
+
                 }
             });
         }else if (body.errors) {
@@ -247,6 +262,7 @@ document.getElementById('formulario-registro').addEventListener('submit', functi
         //se añade todo el formulario con diseño al modal
         document.getElementById('formulario').innerHTML = configuracion.join('')
 
+        //implementa input de busqueda en los select del formulario
         id.forEach(campo => {
 
             configuracion.forEach(elemento =>{
@@ -267,9 +283,7 @@ document.getElementById('formulario-registro').addEventListener('submit', functi
         atributo = formulario
     }
     </script>
-        <script>
-            $('#nombre').select2()
-        </script>
+
 
 <!-- este bloque es para que se coloque el precio automaticamente en el input segun que producto se selccione -->
 {% block codigo %}

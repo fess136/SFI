@@ -4,7 +4,7 @@ from apl.forms import ProductosForm, TipoForm, MarcaForm, PresentacionForm, Medi
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
-from django.db.models import ProtectedError, Q
+from django.db.models import ProtectedError
 from apl.models import *
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required

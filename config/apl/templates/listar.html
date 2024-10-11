@@ -203,7 +203,6 @@
     }
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
         {% if messages %}
             {% for message in messages %}
                 Swal.fire({
@@ -214,7 +213,6 @@
                 });
             {% endfor %}
         {% endif %}
-    });
 </script>
 
 

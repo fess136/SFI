@@ -359,7 +359,7 @@ class DetalleVenta(models.Model):
 
     venta = models.ForeignKey(Ventas, on_delete=models.PROTECT)
     producto = models.ForeignKey(Productos, on_delete=models.PROTECT)
-    precio_unitario = models.PositiveIntegerField(verbose_name='Precio unitario', null=True)
+    precio_unitario = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Precio unitario', null=True)
     cantidad = models.PositiveIntegerField(validators=[validacion_numeros_negativos], verbose_name="Cantidad")
 
     def __str__(self):

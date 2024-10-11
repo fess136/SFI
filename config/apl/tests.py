@@ -10,7 +10,8 @@ from apl.models import*
 # Create your tests here.
 # a = 
 # print(Productos.objects.filter(id=DetalleCompra.objects.filter(id=1).producto.id).precio)
-print(Tipo.objects.get(id = 1))
+resultado = (1*128) + (1*64) + (0*32) + (0*16) + (0*8) + (0*4) + (0*2) + (1*1)
+print(resultado)
 try:
 
         p = Productos.objects.get(id=4)

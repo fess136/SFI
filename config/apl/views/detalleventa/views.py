@@ -1,5 +1,6 @@
+from django.contrib import messages
 from django.db.models.query import QuerySet
-from django.http import JsonResponse
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
@@ -162,6 +163,14 @@ class DetalleVentaDeleteView(DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['titulo'] = "Eliminar Detalle de Venta"
+    
+
+    def get(self, request, *args, **kwargs):
+        try:
+            return super().get(request, *args, **kwargs)
+        except Http404:
+            messages.error(request, 'El detalle de venta no existe o ya ha sido eliminado.')
+            return redirect(reverse_lazy('apl:listar_venta'))
 
     def get_success_url(self):
         

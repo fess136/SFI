@@ -57,11 +57,13 @@
     background-color:  #1f1e1e;
     border-color:  #1f1e1e;
     color: #fff;
+    scrollbar-color: #b3b3b3 #1f1e1e;
 }
 .Dark-mode .main-sidebar {
     background-color:  #1f1e1e;
     border-color:  #1f1e1e;
     color: #fff;
+    scrollbar-color: #b3b3b3 #1f1e1e;
 }
 .Dark-mode .dataTables_length {
     background-color:  #1f1e1e;
@@ -416,6 +418,7 @@ color: #ECF0F1;
 
   .sidebar{
     background-color:#1f5a96;
+    scrollbar-color: #9f9f9f #1f5a96;
 }
 .main-sidebar{
     background-color:#1f5a96;
@@ -564,6 +567,8 @@ color: #ECF0F1;
 
 
     .select2-container .select2-selection--single {
+        position: relative;
+        z-index: 1;
         height: 38px !important; /* Ajusta este valor según sea necesario */
       }
 
@@ -583,4 +588,8 @@ color: #ECF0F1;
         scrollbar-color: #9f9f9f #1393a7;
         border-radius: 10px;
         padding: 10px;
+    }
+
+    .alerta-error{
+        display: none;
     }

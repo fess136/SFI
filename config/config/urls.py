@@ -30,9 +30,11 @@ from login.views import *
 from inicio.views import indexView
 from django.contrib.auth import views as auth_views
 from dashboard.views import *
-
 from apl.views import *
-
+from apl.views.error_404.views import Error404view
+from django.conf.urls import handler404, handler500
+handler404 = Error404view.as_view()
+handler500 = Error404view.as_view()
 urlpatterns = [
 
     path('', indexView.as_view(), name='index'),

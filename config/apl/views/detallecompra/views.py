@@ -1,5 +1,5 @@
 from django.db.models.query import QuerySet
-from django.http import JsonResponse
+from django.http import Http404, JsonResponse
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 from django.core.serializers.json import DjangoJSONEncoder
 from django.urls import reverse_lazy
@@ -84,6 +84,13 @@ class DetalleCompraDeleteView(DeleteView):
         
         return reverse_lazy('apl:detallar_detallecompra', args=[DetalleCompra.objects.get(id = self.kwargs.get('pk')).compra])
     
+    def get(self, request, *args, **kwargs):
+        try:
+            return super().get(request, *args, **kwargs)
+        except Http404:
+            messages.error(request, 'El detalle de compra no existe o ya ha sido eliminado.')
+            return redirect(reverse_lazy('apl:listar_compra'))
+            
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 
         return super().dispatch(request, *args, **kwargs)

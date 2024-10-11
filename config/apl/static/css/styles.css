@@ -593,6 +593,10 @@ color: #ECF0F1;
         padding: 10px;
     }
 
+    .error-formualrio{
+        display: none;
+    }
+
     .lista-scrolleable{
         max-height: 150px; /* Ajusta esta altura según tus necesidades */
         background: #1393a7;

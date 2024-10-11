@@ -9,6 +9,8 @@ from django.core.exceptions import ValidationError
 from django.forms import ModelForm, TextInput, Select, NumberInput, EmailInput, PasswordInput
 from apl.models import Administradores
 
+import re
+
 class TipoForm(ModelForm):
 
     #Le agrega un poco de diseño al formulario
@@ -32,12 +34,18 @@ class MarcaForm(ModelForm):
 class AdministradorForm(ModelForm):
     username = forms.CharField(label="Usuario", max_length=150)
     email = forms.EmailField(label="Correo", max_length=150)
-    password = forms.CharField(label="Password", widget=PasswordInput)
-    conf_password = forms.CharField(label="Confirm Password", widget=PasswordInput)
+    password = forms.CharField(label="Password", widget=PasswordInput, required=False)
+    conf_password = forms.CharField(label="Confirm Password", widget=PasswordInput, required=False)
 
-    def _init_(self, *args, **kwargs):
-        super()._init_(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.fields["nombre"].widget.attrs["autofocus"] = True
+        
+        # Si estamos editando un administrador existente
+        if self.instance and self.instance.pk:
+            # Prellenamos los campos con la información actual
+            self.fields['username'].initial = self.instance.user.username
+            self.fields['email'].initial = self.instance.user.email
 
     def clean(self):
         cleaned_data = super().clean()
@@ -46,41 +54,73 @@ class AdministradorForm(ModelForm):
         password1 = cleaned_data.get("password")
         password2 = cleaned_data.get("conf_password")
 
-        if User.objects.filter(username=username).exists():
+        # Verificamos si es una edición
+        if len(password1) < 8:
+            raise ValidationError("La contraseña debe tener al menos 8 caracteres.")
+            
+        # Verificar mayúsculas
+        if not re.search(r'[A-Z]', password1):
+            raise ValidationError("La contraseña debe contener al menos una letra mayúscula.")
+            
+        # Verificar minúsculas
+        if not re.search(r'[a-z]', password1):
+                raise ValidationError("La contraseña debe contener al menos una letra minúscula.")
+
+        if self.instance and self.instance.pk:
+            # Para edición, permitimos el mismo username y email del usuario actual
+            username_exists = User.objects.filter(username=username).exclude(pk=self.instance.user.pk).exists()
+            email_exists = User.objects.filter(email=email).exclude(pk=self.instance.user.pk).exists()
+        else:
+            # Para creación, verificamos que no exista ningún usuario con ese username o email
+            username_exists = User.objects.filter(username=username).exists()
+            email_exists = User.objects.filter(email=email).exists()
+
+        if username_exists:
             raise ValidationError("Este nombre de usuario ya está en uso.")
         
-        if User.objects.filter(email=email).exists():
+        if email_exists:
             raise ValidationError("Este correo electrónico ya está en uso.")
         
-        if not password2:
-            raise ValidationError("Necesitas validar tu contraseña")
-        
-        if password1 != password2:
-            raise ValidationError("Las contraseñas no coinciden")
+        # Solo validamos las contraseñas si se proporcionaron (requerido en creación, opcional en edición)
+        if password1 or password2:
+            if not password2:
+                raise ValidationError("Necesitas validar tu contraseña")
+            
+            if password1 != password2:
+                raise ValidationError("Las contraseñas no coinciden")
+        elif not self.instance.pk:  # Si es una creación nueva y no hay contraseña
+            raise ValidationError("La contraseña es requerida para crear un nuevo administrador")
         
         return cleaned_data
 
     def save(self, commit=True):
+        administrador = super().save(commit=False)
         cleaned_data = self.cleaned_data
         username = cleaned_data.get('username')
         email = cleaned_data.get('email')
         password = cleaned_data.get('password')
 
-        if User.objects.filter(username=username).exists():
-            raise ValidationError("Este nombre de usuario ya está en uso.")
-        
-        if User.objects.filter(email=email).exists():
-            raise ValidationError("Este correo electrónico ya está en uso.")
+        if self.instance and self.instance.pk:
+            # Actualizar usuario existente
+            user = self.instance.user
+            user.username = username
+            user.email = email
+            if password:  # Solo actualizamos la contraseña si se proporcionó una nueva
+                user.set_password(password)
+                administrador.contrasena = password
+                administrador.conf_contrasena = cleaned_data.get('conf_password')
+            user.save()
+        else:
+            # Crear nuevo usuario
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
+            administrador.user = user
+            administrador.contrasena = password
+            administrador.conf_contrasena = cleaned_data.get('conf_password')
 
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password
-        )
-        administrador = super().save(commit=False)
-        administrador.user = user
-        administrador.contrasena = password 
-        administrador.conf_contrasena = cleaned_data.get('conf_password')
         if commit:
             administrador.save()
         return administrador
@@ -93,8 +133,8 @@ class AdministradorForm(ModelForm):
             "tipo_documento": Select(attrs={"placeholder": "Tipo de identificación"}),
             "numero_documento": NumberInput(attrs={"min": 8, "placeholder": "Número de documento"}),
             "telefono": NumberInput(attrs={"min": 1, "placeholder": "Teléfono"}),
-            "password": PasswordInput(attrs={"min": 1, "placeholder": "Contraseña"}),
-            "conf_password": PasswordInput(attrs={"min": 1, "placeholder": "Confirme su contraseña"})
+            "password": PasswordInput(attrs={"placeholder": "Contraseña"}),
+            "conf_password": PasswordInput(attrs={"placeholder": "Confirme su contraseña"})
         }
 class VentaForm(ModelForm):
 
@@ -199,7 +239,7 @@ class DetalleCompraForm(ModelForm):
     class Meta:
         
         model = DetalleCompra
-        fields = ['compra', 'cantidad', 'producto', 'precio_unitario']
+        fields = ['compra', 'producto', 'cantidad', 'precio_unitario']
 
     def __init__(self, *args, **kwargs):
 
@@ -262,4 +302,4 @@ class DetalleVentaForm(ModelForm):
         if cantidad > Productos.objects.get(id = producto.id).cantidad:
 
             
-            self.add_error("cantidad", f"Quieres vender {cantidad} productos pero solo hay {Productos.objects.get(nombre = producto).cantidad} productos en stock")
+            self.add_error("cantidad", f"Quieres vender {cantidad} productos pero solo hay {Productos.objects.get(id = producto.id).cantidad} productos en stock")

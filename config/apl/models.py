@@ -257,7 +257,7 @@ class Productos(models.Model):
     unidad_medida=models.ForeignKey(Unidad_Medida,on_delete=models.CASCADE,limit_choices_to={'estado': 'activo'})
     
     def __str__(self):
-        return self.nombre
+        return f"id: {self.id} - {self.nombre} - {self.tipo} - {self.unidad_medida} - {self.marcas} "
     
     class Meta:
         verbose_name="Producto"

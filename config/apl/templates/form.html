@@ -4,6 +4,24 @@
 
 {% block contenido %}
 
+    <div class = "error-formualrio">
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h3><i class="fas fa-ban"></i> Error</h3>
+            <div class="content-truncate" id="alert-content">
+                <h5>
+                    Los siguientes errores impidieron el registro de {{titulo}}:
+                    <br>
+                    <div class="scrollable-list">
+                        <ul id = 'lista_errores'>
+
+                        </ul>
+                    </div>
+                </h5>
+            </div>
+        </div>
+    </div>
+
     <form id='formulario-registro' method="post">
 
         <div class="card card-default">
@@ -16,26 +34,6 @@
             <div class="card-body">
                 {% csrf_token %}
 
-                <!-- Hace una validacion de datos -->
-                {% if form.errors %}
-
-                    <div class="alert alert-danger alert-dismissible">
-                        <button type ="button" class ="close" data-dismiss="alert" aria-hidden="true">x</button>
-                        <h5><i class = "fas fa-ban"></i>
-                            Ha ocurrido un error al intentar guardar los datos ingresados
-                        </h5>
-
-                                {% for field in form %}
-                                    {% for error in field.errors%}
-
-                                      <p> <strong>En el campo {{field.label}}:</strong>  {{error}}</p>
-
-                                    {% endfor %}
-                                {% endfor %}
-
-                    </div>
-
-                {% endif%}
 
                 <!-- Mustra todo el formulario como por ejemplo los campos de texto -->
                 {% for field in form.visible_fields %}
@@ -52,6 +50,8 @@
                        
                     </div>
                 {% endfor%}
+                {% block requisitos_contraseña %}
+                {% endblock %}
             </div>
             <div class="card-footer">
                 {% block boton_agregar %}
@@ -114,40 +114,22 @@ document.getElementById('formulario-registro').addEventListener('submit', functi
                 icon: 'success',
                 confirmButtonText: 'Ok',
             }).then((result) => {
-                if (result.isConfirmed) {
                     
                     //Si lo que se creo fue una compra entonces se redirigira al detalle de compra y como argumento
                     //de la url se coloca el id que recien se creo
-                    if (body.es_compra){
+
+                if (body.es_compra){
 
                         window.location.href = "{% url 'apl:crear_detallecompra' 0 %}".replace('0', body.id);
 
-                    } else if (body.es_venta){ //aqui es lo mismo que lo anterior pero con venta
+                        } else if (body.es_venta){ //aqui es lo mismo que lo anterior pero con venta
 
                         window.location.href = "{% url 'apl:crear_detalleventa' 0 %}".replace('0', body.id);
-                    } else {
+                        } else {
 
                         window.location.href = "{{crear_url}}"
 
                     }
-                    
-                    
-                } else {
-
-                    if (body.es_compra){
-
-window.location.href = "{% url 'apl:crear_detallecompra' 0 %}".replace('0', body.id);
-
-} else if (body.es_venta){ //aqui es lo mismo que lo anterior pero con venta
-
-window.location.href = "{% url 'apl:crear_detalleventa' 0 %}".replace('0', body.id);
-} else {
-
-window.location.href = "{{crear_url}}"
-
-} 
-
-                }
             });
         }else if (body.errors) {
                     let errorMessage = '<ul>';
@@ -157,11 +139,13 @@ window.location.href = "{{crear_url}}"
                     errorMessage += '</ul>';
                     
                     Swal.fire({
-                        title: 'Error en el formulario',
-                        html: errorMessage,
+                        title: 'Error',
+                        html: 'Hubo errores al ingresar datos.',
                         icon: 'error',
                         confirmButtonText: 'Ok'
                     });
+                    document.getElementById('lista_errores').innerHTML = errorMessage
+                    $('.error-formualrio').css('display', 'block')
                 }
             })
             .catch(error => {

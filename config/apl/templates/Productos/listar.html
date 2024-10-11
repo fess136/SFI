@@ -7,58 +7,43 @@ Listar Productos
 {% block filtro_form_contenido %} 
 <form method="GET" action="">
     <div class="form-group">
-        <label for="id">ID</label>
-        <input type="int" class="form-control" id="id" name="id" value="{{ request.GET.id }}">
-        <!--Campo para filtrar por ID -->
+        <label for="id">ID:</label>
+        <input type="number" class="form-control" id="id" name="id" value="{{ request.GET.id }}">
     </div>
+
     <div class="form-group">
         <label for="nombre">Nombre:</label>
         <input type="text" name="nombre" id="nombre" class="form-control" value="{{ request.GET.nombre }}">
     </div>
+
     <div class="form-group">
         <label for="marcas">Marcas:</label>
-        <select name="marcas" id="marcas" class="form-control">
-            <option value="">Seleccione una marca</option>
-            {% for marca in marca %}
-                <option value="{{ marca.id }}" {% if request.GET.marca == marca.id|stringformat:"s" %}selected{% endif %}>{{ marca.nombre }}</option>
-            {% endfor %}
-        </select>
+        {{ Producto.marcas }}
     </div>
-    
+
     <div class="form-group">
         <label for="tipo">Tipo:</label>
-        <select name="tipo" id="tipo" class="form-control">
-            <option value="">Seleccione un tipo</option>
-            {% for tipo in tipo %}
-                <option value="{{ tipo.id }}" {% if request.GET.tipo == tipo.nombre|stringformat:"s" %}selected{% endif %}>{{ tipo.nombre }}</option>
-            {% endfor %}
-        </select>
+        {{ Producto.tipo }}
     </div>
-    
+
     <div class="form-group">
         <label for="presentacion">Presentación:</label>
-        <select name="presentacion" id="presentacion" class="form-control">
-            <option value="">Seleccione una presentación</option>
-            {% for presentacion in presentaciones %}
-                <option value="{{ presentacion.id }}" {% if request.GET.presentacion == presentacion.id|stringformat:"s" %}selected{% endif %}>{{ presentacion.nombre }}</option>
-            {% endfor %}
-        </select>
+        {{ Producto.presentacion }}
     </div>
-    
+
     <div class="form-group">
         <label for="unidad_medida">Unidad de Medida:</label>
-        <select name="unidad_medida" id="unidad_medida" class="form-control">
-            <option value="">Seleccione una unidad de medida</option>
-            {% for unidad in unidad_medida %}
-                <option value="{{ unidad_medida.descripcion }}" {% if request.GET.unidad_medida == unidad_medida.descripcion|stringformat:"s" %}selected{% endif %}>{{ unidad_medida.descripcion }}</option>
-            {% endfor %}
-        </select>
+        {{ Producto.unidad_medida }}
     </div>
-    
-    
 </form>
 
 
+<script>
+    $('#id_marcas').select2({width: '100%'});
+    $('#id_tipo').select2({width: '100%'});
+    $('#id_presentacion').select2({width: '100%'});
+    $('#id_unidad_medida').select2({width: '100%'});
+</script>
 
 {%endblock%}
 

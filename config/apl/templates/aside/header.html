@@ -4,18 +4,52 @@
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
+<<<<<<< HEAD
         <li class="nav-item d-none d-sm-inline-block">
             <a href="/dashboard" class="nav-link">Inicio</a>
+=======
+        <li class="nav-item">
+            <a href="{% url 'dashboard' %}" class="nav-link btn-responsive">Inicio</a>
+>>>>>>> 9da89697bcc3cf710e1e2437d94fa70ffdfdcbf0
         </li>
     </ul>
+    <style>
+        /* Agregar algo de estilo básico para hacer el botón visualmente atractivo */
+        .btn-responsive {
+            display: inline-block;
+            padding: 10px 5vw; /* Ancho del botón basado en el tamaño de la pantalla (vw: Viewport Width) */
+            font-size: 1vw; /* Tamaño de fuente proporcional al ancho de la pantalla */
+            color: #fffff;
+            background-color: #1f5a96;
+            border-radius: 50px;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+        }
 
+        /* Hacer el botón más pequeño en pantallas pequeñas */
+        @media (max-width: 768px) {
+            .btn-responsive {
+                padding: 8px 4vw; /* Cambia el padding en pantallas pequeñas */
+                font-size: 3vw; /* Ajusta el tamaño de la fuente en pantallas más pequeñas */
+            }
+        }
+    </style>
     <ul class="navbar-nav ml-auto">
         <!-- Botón de ayuda -->
-        <li class="nav-item" data-toggle="tooltip" data-placement="top" title="Manual de Ayuda">
-            <a class="nav-link" href="#" id="help-manual-link">
-                <i class="fas fa-info-circle fa-lg"></i> 
+        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="Manual de Ayuda">
+            <a class="nav-link dropdown-toggle" href="#" id="help-manual-link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-question-circle fa-lg"></i> 
             </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" aria-labelledby="help-manual-link">
+                <a class="dropdown-item" href="#">Opción 1</a>
+                <a class="dropdown-item" href="#">Opción 2</a>
+                <a class="dropdown-item" href="#">Opción 3</a>
+                <a class="dropdown-item" href="#">Opción 4</a>
+                <a class="dropdown-item" href="#">Opción 5</a>
+            </div>
         </li>
+        
         <!-- Botón de Accesibilidad -->
         <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="Accesibilidad">
             <a class="nav-link dropdown-toggle" href="#" id="dropdownAccesibilidad">
@@ -39,7 +73,10 @@
                 </a>
                 <a href="#" class="dropdown-item" id="color-blind">
                     <i class="fas fa-adjust mr-2"></i> Modo daltonico
-                </a>               
+                </a>  
+                <a href="#" class="dropdown-item" id="reset-accessibility">
+                    <i class="fas fa-adjust mr-2"></i> Modo normal
+                </a>             
                 <a href="#" class="dropdown-item" id="toggle-reader-bar">
                     <i class="fas fa-book-reader mr-2"></i> Barra Lectora
                 </a>
@@ -65,132 +102,143 @@
 
 
 <script type="application/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     let isDropdownOpen = false;
 
-        $('#dropdownAccesibilidad').on('click', function(e) {
-            e.preventDefault();
-            isDropdownOpen = !isDropdownOpen;
-            if (isDropdownOpen) {
-                $(this).parent().addClass('show');
-                $(this).next('.dropdown-menu').addClass('show');
-            } else {
-                $(this).parent().removeClass('show');
-                $(this).next('.dropdown-menu').removeClass('show');
-            }
-        });
-
-        // Cerrar el menú si se hace clic fuera de él
-        $(document).on('click', function(e) {
-            if (!$(e.target).closest('#dropdownAccesibilidad').length && isDropdownOpen) {
-                $('#dropdownAccesibilidad').parent().removeClass('show');
-                $('#dropdownAccesibilidad').next('.dropdown-menu').removeClass('show');
-                isDropdownOpen = false;
-            }
-        });
-        // Verifica si el modo oscuro está habilitado
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('Dark-mode');
-        }
-        if (localStorage.getItem('contraste') === 'enabled') {
-            document.body.classList.add('Contraste');
-        }
-        if (localStorage.getItem('daltonico') === 'enabled') {
-            document.body.classList.add('Daltonico');
-        }
-    
-        // Definir los tamaños de texto
-        const textSizes = ['12px', '14px', '16px', '18px', '20px', '22px', '24px'];
-        let currentSizeIndex = 2; // Índice del tamaño normal (16px)
-    
-        // Función para actualizar el tamaño del texto
-        function updateTextSize() {
-            document.body.style.fontSize = textSizes[currentSizeIndex];
-            localStorage.setItem('textSize', textSizes[currentSizeIndex]);
-        }
-    
-        // Cargar el tamaño de texto guardado
-        const savedSize = localStorage.getItem('textSize');
-        if (savedSize) {
-            currentSizeIndex = textSizes.indexOf(savedSize);
-            if (currentSizeIndex === -1) currentSizeIndex = 2;
-            updateTextSize();
-        }
-    
-        document.getElementById('increase-text').addEventListener('click', function() {
-            if (currentSizeIndex < textSizes.length - 1) {
-                currentSizeIndex++;
-                updateTextSize();
-            }
-        });
-    
-        document.getElementById('decrease-text').addEventListener('click', function() {
-            if (currentSizeIndex > 0) {
-                currentSizeIndex--;
-                updateTextSize();
-            }
-        });
-    
-        document.getElementById('normal-text').addEventListener('click', function() {
-            currentSizeIndex = 2; // Índice del tamaño normal (16px)
-            updateTextSize();
-        });
-    
-        document.getElementById('toggle-contrast').addEventListener('click', function() {
-            document.body.classList.toggle('Dark-mode');
-    
-            // Guardar el estado del modo oscuro en localStorage
-            if (document.body.classList.contains('Dark-mode')) {
-                localStorage.setItem('darkMode', 'enabled');
-            } else {
-                localStorage.setItem('darkMode', 'disabled');
-            }
-        });
-
-        document.getElementById('high-contrast').addEventListener('click', function() {
-            document.body.classList.toggle('Contraste');
-    
-            // Guardar el estado del modo alto contraste en localStorage
-            if (document.body.classList.contains('Contraste')) {
-                localStorage.setItem('contraste', 'enabled');
-            } else {
-                localStorage.setItem('contraste', 'disabled');
-            }
-        });
-
-        document.getElementById('color-blind').addEventListener('click', function() {
-            document.body.classList.toggle('Daltonico');
-    
-            // Guardar el estado del modo alto contraste en localStorage
-            if (document.body.classList.contains('Daltonico')) {
-                localStorage.setItem('daltonico', 'enabled');
-            } else {
-                localStorage.setItem('daltonico', 'disabled');
-            }
-        });
-
-        let readerBarActive = false;
-        const readerBar = document.getElementById('reader-bar');
-        const readerBarContent = readerBar.querySelector('.reader-bar-content');
-        const pageOverlay = document.getElementById('page-overlay');
-
-        document.getElementById('toggle-reader-bar').addEventListener('click', function() {
-            readerBarActive = !readerBarActive;
-            readerBar.style.display = readerBarActive ? 'block' : 'none';
-            pageOverlay.style.display = readerBarActive ? 'block' : 'none';
-
-            if (readerBarActive) {
-                document.addEventListener('mousemove', updateReaderBar);
-            } else {
-                document.removeEventListener('mousemove', updateReaderBar);
-            }
-        });
-
-        function updateReaderBar(e) {
-            const y = e.clientY;
-            readerBar.style.top = `${y}px`;
-
-           
+    $('#dropdownAccesibilidad').on('click', function(e) {
+        e.preventDefault();
+        isDropdownOpen = !isDropdownOpen;
+        if (isDropdownOpen) {
+            $(this).parent().addClass('show');
+            $(this).next('.dropdown-menu').addClass('show');
+        } else {
+            $(this).parent().removeClass('show');
+            $(this).next('.dropdown-menu').removeClass('show');
         }
     });
+
+    // Cerrar el menú si se hace clic fuera de él
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('#dropdownAccesibilidad').length && isDropdownOpen) {
+            $('#dropdownAccesibilidad').parent().removeClass('show');
+            $('#dropdownAccesibilidad').next('.dropdown-menu').removeClass('show');
+            isDropdownOpen = false;
+        }
+    });
+
+    // Función para desactivar todos los modos de accesibilidad
+    function deactivateAllModes() {
+        document.body.classList.remove('Dark-mode', 'Contraste', 'Daltonico');
+        localStorage.removeItem('darkMode');
+        localStorage.removeItem('contraste');
+        localStorage.removeItem('daltonico');
+    }
+
+    // Verifica si algún modo de accesibilidad está habilitado
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('Dark-mode');
+    }
+    if (localStorage.getItem('contraste') === 'enabled') {
+        document.body.classList.add('Contraste');
+    }
+    if (localStorage.getItem('daltonico') === 'enabled') {
+        document.body.classList.add('Daltonico');
+    }
+
+    // Definir los tamaños de texto
+    const textSizes = ['12px', '14px', '16px', '18px', '20px', '22px', '24px'];
+    let currentSizeIndex = 2; // Índice del tamaño normal (16px)
+
+    // Función para actualizar el tamaño del texto
+    function updateTextSize() {
+        document.body.style.fontSize = textSizes[currentSizeIndex];
+        localStorage.setItem('textSize', textSizes[currentSizeIndex]);
+    }
+
+    // Cargar el tamaño de texto guardado
+    const savedSize = localStorage.getItem('textSize');
+    if (savedSize) {
+        currentSizeIndex = textSizes.indexOf(savedSize);
+        if (currentSizeIndex === -1) currentSizeIndex = 2;
+        updateTextSize();
+    }
+
+    document.getElementById('increase-text').addEventListener('click', function() {
+        if (currentSizeIndex < textSizes.length - 1) {
+            currentSizeIndex++;
+            updateTextSize();
+        }
+    });
+
+    document.getElementById('decrease-text').addEventListener('click', function() {
+        if (currentSizeIndex > 0) {
+            currentSizeIndex--;
+            updateTextSize();
+        }
+    });
+
+    document.getElementById('normal-text').addEventListener('click', function() {
+        currentSizeIndex = 2; // Índice del tamaño normal (16px)
+        updateTextSize();
+    });
+
+    document.getElementById('toggle-contrast').addEventListener('click', function() {
+        deactivateAllModes(); // Desactivar todos los modos antes de activar el nuevo
+        document.body.classList.toggle('Dark-mode');
+        if (document.body.classList.contains('Dark-mode')) {
+            localStorage.setItem('darkMode', 'enabled');
+        } else {
+            localStorage.setItem('darkMode', 'disabled');
+        }
+    });
+
+    document.getElementById('high-contrast').addEventListener('click', function() {
+        deactivateAllModes(); // Desactivar todos los modos antes de activar el nuevo
+        document.body.classList.toggle('Contraste');
+        if (document.body.classList.contains('Contraste')) {
+            localStorage.setItem('contraste', 'enabled');
+        } else {
+            localStorage.setItem('contraste', 'disabled');
+        }
+    });
+
+    document.getElementById('color-blind').addEventListener('click', function() {
+        deactivateAllModes(); // Desactivar todos los modos antes de activar el nuevo
+        document.body.classList.toggle('Daltonico');
+        if (document.body.classList.contains('Daltonico')) {
+            localStorage.setItem('daltonico', 'enabled');
+        } else {
+            localStorage.setItem('daltonico', 'disabled');
+        }
+    });
+
+    // Nueva función para volver al modo normal
+    document.getElementById('reset-accessibility').addEventListener('click', function() {
+        deactivateAllModes(); // Desactivar todos los modos de accesibilidad
+        document.body.style.fontSize = '16px'; // Restablecer tamaño de texto a normal
+        localStorage.removeItem('textSize'); // Eliminar tamaño de texto guardado
+    });
+
+    let readerBarActive = false;
+    const readerBar = document.getElementById('reader-bar');
+    const readerBarContent = readerBar.querySelector('.reader-bar-content');
+    const pageOverlay = document.getElementById('page-overlay');
+
+    document.getElementById('toggle-reader-bar').addEventListener('click', function() {
+        readerBarActive = !readerBarActive;
+        readerBar.style.display = readerBarActive ? 'block' : 'none';
+        pageOverlay.style.display = readerBarActive ? 'block' : 'none';
+
+        if (readerBarActive) {
+            document.addEventListener('mousemove', updateReaderBar);
+        } else {
+            document.removeEventListener('mousemove', updateReaderBar);
+        }
+    });
+
+    function updateReaderBar(e) {
+        const y = e.clientY;
+        readerBar.style.top = `${y}px`;
+    }
+});
 </script>

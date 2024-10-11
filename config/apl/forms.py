@@ -116,6 +116,14 @@ class ProductosForm(ModelForm):
     class Meta:
         model = Productos
         fields = '__all__'
+        widgets = {
+            'id' : NumberInput(attrs={'class': 'form-control'}),
+            'nombre': TextInput(attrs={'class': 'form-control'}),
+            'marcas': Select(attrs={'class': 'form-control'}),
+            'tipo': Select(attrs={'class': 'form-control'}),
+            'presentacion': Select(attrs={'class': 'form-control'}),
+            'unidad_medida': Select(attrs={'class': 'form-control'})
+        }
 
 class PresentacionForm(ModelForm):
 

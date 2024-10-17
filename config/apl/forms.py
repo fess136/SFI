@@ -34,8 +34,7 @@ class MarcaForm(ModelForm):
 class AdministradorForm(ModelForm):
     username = forms.CharField(label="Usuario", max_length=150)
     email = forms.EmailField(label="Correo", max_length=150)
-    password = forms.CharField(label="Password", widget=PasswordInput, required=False)
-    conf_password = forms.CharField(label="Confirm Password", widget=PasswordInput, required=False)
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -51,20 +50,21 @@ class AdministradorForm(ModelForm):
         cleaned_data = super().clean()
         username = cleaned_data.get('username')
         email = cleaned_data.get('email')
-        password1 = cleaned_data.get("password")
-        password2 = cleaned_data.get("conf_password")
+        password1 = cleaned_data.get("contrasena")
+        password2 = cleaned_data.get("conf_contrasena")
 
         # Verificamos si es una edición
-        if len(password1) < 8:
-            raise ValidationError("La contraseña debe tener al menos 8 caracteres.")
             
-        # Verificar mayúsculas
-        if not re.search(r'[A-Z]', password1):
-            raise ValidationError("La contraseña debe contener al menos una letra mayúscula.")
+        if password1:
+            # Verificar longitud mínima
             
-        # Verificar minúsculas
-        if not re.search(r'[a-z]', password1):
-                raise ValidationError("La contraseña debe contener al menos una letra minúscula.")
+            # Verificar mayúsculas
+            if not re.search(r'[A-Z]', password1):
+                raise ValidationError({'contrasena':"La contraseña debe contener al menos una letra mayúscula."})
+            
+            # Verificar minúsculas
+            if not re.search(r'[a-z]', password1):
+                raise ValidationError({'contrasena':"La contraseña debe contener al menos una letra minúscula."})
 
         if self.instance and self.instance.pk:
             # Para edición, permitimos el mismo username y email del usuario actual
@@ -98,7 +98,7 @@ class AdministradorForm(ModelForm):
         cleaned_data = self.cleaned_data
         username = cleaned_data.get('username')
         email = cleaned_data.get('email')
-        password = cleaned_data.get('password')
+        password = cleaned_data.get('contrasena')
 
         if self.instance and self.instance.pk:
             # Actualizar usuario existente
@@ -108,7 +108,7 @@ class AdministradorForm(ModelForm):
             if password:  # Solo actualizamos la contraseña si se proporcionó una nueva
                 user.set_password(password)
                 administrador.contrasena = password
-                administrador.conf_contrasena = cleaned_data.get('conf_password')
+                administrador.conf_contrasena = cleaned_data.get('conf_contrasena')
             user.save()
         else:
             # Crear nuevo usuario
@@ -119,7 +119,7 @@ class AdministradorForm(ModelForm):
             )
             administrador.user = user
             administrador.contrasena = password
-            administrador.conf_contrasena = cleaned_data.get('conf_password')
+            administrador.conf_contrasena = cleaned_data.get('conf_contrasena')
 
         if commit:
             administrador.save()
@@ -127,14 +127,14 @@ class AdministradorForm(ModelForm):
 
     class Meta:
         model = Administradores
-        fields = ["username", "email", "nombre", "tipo_documento", "numero_documento", "telefono", "password", "conf_password"]
+        fields = ["username", "email", "nombre", "tipo_documento", "numero_documento", "telefono", "contrasena", "conf_contrasena"]
         widgets = {
             "nombre": TextInput(attrs={"placeholder": "Nombre del administrador"}),
             "tipo_documento": Select(attrs={"placeholder": "Tipo de identificación"}),
             "numero_documento": NumberInput(attrs={"min": 8, "placeholder": "Número de documento"}),
             "telefono": NumberInput(attrs={"min": 1, "placeholder": "Teléfono"}),
-            "password": PasswordInput(attrs={"placeholder": "Contraseña"}),
-            "conf_password": PasswordInput(attrs={"placeholder": "Confirme su contraseña"})
+            "contrasena": PasswordInput(attrs={"placeholder": "Contraseña"}),
+            "conf_contrasena": PasswordInput(attrs={"placeholder": "Confirme su contraseña"})
         }
 class VentaForm(ModelForm):
 

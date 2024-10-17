@@ -1,12 +1,16 @@
 
 from typing import Any
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import RedirectView
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login, logout
-from django.urls import reverse_lazy
+from django.contrib.auth.models import User
+from django.contrib.auth.views import PasswordResetView
+from django.contrib import messages
+from django.shortcuts import render
+
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
@@ -39,3 +43,10 @@ class logoutredirect(RedirectView):
           logout(request)
           
           return super().dispatch(request, *args, **kwargs)
+
+def validate_email(request):
+    email = request.GET.get('email', None)
+    response = {
+        'is_taken': User.objects.filter(email__iexact=email).exists()
+    }
+    return JsonResponse(response)

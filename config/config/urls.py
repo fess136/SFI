@@ -42,7 +42,7 @@ urlpatterns = [
     path('dashboard',dashView.as_view(), name='dashboard'),
     path('admin/', admin.site.urls),
     path("apl/", include("apl.urls")),
-    
+
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name='register/password_reset_form.html'), name='reset_password'),
 
     path('reset_password/done/', auth_views.PasswordResetDoneView.as_view(template_name='register/password_reset_done.html'), name='password_reset_done'),

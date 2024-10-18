@@ -1,0 +1,611 @@
+/*  MODO OSCURO */
+.Dark-mode .user-panel {
+    background-color: #1f1e1e;
+
+    color: #fff;
+}
+
+.Dark-mode .content-wrapper {
+       /* imagen obtenida desde: https://www.istockphoto.com/es/foto/fondo-de-la-variedad-de-herramientas-gm1370598531-440117158 */
+    background-image: url("/static/img/Herramientaoscura.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+   
+    background-color: #1f1e1e;
+    border-color:  #1f1e1e;    
+    color: #fff;
+}
+
+.Dark-mode .encabezado {
+    
+    background-color: #1f1e1e;
+    border-color:  #1f1e1e;    
+    color: #fff;
+}
+.Dark-mode .detalles {
+    
+    background-color: #1f1e1e;
+    border-color:  #1f1e1e;    
+    color: #fff;
+}
+
+
+.Dark-mode .main-header {
+    background-color: #1f1e1e;
+    border-color:  #1f1e1e;    
+    color: #fff;
+}
+.Dark-mode .table-responsive {
+    background-color: #1f1e1e;
+    border-color: #1f1e1e ;   
+    color: #fff;
+}
+.Dark-mode .card-header {
+    background-color:#1f1e1e;
+    border-color:#1f1e1e;
+    color: #fff;
+}
+
+.Dark-mode .card-body {
+    background-color:#1f1e1e;
+    border-color:#1f1e1e;
+    color: #fff;
+}
+.Dark-mode .card-footer {
+    background-color: #1f1e1e;
+    border-color:  #1f1e1e;
+    color: #fff;
+    
+}
+.Dark-mode .sidebar {
+    background-color:  #1f1e1e;
+    border-color:  #1f1e1e;
+    color: #fff;
+    scrollbar-color: #b3b3b3 #1f1e1e;
+}
+.Dark-mode .main-sidebar {
+    background-color:  #1f1e1e;
+    border-color:  #1f1e1e;
+    color: #fff;
+    scrollbar-color: #b3b3b3 #1f1e1e;
+}
+.Dark-mode .dataTables_length {
+    background-color:  #1f1e1e;
+    border-color:#1f1e1e; 
+    color: #fff;
+}
+.Dark-mode .main-footer {
+    background-color: #1f1e1e;
+    border-color:#1f1e1e;
+    color: #fff;
+    
+}
+.Dark-mode .form-group {
+    background-color:#1f1e1e;
+    border-color: #1f1e1e;
+    color: #fff;
+    
+}
+.Dark-mode .form-control{
+    background-color: #ffffff;
+    border-color:#ffffff;
+    color: #000000;
+    
+}
+.Dark-mode .encabezado{
+    background-color: #ffffff;
+    border-color:#ffffff;
+    color: #000000;
+    
+}
+
+/* Modo Alto contraste */
+.Contraste .user-panel {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+.Contraste .content-wrapper {
+   /* imagen obtenida desde: https://www.istockphoto.com/es/foto/fondo-de-la-variedad-de-herramientas-gm1370598531-440117158 */
+   background-image: url("/static/img/Herraaltocontraste.jpg");
+   background-size: cover;
+   background-repeat: no-repeat;
+  
+    background-color: #1A237E;
+    border-color: #FF0000;
+    color: #FFFF00;
+}
+
+.Contraste .encabezado {
+    
+    background-color: #1A237E;
+    border-color: #FF0000;
+    color: #FFFF00;
+}
+.Contraste .detalles {
+    
+    background-color: #1A237E;
+    border-color: #FF0000;
+    color: #FFFF00;
+}
+
+.Contraste .main-header {
+    background-color: #1A237E;
+    border-color: #FF0000;
+    color: #FFFF00;
+}
+.Contraste .table-responsive {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+.Contraste .card-header {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+
+.Contraste .card-body {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+.Contraste .card-footer {
+    background-color: #1A237E;
+    border-color: #FF0000;
+    color: #FFFF00;
+    
+}
+.Contraste .sidebar {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+.Contraste .main-sidebar {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+.Contraste .dataTables_length {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+}
+.Contraste .main-footer {
+    background-color: #1A237E;
+    border-color: #FF0000;
+    color: #FFFF00;
+    
+}
+.Contraste .form-group {
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+    
+}
+.Contraste .form-control{
+    background-color: #1A237E;
+border-color: #FF0000;
+color: #FFFF00;
+    
+}
+
+/* Modo daltonico */
+.Daltonico .user-panel {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .content-wrapper {
+   /* imagen obtenida desde: https://www.istockphoto.com/es/foto/fondo-de-la-variedad-de-herramientas-gm1370598531-440117158 */
+   background-image: url("/static/img/Herramientadaltonica.jpg");
+   background-size: cover;
+   background-repeat: no-repeat;
+    background-color: #2C3E50;
+    border-color: #34495E;
+    color: #ECF0F1;
+}
+
+.Daltonico .encabezado {
+    
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .detalles {
+    
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+
+.Daltonico .main-header {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .table-responsive {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .card-header {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+
+.Daltonico .card-body {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .card-footer {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+    
+}
+.Daltonico .sidebar {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .main-sidebar {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .dataTables_length {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+}
+.Daltonico .main-footer {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+    
+}
+.Daltonico .form-group {
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+    
+}
+.Daltonico .form-control{
+    background-color: #2C3E50;
+border-color: #34495E;
+color: #ECF0F1;
+    
+}
+
+
+
+
+.Dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+
+/* Diseño boton de accesibilidad */
+
+/* Estilo del cuadro desplegable */
+.nav-item .dropdown-menu {
+    background-color: #1f5a96; 
+    border-radius: 8px; 
+    border: 2px solid #000000; 
+    padding: 10px; 
+}
+
+/* Estilo de los elementos dentro del cuadro desplegable */
+.nav-item .dropdown-menu .dropdown-item {
+    color: #ffffff; 
+    padding: 8px 16px; 
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Estilo al pasar el mouse sobre una opción */
+.nav-item .dropdown-menu .dropdown-item:hover {
+    background-color: #000000; 
+    color: #ffffff; 
+}
+
+/* Cambiar la sombra del cuadro desplegable */
+.nav-item .dropdown-menu {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); 
+}
+
+
+#help-manual-link i {
+    color: #b49b47; 
+    font-size: 25px; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+    transition: transform 0.3s ease; 
+}
+
+
+/* Estilo para el ícono de ayuda */
+.nav-item.dropdown .nav-link i {
+    color: #b49b47; 
+    font-size: 25px; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+    transition: transform 0.3s ease, color 0.3s ease; 
+}
+
+
+
+/* Estilo para el ícono de cerrar sesión */
+.nav-item .nav-link i.fas.fa-power-off {
+    color: #ffffff; 
+    font-size: 25px; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+    transition: transform 0.3s ease, color 0.3s ease; 
+}
+
+/* dieño del logo del sidebar */
+.sidebar-logo {
+    position: absolute; 
+    width: 100%; 
+
+}
+    
+
+
+.logo-side {
+    max-width: 100%; 
+    height: auto; 
+    vertical-align: middle; 
+}
+
+
+
+/* diseño logo data table */
+.logo-container {
+    text-align: center; 
+    margin-bottom: 00px; 
+}
+
+/* Estilo para la imagen del logo */
+.logo-img {
+    max-width: 10%; 
+    
+    height: auto;
+     
+}
+@media (max-width: 600px) {
+    .logo-img {
+        max-width: 80%;
+    }
+}
+
+@media (max-width: 400px) {
+    .logo-img {
+        max-width: 60%;
+    }
+}
+
+/* ESTILO DEL FONDO DEL CONTENT */
+.content-wrapper {
+    /* imagen obtenida desde: https://www.istockphoto.com/es/foto/fondo-de-la-variedad-de-herramientas-gm1370598531-440117158 */
+    background-image: url("/static/img/Herramientas.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+.main-header.navbar {
+    height: 80px; 
+    padding: 0 15px; 
+}
+
+/* Centrar el contenido verticalmente dentro del header */
+.main-header .navbar-nav {
+    align-items: center; 
+}
+
+/* Ajustar el ícono para que se alinee verticalmente */
+.main-header .nav-link i {
+    font-size: 1.5rem; 
+    line-height: 1; 
+}
+
+/* Estilo barra baja*/
+.main-footer{
+    background-color: #4e4e4e;
+    border-color:#1f1e1e;
+    color: #fff;
+
+}
+
+
+/* Estilo del side bar*/
+
+.request.user.username{
+    color: #ffffff; 
+
+}   
+
+  .sidebar{
+    background-color:#1f5a96;
+    scrollbar-color: #9f9f9f #1f5a96;
+    
+}
+.main-sidebar{
+    background-color:#1f5a96;
+}
+
+.info {
+    color: #ffffff; 
+    font-size: 20px; 
+}
+.nav-link:hover p {
+    color: #000000;
+    font-size: 20px; 
+}
+.nav-icon {
+    color: #ffffff; 
+    font-size: 20px; 
+}
+.nav-link p {
+    color: #ffffff; 
+    font-size: 18px; 
+}
+
+/* barra lectora */
+
+.reader-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.4); 
+    z-index: 9999;
+    pointer-events: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reader-bar-content {
+    padding: 10px;
+    font-size: 16px;
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: inline-block;
+}
+
+.page-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 9998;
+    pointer-events: none;
+}
+
+/* <!-- Estilo del Detalle de la Compra --> */
+
+    .encabezado {
+        
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .logo {
+        background-color:#1f5a96;
+        width: 150px;
+        height: 100px;
+        border-radius: 15px;
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+        margin-right: 15px;
+    }
+
+    .detalles {
+        text-align: left;
+        padding: 10px;
+        margin: 5px 0;
+        color: #555;
+    }
+
+    .detalles h4 {
+        margin: 5px 0;
+    }
+
+    .botones {
+
+        display: flex;
+        justify-content: left;
+        gap: 10px;
+    }
+    .btn btn-success, btn btn-primary {
+
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    /* <!-- Estilo del Detalle de la venta --> */
+
+    .encabezado {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .logo {
+        background-color:#1f5a96;
+        width: 150px;
+        width: 150px;
+        height: 100px;
+        border-radius: 15px;
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+        margin-right: 15px;
+    }
+
+    .detalles {
+        text-align: left;
+        padding: 10px;
+        margin: 5px 0;
+        color: #555;
+    }
+
+    .detalles h4 {
+        margin: 5px 0;
+    }
+
+    .botones {
+
+        display: flex;
+        justify-content: left;
+        gap: 10px;
+    }
+    .btn btn-success, btn btn-primary {
+
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+    #contenido{
+
+        display: none;
+    }
+
+
+    .select2-container .select2-selection--single {
+        position: relative;
+        z-index: 1;
+        height: 38px !important; /* Ajusta este valor según sea necesario */
+      }
+
+    .scrollable-list {
+        max-height: 150px; /* Ajusta esta altura según tus necesidades */
+        background: #c92f2f;
+        overflow-y: auto;
+        scrollbar-color: #9f9f9f #c92f2f;
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .error-formualrio{
+        display: none;
+    }
+
+    .lista-scrolleable{
+        max-height: 150px; /* Ajusta esta altura según tus necesidades */
+        background: #1393a7;
+        overflow-y: auto;
+        scrollbar-color: #9f9f9f #1393a7;
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .alerta-error{
+        display: none;
+    }

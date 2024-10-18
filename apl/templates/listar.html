@@ -1,0 +1,244 @@
+{% extends "layout.html" %}
+
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<!-- Urls de los archivos CSS -->
+<link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/dataTables-bs4/css/dataTables.bootstrap4.min.css' %}" />
+<link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/datatables-responsive/css/responsive.bootstrap4.min.css' %}" />
+<link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/datatables-buttons/css/buttons.bootstrap4.min.css' %}" />
+<link rel="stylesheet" href="{% static 'lib/adminlte-3.2.0/icheck-bootstrap/icheck-bootstrap.min.css' %}" />
+<link href="{% static 'css/styles.css' %}" rel="stylesheet">
+<link href="{% static 'css/styles.css' %}" rel="stylesheet">
+<style>
+    .custom-button {
+        background-color: #1f5a96;
+        border: 2px solid hwb(0 100% 0%);
+        color: #fff;
+        margin: 0;
+        padding: 4px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+    }
+
+    .custom-button:hover {
+        background-color: #1d3c5d;
+        border: 2px solid #09335f;
+    }
+</style>
+{% endblock %}
+
+{% block contenido %}
+
+{% block alertas %}
+    {% if messages and obj_relacionados %}
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h3><i class="fas fa-ban"></i> Error</h3>
+        <div class="content-truncate" id="alert-content">
+            <h5>
+                El registro que se intentó eliminar está relacionado con los siguientes registros:
+                <br>
+                <div class="scrollable-list">
+                    <ul id = 'lista_errores'>
+                        {% for i in obj_relacionados %}
+                                <li>{{i}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </h5>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+
+<div class="card card-default">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-address-book" style="margin-right: 5px;"></i>
+            {{ titulo }}
+        </h3>
+        <div class="card-tools">
+            <button id = 'btn-filtro' type="button" class="btn btn-secondary btn-sm custom-button" data-toggle="modal" data-target="#filtroModal" >
+                <i class="fas fa-filter"></i> Filtrar
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        {% block Detalle %}
+        {% endblock %}
+
+        <div class="logo-container">
+            <img src="{% static 'img/logosfi.png' %}" alt="Logo" class="logo-img">
+        </div>
+
+        
+
+        <table id="tabla" class="table table-bordered table-striped">
+            <thead>
+                {% block columnas %}
+                {% endblock %}
+            </thead>
+            <tbody>
+                {% block filas %}
+                {% endblock %}
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        {% block botones_opc %}
+            <a href="{{ crear_url }}" class="btn btn-flat" style="background-color: #23853a; border: 1px solid #23853a; color: #fff; margin: 5px; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                <i class="fas fa-plus"></i> Agregar
+            </a>
+        {% endblock %}
+    </div>
+</div>
+
+<!-- Modal Grande -->
+<div class="modal fade" id="filtroModal" tabindex="-1" role="dialog" aria-labelledby="filtroModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="filtroModalLabel">Filtrar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id = 'filtro-contenido' class="modal-body">
+                {% block filtro_form_contenido %}
+                {% endblock %}
+            </div>
+            <div class="modal-footer justify-content-center"> <!-- Alineación a la izquierda -->
+                <!-- Cambia los estilos de los botones -->
+                <button type="button" class="btn btn-flat custom-button" data-dismiss="modal" style="background-color: #6c757d; color: white;">Cerrar</button>
+                <button type="button" class="btn btn-flat custom-button ml-4" onclick="applyFilters()" style="background-color: #23853a; color: white;">Filtrar</button>
+                <button type="button" class="btn btn-flat custom-button ml-4" onclick="clearFilters()" style="background-color: #007bff; color: white;">Limpiar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<!-- Urls de los archivos Js -->
+<script src="{% static 'lib/adminlte-3.2.0/datatables/Spanish.json' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/dataTables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/dataTables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/dataTables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/jszip/jszip.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/datatables-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'lib/adminlte-3.2.0/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+
+
+<script>
+    $(document).ready(function () {
+        var yourBase64Logo = 'data:image/jpeg;base64,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'
+        $("#tabla").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "language": {
+                "url": "{% static 'lib/adminlte-3.2.0/datatables/Spanish.json' %}"
+            },
+            buttons: [
+    { 
+        extend: 'copy', 
+        text: 'Copiar tabla', 
+        className: 'custom-button', 
+        exportOptions: { columns: ':not(:last-child)' } 
+    },
+    { 
+        extend: 'excel', 
+        text: 'Archivo Excel', 
+        className: 'custom-button', 
+        exportOptions: { columns: ':not(:last-child)' }
+    },
+    { 
+        extend: 'pdf', 
+        text: 'PDF', 
+        className: 'custom-button', 
+        exportOptions: { columns: ':not(:last-child)' },
+        customize: function (doc) {
+            doc.content.unshift({
+                image: yourBase64Logo, 
+                width: 70, // Ajusta el tamaño del logo
+                alignment: 'center',
+                margin: [0, 0, 0, 10] // Añade un margen entre el logo y la tabla
+            });
+        }
+    },
+    { 
+        extend: 'print', 
+        text: 'Imprimir', 
+        className: 'custom-button', 
+        exportOptions: { columns: ':not(:last-child)' },
+        customize: function (win) {
+            // Añadir el logo antes de la tabla en la vista de impresión
+            $(win.document.body)
+                .prepend('<img src="{% static 'img/logo.jpg' %}" style="display:block; margin: 20px auto; width:100px;" ></img>'); // El logo está centrado con margen suficiente
+
+            // Ajustar el estilo del contenido impreso
+            $(win.document.body).css({
+                'font-size': '10pt',
+                'text-align': 'center'
+            });
+
+            $(win.document.body).find('table')
+                .addClass('compact')
+                .css({
+                    'margin-top': '20px',
+                    'border-collapse': 'collapse',
+                    'width': '100%',
+                    'text-align': 'center'
+                });
+
+            $(win.document.body).find('table th, table td').css({
+                'padding': '8px',
+                'border': '1px solid black'
+            });
+        }
+    }
+],
+            "dom": 'Bfrtip'
+        }).buttons().container().appendTo('#tabla_wrapper .col-md-6:eq(0)');
+    });
+
+    function clearFilters() {
+        // Limpia los campos del formulario
+        document.querySelector('#filtroModal form').reset();
+        // Redirige a la URL actual sin parámetros
+        const url = new URL(window.location.href);
+        url.search = ''; // Elimina todos los parámetros de búsqueda
+        window.location.href = url.toString();
+    }
+
+    function applyFilters() {
+        document.querySelector('#filtroModal form').submit();
+    }
+</script>
+<script>
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    icon: '{{ message.tags }}',  // Tipo de mensaje: success, error, etc.
+                    title: '{% if message.tags == "success" %}¡Éxito!{% elif message.tags == "error" %}¡Error!{% endif %}',  // Título basado en el tipo de mensaje
+                    text: "{{ message }}",  // Mensaje del contenido
+                    confirmButtonText: 'OK'
+                });
+            {% endfor %}
+        {% endif %}
+</script>
+
+{% endblock %}

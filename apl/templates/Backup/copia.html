@@ -1,0 +1,130 @@
+{% extends "form.html" %}
+
+{% block head %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #ffffff;
+        
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            padding-left: 0px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            color: #ffffff;
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            background-color: #1f5a96;
+            color:#ffffff;
+            display: block;
+            margin: 20px auto;
+            width: fit-content;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-success {
+            background-color: #1f5a96;
+            display: block;
+            margin: 20px auto;
+            width: fit-content;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+
+{% endblock %}
+
+{% block contenido %}
+<div class="containers">
+    <h1>Gestión de Copias de Seguridad</h1>
+
+    <!-- SweetAlert para mensajes -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if messages %}
+                {% for message in messages %}
+                    Swal.fire({
+                        icon: '{{ message.tags }}',  // Tipo de mensaje: success, error, etc.
+                        title: '{% if message.tags == "success" %}¡Éxito!{% elif message.tags == "error" %}¡Error!{% endif %}',  // Título basado en el tipo de mensaje
+                        text: "{{ message }}",  // Mensaje del contenido
+                        confirmButtonText: 'OK'
+                    });
+                {% endfor %}
+            {% endif %}
+        });
+        
+    </script>
+
+
+    <!-- Sección para hacer una copia de seguridad -->
+    <h2>Hacer Copia de Seguridad</h2>
+    <form action="{% url 'apl:hacer_copia_de_seguridad' %}" method="get" class="form-backup">
+        <button type="submit" class="btn btn-primary">Generar copia de seguridad de la base de datos</button>
+    </form>
+
+    <!-- Sección para restaurar una copia de seguridad -->
+    <h2>Restaurar Copia de Seguridad</h2>
+    {% if archivos_zip %}
+    <form action="{% url 'apl:restaurar_copia_de_seguridad' %}" method="post" class="form-restore">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="nombre">Selecciona la copia de seguridad para restaurar:</label>
+            <select id="nombre" name="nombre" required class="form-control">
+                {% for archivo in archivos_zip %}
+                    <option value="{{ archivo }}">{{ archivo }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Restaurar</button>
+    </form>
+    {% else %}
+        <p>No hay copias de seguridad disponibles para restaurar.</p>
+    {% endif %}
+</div>
+
+<script>
+    $('#nombre').select2({width: '100%'})
+</script>
+{% endblock %}
+
+{% block Bienvenidos %}
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends "listar.html" %}
+{% load humanize %}
+{% load static %}
+
+{% block alertas %}
+<div class = 'alerta-error'>
+    <div class="alert alert-danger alert-dismissible" id="alerta">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h3><i class="fas fa-ban"></i> Error</h3>
+        <div class="content-truncate" id="alert-content">
+            <h5>
+                Los siguientes productos superaron el límite de productos que hay en el inventario:
+            </h5>
+            <div class="scrollable-list">
+                <ul id="lista_errores">
+                    <!-- Aquí irían los elementos de la lista -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .scrollable-list {
+        max-height: 200px; /* Ajusta esta altura según tus necesidades */
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    #lista_errores {
+        margin: 0;
+        padding: 0 0 0 20px;
+    }
+</style>
+{% endblock %}
+<!-- Detalle de la Venta -->
+{% block Detalle %}
+<!-- Script del SweetAlert para la confirmacion de la finalizacion de la compra -->
+<script>
+$(document).ready(function() {
+    $('#finalizar').click(function() {
+        Swal.fire({
+            title: "¿Estás seguro(a) que deseas finalizar la compra?",
+            text: "Después de finalizar, no podrás realizar más cambios en la compra",
+            showDenyButton: true,
+            confirmButtonText: "Sí, Finalizar",
+            denyButtonText: `Cancelar`
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar una solicitud POST
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}', 
+                        'accion': 'finalizar' 
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            Swal.fire("¡Venta Finalizada!", "", "success").then(() => {
+                                // Redirigir si es necesario
+                                window.location.href = "{% url 'apl:listar_venta' %}";
+                            });
+                        } else {
+                            // Manejar otros tipos de respuestas si es necesario
+                            Swal.fire("Error", "Ocurrió un error inesperado", "error");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        if (xhr.status === 400 && xhr.responseJSON) {
+                            $('#alerta').css('display', 'block')
+                            // Manejar ValidationError
+                            Swal.fire("Error de Validación", 'No se logro finalizar la venta', "error");
+
+                            let listaErrores = $('#lista_errores');
+                            listaErrores.empty();
+
+                            xhr.responseJSON.message.split(',').forEach((e, i) => {
+
+                                listaErrores.append(`<li>${e}</li>`)
+                            });
+
+                            $('.alerta-error').css('display', 'block')
+
+                        } else {
+                            // Manejar otros errores
+                            Swal.fire("Error", `No se pudo registrar la Compra: ${error}`, "error");
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+});
+    </script>
+
+
+<div class="encabezado">
+    <div class="detalles">
+        
+        <h4><strong>Id de Venta: </strong>{{ venta.id }}</h4>
+        <h4><strong>Fecha Venta: </strong>{{ venta.fecha_venta }}</h4>
+        <h4><strong>Método de Pago: </strong>{{ venta.metodo_pago }}</h4>
+        {% if venta.finalizado %}
+
+        <h4><strong>Estado: </strong>Venta Finalizada</h4><br>
+
+        {% else %}
+
+            <h4><strong>Estado: </strong>Venta Pendiente</h4><BR>
+
+        {% endif %}
+        <h4><strong>Total: </strong> ${{Total|floatformat:0|intcomma}} </h4>
+
+        <div class ="botones">
+            {% if not finalizo %}
+            <a href="{% url 'apl:crear_detalleventa' venta.id %}" class = "btn btn-primary"><i class ="fas fa-plus"></i> Agregar</a>
+
+            {% endif %}
+
+            {% if not finalizo and hay_productos %}
+
+                    <button id ="finalizar" class = "btn btn-success"><i class = "fas fa-check"></i>Finalizar Venta</button>
+
+            {% endif %}
+
+        </div>
+    </div>
+    <img src="{% static 'img/logosfi.png' %}" alt="Logo de la empresa" class="logo">
+</div>
+
+</style>
+{% endblock %}
+<!-- Tabla con los productos seleccionados -->
+{% block columnas %}
+<tr>
+    <th scope="col">ID</th>
+    <th scope="col">Venta</th>
+    <th scope="col">Producto</th>
+    <th scope="col">Cantidad</th>
+    <td scope="col">Precio</td>
+    <td scope="col">Subtotal</td>
+    <td scope="col">Iva</td>
+    <td scope="col">Total</td>
+
+    <!-- Cuando la compra ha sido finalizada ya no se podra editar ni eliminar los productos seleccionados -->
+    {% if not finalizo %}
+        <th scope="col">Opciones</th>
+    {% endif %}
+</tr>
+{% endblock %}
+
+{% block filas %}
+{% for c in object.detalleventa_set.all %}
+<tr>
+    <td>{{ c.id }}</td>
+    <td>{{ c.venta }}</td>
+    <td>{{ c.producto }}</td>
+    <td>{{ c.cantidad }}</td>
+    <td>{{ c.precio_unitario|floatformat:0|intcomma}}</td>
+    <td>{{ c.Subtotal|floatformat:0|intcomma}}</td>
+    <td>{{ c.Iva|floatformat:0|intcomma}}</td>
+    <td>{{ c.Total|floatformat:0|intcomma}}</td>
+    {% if not finalizo %}
+        <td>
+            <a href="{% url 'apl:editar_detalleventa' c.id %}" class="btn btn-primary btn-xs">
+                <i class="fas fa-edit"></i>
+            </a>
+            <a href="{% url 'apl:borrar_detalleventa' c.id %}" class="btn btn-danger btn-xs">
+                <i class="fas fa-trash"></i>
+            </a>
+        </td>
+    {% endif %}
+</tr>
+{% endfor %}
+{% endblock %}
+{% block botones_opc %}
+{% endblock %}

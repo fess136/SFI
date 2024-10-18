@@ -1,0 +1,29 @@
+{% extends 'form.html' %}
+
+{% block boton_crear %}
+
+    {% if field.label == 'Tipo de identificación' %}
+
+    <button id = "tipo_documento" type="button" class="btn btn-primary btn btn-xs" data-value = '{{formulario}}' onclick ="mostrarFormulario('tipo_documento','identificadores', 'id_nombre', 'id_estado')" data-toggle="modal" data-target="#formulario-modal"><i class = "fas fa-plus "></i></button>
+
+    {% endif %}
+
+{% endblock %}
+
+{% block requisitos_contraseña %}
+<h5>
+    La contraseña debe cumplir los siguientes requisitos:
+    <br>
+    <ul>
+        <li>Tener al menos 8 caracteres.</li>
+        <li>Contener al menos una letra mayúscula.</li>
+        <li>Contener al menos una letra minúscula.</li>
+    </ul>
+</h5>
+{% endblock %}
+
+{% block codigo %}
+    <script>
+        $('#id_tipo_documento').select2({width: '100%'})
+    </script>
+{% endblock %}

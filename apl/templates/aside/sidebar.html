@@ -1,0 +1,113 @@
+{% load static %}
+<aside class="main-sidebar sidebar-light-primary ">
+
+    <div class="sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="{% static 'img/user.png' %}" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block" style="color: rgb(255, 255, 255);">{{ request.user.username }}</a>
+            </div>
+        </div>
+        
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-header" style="color: rgb(255, 255, 255);">Modulos</li>
+
+                <li class="nav-item"  data-toggle="tooltip" data-placement="top" title="Tipo">
+                    <a href="{% url 'apl:listar_tipo' %}" class="nav-link">
+                        <i class="nav-icon fas fa-truck-loading"></i>
+                        <p>
+                            Tipo
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item"  data-toggle="tooltip" data-placement="top" title="Productos">
+                    <a href="{% url 'apl:listar_producto' %}" class="nav-link">
+                        <i class="nav-icon fas fa-boxes"></i>
+                        <p>
+                            Productos
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item"  data-toggle="tooltip" data-placement="top" title="Clientes">
+                    <a href="{% url 'apl:listar_cliente' %}" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                            Clientes
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item"  data-toggle="tooltip" data-placement="top" title="Ventas">
+                    <a href="{% url 'apl:listar_venta' %}" class="nav-link">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Ventas
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item"  data-toggle="tooltip" data-placement="top" title="Compras">
+                    <a href="{% url 'apl:listar_compra' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-cart-plus"></i>
+                    <p>Compras</p>
+                    </a>
+                </li>
+                <li class="nav-item"  data-toggle="tooltip" data-placement="top" title="Marcas">
+                    <a href="{% url 'apl:listar_marca' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-hammer"></i>
+                    <p>Marcas</p>
+                    </a>
+                </li>
+                <li class="nav-item"  data-toggle="tooltip" data-placement="top" title="Metodos de pago">
+                    <a href="{% url 'apl:listar_metodo' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-credit-card"></i>
+                    <p>Metodo de pago</p>
+                    </a>
+                </li>
+                <li class="nav-item"  data-toggle="tooltip" data-placement="top" title="Presentaciones">
+                    <a href="{% url 'apl:listar_presentacion' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-box"></i>
+                    <p>Presentaciones</p>
+                    </a>
+                </li>
+                <li class="nav-item"  data-toggle="tooltip" data-placement="top" title="Proveedores">
+                    <a href="{% url 'apl:listar_proveedor' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-parachute-box"></i>
+                    <p>Proveedor</p>
+                    </a>
+                </li>
+                <li class="nav-item"  data-toggle="tooltip" data-placement="top" title="Tipo de identificacion">
+                    <a href="{% url 'apl:listar_identificador' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-address-card"></i>
+                    <p>Tipo de identificacion</p>
+                    </a>
+                </li>
+                <li class="nav-item"  data-toggle="tooltip" data-placement="top" title="Unidades de medida">
+                    <a href="{% url 'apl:listar_medida' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-pencil-ruler"></i>
+                    <p>Unidades de Medida</p>
+                    </a>
+                </li>
+                <li class="nav-item"  data-toggle="tooltip" data-placement="top" title="Administradores">
+                    <a href="{% url 'apl:listar_administrador' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-user"></i>
+                    <p>Administradores</p>
+                    </a>
+                </li>
+                <li class="nav-item"  data-toggle="tooltip" data-placement="top" title="Copias de seguriada">
+                    <a href="{% url 'apl:backup_restore_view' %}" class="nav-link">
+                    <i class ="nav-icon fas fa-user"></i>
+                    <p>Copia de seguridad</p>
+                    </a>
+                </li>
+            </ul>
+            
+        </nav>
+        {% comment %} <div class="sidebar-logo">
+            <img src="{% static 'img/logosfi.png' %}" alt="Logo" class="logo-side">
+        </div> {% endcomment %}
+       
+    </div>
+    
+</aside>

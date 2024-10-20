@@ -94,9 +94,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db',
-        'USER': 'sfi',
-        'PASSWORD': 'bUfh0vLnSRW72beoUKdy',
+        'NAME': 'database-sfi',
+        'USER': 'user-sfi',
+        'PASSWORD': 'laDXjc38zKX1UFQ3rf2Q',
         'HOST': 'localhost',  # O la dirección de tu servidor de MySQL
         'PORT': '3306',  # O el puerto de MySQL que estás usando
     }

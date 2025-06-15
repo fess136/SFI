@@ -1,0 +1,44 @@
+services:
+  sfi_db:
+    image: mysql:9.3
+    container_name: SFI_DB
+    ports:
+      - "3307:3306"
+    hostname: sfi-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - sfi_db:/var/lib/mysql #Persistencia de datos
+    networks:
+      - sfi_network #Red para que el contenedor de la pagina sfi pueda conectarse a la base de datos
+    healthcheck: #Espera a que la base de datos este funcionando
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 100
+
+  sfi:
+    build: .
+    container_name: SFI
+    env_file:
+      - .env
+    environment:
+      - DJANGO_SUPERUSER_USERNAME=${SUPERUSER_USERNAME}
+      - DJANGO_SUPERUSER_EMAIL=${SUPERUSER_EMAIL}
+      - DJANGO_SUPERUSER_PASSWORD=${SUPERUSER_PASSWORD}
+    ports:
+      - "8000:8000"
+    depends_on:
+      sfi_db:
+        condition: service_healthy
+    networks:
+      - sfi_network
+
+networks:
+  sfi_network:
+    driver: bridge
+
+volumes:
+  sfi_db:

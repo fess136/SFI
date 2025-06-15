@@ -17,7 +17,7 @@ def backup_restore_view(request):
     directorio_copias = os.path.join(settings.BASE_DIR, 'database/database')
     archivos_zip = [f for f in os.listdir(directorio_copias) if f.endswith('.zip')]
 
-    return render(request, 'backup/copia.html', {
+    return render(request, 'Backup/copia.html', {
         'archivos_zip': archivos_zip,
     })
 @login_required

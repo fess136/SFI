@@ -16,7 +16,7 @@ import re
 @method_decorator(never_cache, name='dispatch')
 class MarcaListView(ListView):
     model = Marcas
-    template_name = 'marca/listar.html'
+    template_name = 'Marca/listar.html'
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs): 

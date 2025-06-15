@@ -18,7 +18,7 @@ import re
 class TipoCreateView(CreateView):
     model = Tipo
     form_class = TipoForm
-    template_name = 'tipo/crear.html'
+    template_name = 'Tipo/crear.html'
     success_url = reverse_lazy('apl:listar_tipo')
 
     def form_valid(self, form):
@@ -146,7 +146,7 @@ class TipoUpdateView(UpdateView):
 class TipoListView(ListView):
 
     model = Tipo
-    template_name = 'tipo/listar.html'
+    template_name = 'Tipo/listar.html'
 
       #decorador para proteccion de la vista desde el login
     

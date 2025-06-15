@@ -11,7 +11,17 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os, random, string
+from dotenv import load_dotenv
 from pathlib import Path
+
+#Se hace la importacion de las variables de entorno
+load_dotenv()
+
+DB_USUARIO = os.getenv("MYSQL_USER")
+DB_CONTRASENA = os.getenv("MYSQL_PASSWORD")
+DB_PUERTO = os.getenv("MYSQL_PORT")
+DB_HOST = os.getenv("MYSQL_HOST")
+DB_DATABASE = os.getenv("MYSQL_DATABASE")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -94,11 +104,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'database-sfi',
-        'USER': 'user-sfi',
-        'PASSWORD': 'laDXjc38zKX1UFQ3rf2Q',
-        'HOST': 'localhost',  # O la dirección de tu servidor de MySQL
-        'PORT': '3306',  # O el puerto de MySQL que estás usando
+        'NAME': DB_DATABASE,
+        'USER': DB_USUARIO,
+        'PASSWORD': DB_CONTRASENA,
+        'HOST': DB_HOST,  # O la dirección de tu servidor de MySQL
+        'PORT': DB_PUERTO,  # O el puerto de MySQL que estás usando
     }
 }
 
@@ -142,12 +152,11 @@ USE_TZ = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static' ),
+    os.path.join(BASE_DIR, 'static'),
 ]
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

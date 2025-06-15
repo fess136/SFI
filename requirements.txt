@@ -1,6 +1,6 @@
 django
 django-widget-tweaks
-
+python-dotenv
 mysqlclient
 # # JavaScript dependencies (for reference only, install with npm)
 # jspdf==2.5.1
